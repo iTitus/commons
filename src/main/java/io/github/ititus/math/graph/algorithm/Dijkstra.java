@@ -14,49 +14,56 @@ public class Dijkstra<T> {
 
     private final Graph<T> graph;
     private final Vertex<T> start;
+    private final boolean directed;
 
-    public Dijkstra(Graph<T> graph, Vertex<T> start) {
+    public Dijkstra(Graph<T> graph, Vertex<T> start, boolean directed) {
         this.graph = graph;
         this.start = start;
+        this.directed = directed;
     }
 
     public Result findShortestPaths() {
         Result r = new Result();
 
-        Set<UUID> unvisited = graph.getVertices().stream().map(Vertex::getUuid).collect(Collectors.toSet());
+        Set<Vertex<T>> unvisited = new HashSet<>(graph.getVertices());
         r.setDist(start, BigRationalConstants.ZERO);
 
         while (!unvisited.isEmpty()) {
-            Vertex<T> v = findMinDist(unvisited, r);
+            Vertex<T> u = findMinDist(unvisited, r);
 
-            Optional<BigRational> distVOpt = r.getDist(v);
+            Optional<BigRational> distVOpt = r.getDist(u);
             if (distVOpt.isEmpty()) {
-                throw new RuntimeException("unreachable vertex " + v);
+                // throw new RuntimeException("unreachable vertex " + u);
+                unvisited.remove(u);
+                continue;
             }
-            BigRational distV = distVOpt.get();
+            BigRational distU = distVOpt.get();
 
-            Set<Edge<T>> adjEdges = graph.getAdjacentEdges(v);
+            Set<Edge<T>> adjEdges = directed ? graph.getIncomingEdges(u) : graph.getAdjacentEdges(u);
             for (Edge<T> e : adjEdges) {
-                Vertex<T> w = e.getStart().equals(v) ? e.getEnd() : e.getStart();
+                Vertex<T> v = !directed && e.getStart().equals(u) ? e.getEnd() : e.getStart();
+                if (!unvisited.contains(v)) {
+                    continue;
+                }
 
-                BigRational distance = distV.add(e.getWeight());
-                Optional<BigRational> distW = r.getDist(w);
-                if (distW.isEmpty() || distance.compareTo(distW.get()) < 0) {
-                    r.setDist(w, distance);
-                    r.setPrev(w, v);
+                BigRational altDist = distU.add(e.getWeight());
+                Optional<BigRational> distV = r.getDist(v);
+                if (distV.isEmpty() || altDist.compareTo(distV.get()) < 0) {
+                    r.setDist(v, altDist);
+                    r.setPrev(v, u);
                 }
             }
 
-            System.out.printf("visiting=%s | %s%n", v, resultToString(r));
+            // System.out.printf("visiting=%s | %s%n", u, resultToString(r));
         }
 
         return r;
     }
 
-    private Vertex<T> findMinDist(Set<UUID> unvisited, Result res) {
-        UUID min = Collections.min(unvisited, (u1, u2) -> {
-            Optional<BigRational> r1 = res.getDist(u1);
-            Optional<BigRational> r2 = res.getDist(u2);
+    private Vertex<T> findMinDist(Set<Vertex<T>> unvisited, Result res) {
+        Vertex<T> min = Collections.min(unvisited, (v1, v2) -> {
+            Optional<BigRational> r1 = res.getDist(v1);
+            Optional<BigRational> r2 = res.getDist(v2);
 
             if (r1.isPresent()) {
                 return r2.map(r -> r1.get().compareTo(r)).orElse(-1);
@@ -68,19 +75,11 @@ public class Dijkstra<T> {
 
         unvisited.remove(min);
 
-        //noinspection OptionalGetWithoutIsPresent
-        return graph.getVertex(min).get();
+        return min;
     }
 
-    @SuppressWarnings("unchecked")
     private String resultToString(Result r) {
-        List<Vertex<T>> vertices = graph.getVertices().stream().filter(Predicate.not(start::equals)).sorted((v1, v2) -> {
-            if (v1.get() instanceof Comparable<?>) {
-                return ((Comparable<T>) v1.get()).compareTo(v2.get());
-            }
-            return v1.getUuid().compareTo(v2.getUuid());
-        }).collect(Collectors.toList());
-
+        List<Vertex<T>> vertices = graph.getVertices().stream().filter(Predicate.not(start::equals)).sorted().collect(Collectors.toList());
         StringBuilder b = new StringBuilder();
 
         for (Vertex<T> v : vertices) {
@@ -101,8 +100,8 @@ public class Dijkstra<T> {
 
     public class Result {
 
-        private final Map<UUID, BigRational> dist;
-        private final Map<UUID, UUID> prev;
+        private final Map<Vertex<T>, BigRational> dist;
+        private final Map<Vertex<T>, Vertex<T>> prev;
 
         private Result() {
             this.dist = new HashMap<>();
@@ -110,24 +109,19 @@ public class Dijkstra<T> {
         }
 
         private void setDist(Vertex<T> v, BigRational r) {
-            dist.put(v.getUuid(), r);
+            dist.put(v, r);
         }
 
         private void setPrev(Vertex<T> v, Vertex<T> w) {
-            prev.put(v.getUuid(), w.getUuid());
+            prev.put(v, w);
         }
 
         private Optional<BigRational> getDist(Vertex<T> v) {
-            return getDist(v.getUuid());
+            return Optional.ofNullable(dist.get(v));
         }
 
-        private Optional<BigRational> getDist(UUID uuid) {
-            return Optional.ofNullable(dist.get(uuid));
-        }
-
-        private Vertex<T> getPrev(Vertex<T> v) {
-            //noinspection OptionalGetWithoutIsPresent
-            return graph.getVertex(prev.get(v.getUuid())).get();
+        private Optional<Vertex<T>> getPrev(Vertex<T> v) {
+            return Optional.ofNullable(prev.get(v));
         }
 
         public List<Vertex<T>> getShortestPathVertices(Vertex<T> end) {
@@ -136,7 +130,7 @@ public class Dijkstra<T> {
 
             Vertex<T> v = end;
             while (!v.equals(start)) {
-                v = getPrev(v);
+                v = getPrev(v).orElseThrow();
                 list.add(v);
             }
 
@@ -155,9 +149,8 @@ public class Dijkstra<T> {
 
             Vertex<T> v = end, w;
             while (!v.equals(start)) {
-                w = getPrev(v);
-                //noinspection OptionalGetWithoutIsPresent
-                list.add(graph.getEdge(v, w).get());
+                w = getPrev(v).orElseThrow();
+                list.add(graph.getEdge(v, w).orElseThrow());
 
                 v = w;
             }

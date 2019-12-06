@@ -3,7 +3,7 @@ package io.github.ititus.math.graph;
 import java.util.Objects;
 import java.util.UUID;
 
-public final class Vertex<T> {
+public final class Vertex<T> implements Comparable<Vertex<T>> {
 
     private final Graph<T> graph;
     private final UUID uuid;
@@ -25,6 +25,15 @@ public final class Vertex<T> {
 
     public T get() {
         return t;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public int compareTo(Vertex<T> o) {
+        if (t instanceof Comparable<?>) {
+            return ((Comparable<T>) t).compareTo(o.t);
+        }
+        return uuid.compareTo(o.uuid);
     }
 
     @Override

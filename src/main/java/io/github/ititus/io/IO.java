@@ -56,6 +56,15 @@ public class IO {
         return Channels.newChannel(is);
     }
 
+    public static FileChannel openCreateNewFileChannel(Path path) {
+        Objects.requireNonNull(path);
+        try {
+            return FileChannel.open(path, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     public static FileChannel openOverwriteFileChannel(Path path) {
         Objects.requireNonNull(path);
         try {

@@ -3,6 +3,7 @@ package io.github.ititus.math.number;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -190,6 +191,20 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return add(r.negate());
     }
 
+    public BigRational multiply(BigInteger n) {
+        if (isZero() || n.signum() == 0) {
+            return ZERO;
+        } else if (isOne()) {
+            return of(n);
+        } else if (n.equals(BigInteger.ONE)) {
+            return this;
+        } else if (isBigInteger() && numerator.equals(n)) {
+            return squared();
+        }
+
+        return of(numerator.multiply(n), denominator);
+    }
+
     public BigRational multiply(BigRational r) {
         if (isZero() || r.isZero()) {
             return ZERO;
@@ -197,7 +212,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
             return r;
         } else if (r.isOne()) {
             return this;
-        } else if (r.equals(this)) {
+        } else if (equals(r)) {
             return squared();
         }
 
@@ -315,6 +330,10 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     public BigRational round(MathContext mc) {
         return isBigInteger() ? this : of(toBigDecimal().round(mc));
+    }
+
+    public BigInteger roundToBigInt(RoundingMode mode) {
+        return toBigDecimal().setScale(0, mode).toBigIntegerExact();
     }
 
     public BigRational sin() {

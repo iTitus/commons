@@ -25,7 +25,7 @@ public class GraphTests {
         Edge<String> de = g.addEdge(d, e, BigRational.of(4));
 
         System.out.println(g);
-        Dijkstra<String> dijkstra = new Dijkstra<>(g, a);
+        Dijkstra<String> dijkstra = new Dijkstra<>(g, a, false);
         Dijkstra<String>.Result shortestPaths = dijkstra.findShortestPaths();
         System.out.println(shortestPaths);
         System.out.println(shortestPaths.getShortestPathVertices(e));

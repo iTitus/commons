@@ -27,11 +27,15 @@ public class Graph<T> {
         UUID uuid;
         do {
             uuid = UUID.randomUUID();
-        } while (getVertex(uuid).isPresent());
+        } while (getVertexById(uuid).isPresent());
 
         Vertex<T> v = new Vertex<>(this, uuid, t);
         vertices.add(v);
         return v;
+    }
+
+    public Edge<T> addEdge(Vertex<T> start, Vertex<T> end) {
+        return addEdge(start, end, BigRationalConstants.ONE);
     }
 
     public Edge<T> addEdge(Vertex<T> start, Vertex<T> end, BigRational weight) {
@@ -46,7 +50,7 @@ public class Graph<T> {
         UUID uuid;
         do {
             uuid = UUID.randomUUID();
-        } while (getEdge(uuid).isPresent());
+        } while (getEdgeById(uuid).isPresent());
 
         Edge<T> e = new Edge<>(this, uuid, start, end, weight);
         edges.add(e);
@@ -61,7 +65,16 @@ public class Graph<T> {
         return edges;
     }
 
-    public Optional<Vertex<T>> getVertex(UUID uuid) {
+    public Optional<Vertex<T>> getVertex(T t) {
+        Objects.requireNonNull(t);
+        return vertices.stream()
+                .filter(v ->
+                        v.get().equals(t)
+                )
+                .findAny();
+    }
+
+    public Optional<Vertex<T>> getVertexById(UUID uuid) {
         Objects.requireNonNull(uuid);
         return vertices.stream()
                 .filter(v ->
@@ -70,7 +83,7 @@ public class Graph<T> {
                 .findAny();
     }
 
-    public Optional<Edge<T>> getEdge(UUID uuid) {
+    public Optional<Edge<T>> getEdgeById(UUID uuid) {
         Objects.requireNonNull(uuid);
         return edges.stream()
                 .filter(e ->
@@ -105,6 +118,24 @@ public class Graph<T> {
                 .filter(e ->
                         e.getStart().equals(v)
                                 || e.getEnd().equals(v)
+                )
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Edge<T>> getOutgoingEdges(Vertex<T> v) {
+        Objects.requireNonNull(v);
+        return edges.stream()
+                .filter(e ->
+                        e.getStart().equals(v)
+                )
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Edge<T>> getIncomingEdges(Vertex<T> v) {
+        Objects.requireNonNull(v);
+        return edges.stream()
+                .filter(e ->
+                        e.getEnd().equals(v)
                 )
                 .collect(Collectors.toSet());
     }
