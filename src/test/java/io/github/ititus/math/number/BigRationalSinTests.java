@@ -2,10 +2,10 @@ package io.github.ititus.math.number;
 
 import org.junit.Test;
 
+import static io.github.ititus.TestUtil.closeTo;
 import static io.github.ititus.math.number.BigRational.of;
 import static io.github.ititus.math.number.BigRationalConstants.*;
 import static io.github.ititus.math.number.BigRationalMath.sin;
-import static io.github.ititus.TestUtil.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

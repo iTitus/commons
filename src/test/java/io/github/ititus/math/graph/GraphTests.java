@@ -1,8 +1,5 @@
-package io.github.ititus.math;
+package io.github.ititus.math.graph;
 
-import io.github.ititus.math.graph.Edge;
-import io.github.ititus.math.graph.Graph;
-import io.github.ititus.math.graph.Vertex;
 import io.github.ititus.math.graph.algorithm.Dijkstra;
 import io.github.ititus.math.number.BigRational;
 

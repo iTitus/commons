@@ -17,6 +17,10 @@ public class Dijkstra<T> {
     private final boolean directed;
 
     public Dijkstra(Graph<T> graph, Vertex<T> start, boolean directed) {
+        if (directed) {
+            throw new UnsupportedOperationException();
+        }
+
         this.graph = graph;
         this.start = start;
         this.directed = directed;
@@ -150,7 +154,7 @@ public class Dijkstra<T> {
             Vertex<T> v = end, w;
             while (!v.equals(start)) {
                 w = getPrev(v).orElseThrow();
-                list.add(graph.getEdge(v, w).orElseThrow());
+                list.add(graph.getEdgeByVertices(v, w).orElseThrow());
 
                 v = w;
             }

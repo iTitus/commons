@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Undirected graph
+ * Undirected Graph
  *
  * @param <T> content type
  */
@@ -22,7 +22,9 @@ public class Graph<T> {
     }
 
     public Vertex<T> addVertex(T t) {
-        Objects.requireNonNull(t);
+        if (getVertex(Objects.requireNonNull(t)).isPresent()) {
+            throw new IllegalArgumentException("vertex already exists");
+        }
 
         UUID uuid;
         do {
@@ -41,9 +43,9 @@ public class Graph<T> {
     public Edge<T> addEdge(Vertex<T> start, Vertex<T> end, BigRational weight) {
         if (Objects.requireNonNull(start).equals(Objects.requireNonNull(end))) {
             throw new IllegalArgumentException("start=end");
-        } else if (getEdge(start, end).isPresent()) {
+        } else if (getEdgeByVertices(start, end).isPresent()) {
             throw new IllegalArgumentException("edge already exists");
-        } else if (Objects.requireNonNull(weight).compareTo(BigRationalConstants.ONE) < 0) {
+        } else if (!Objects.requireNonNull(weight).isPositive()) {
             throw new IllegalArgumentException("weight");
         }
 
@@ -83,16 +85,11 @@ public class Graph<T> {
                 .findAny();
     }
 
-    public Optional<Edge<T>> getEdgeById(UUID uuid) {
-        Objects.requireNonNull(uuid);
-        return edges.stream()
-                .filter(e ->
-                        e.getUuid().equals(uuid)
-                )
-                .findAny();
+    public Optional<Edge<T>> getEdge(T start, T end) {
+        return getEdgeByVertices(getVertex(start).orElseThrow(), getVertex(end).orElseThrow());
     }
 
-    public Optional<Edge<T>> getEdge(Vertex<T> start, Vertex<T> end) {
+    public Optional<Edge<T>> getEdgeByVertices(Vertex<T> start, Vertex<T> end) {
         Objects.requireNonNull(start);
         Objects.requireNonNull(end);
         return edges.stream()
@@ -103,11 +100,20 @@ public class Graph<T> {
                 .findAny();
     }
 
+    public Optional<Edge<T>> getEdgeById(UUID uuid) {
+        Objects.requireNonNull(uuid);
+        return edges.stream()
+                .filter(e ->
+                        e.getUuid().equals(uuid)
+                )
+                .findAny();
+    }
+
     public Set<Vertex<T>> getNeighborVertices(Vertex<T> v) {
         Objects.requireNonNull(v);
         return vertices.stream()
                 .filter(w ->
-                        getEdge(v, w).isPresent()
+                        getEdgeByVertices(v, w).isPresent()
                 )
                 .collect(Collectors.toSet());
     }
@@ -116,8 +122,7 @@ public class Graph<T> {
         Objects.requireNonNull(v);
         return edges.stream()
                 .filter(e ->
-                        e.getStart().equals(v)
-                                || e.getEnd().equals(v)
+                        e.getStart().equals(v) || e.getEnd().equals(v)
                 )
                 .collect(Collectors.toSet());
     }
