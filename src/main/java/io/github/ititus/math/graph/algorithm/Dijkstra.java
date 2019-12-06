@@ -10,20 +10,21 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Undirected Dijkstra algorithm
+ *
+ * @param <T> content type
+ */
 public class Dijkstra<T> {
+
+    private static final boolean PRINT_DEBUG_INFO = false;
 
     private final Graph<T> graph;
     private final Vertex<T> start;
-    private final boolean directed;
 
-    public Dijkstra(Graph<T> graph, Vertex<T> start, boolean directed) {
-        if (directed) {
-            throw new UnsupportedOperationException();
-        }
-
+    public Dijkstra(Graph<T> graph, Vertex<T> start) {
         this.graph = graph;
         this.start = start;
-        this.directed = directed;
     }
 
     public Result findShortestPaths() {
@@ -43,9 +44,9 @@ public class Dijkstra<T> {
             }
             BigRational distU = distVOpt.get();
 
-            Set<Edge<T>> adjEdges = directed ? graph.getIncomingEdges(u) : graph.getAdjacentEdges(u);
+            Set<Edge<T>> adjEdges = graph.getAdjacentEdges(u);
             for (Edge<T> e : adjEdges) {
-                Vertex<T> v = !directed && e.getStart().equals(u) ? e.getEnd() : e.getStart();
+                Vertex<T> v = e.getStart().equals(u) ? e.getEnd() : e.getStart();
                 if (!unvisited.contains(v)) {
                     continue;
                 }
@@ -58,7 +59,9 @@ public class Dijkstra<T> {
                 }
             }
 
-            // System.out.printf("visiting=%s | %s%n", u, resultToString(r));
+            if (PRINT_DEBUG_INFO) {
+                System.out.printf("visiting=%s | %s%n", u, resultToString(r));
+            }
         }
 
         return r;

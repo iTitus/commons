@@ -126,22 +126,4 @@ public class Graph<T> {
                 )
                 .collect(Collectors.toSet());
     }
-
-    public Set<Edge<T>> getOutgoingEdges(Vertex<T> v) {
-        Objects.requireNonNull(v);
-        return edges.stream()
-                .filter(e ->
-                        e.getStart().equals(v)
-                )
-                .collect(Collectors.toSet());
-    }
-
-    public Set<Edge<T>> getIncomingEdges(Vertex<T> v) {
-        Objects.requireNonNull(v);
-        return edges.stream()
-                .filter(e ->
-                        e.getEnd().equals(v)
-                )
-                .collect(Collectors.toSet());
-    }
 }

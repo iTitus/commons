@@ -6,6 +6,11 @@ import io.github.ititus.math.number.BigRationalConstants;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Undirected Edge
+ *
+ * @param <T> content type
+ */
 public final class Edge<T> {
 
     private final Graph<T> graph;
