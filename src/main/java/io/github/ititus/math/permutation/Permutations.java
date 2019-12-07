@@ -1,10 +1,30 @@
 package io.github.ititus.math.permutation;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Permutations {
 
     private Permutations() {
+    }
+
+    public static List<int[]> permute(List<Integer> list) {
+        List<int[]> output = new ArrayList<>();
+        int[] current = new int[list.size()];
+        fillPermutations(output, current, 0, list);
+        return output;
+    }
+
+    private static void fillPermutations(List<int[]> output, int[] current, int i, List<Integer> valid) {
+        if (valid.isEmpty()) {
+            output.add(current);
+        } else {
+            for (int j : valid) {
+                int[] current_ = Arrays.copyOf(current, current.length);
+                current_[i] = j;
+                fillPermutations(output, current_, i + 1, valid.stream().filter(n -> n != j).collect(Collectors.toUnmodifiableList()));
+            }
+        }
     }
 
     public static <T> List<List<T>> permute(Collection<T> src, int n) {
