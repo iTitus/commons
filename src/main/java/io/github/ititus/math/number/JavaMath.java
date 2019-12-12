@@ -36,4 +36,8 @@ public final class JavaMath {
         }
         return Math.multiplyExact(Math.abs(a) / gcd(a, b), Math.abs(b));
     }
+
+    public static int signum(int n) {
+        return n < 0 ? -1 : n > 0 ? 1 : 0;
+    }
 }
