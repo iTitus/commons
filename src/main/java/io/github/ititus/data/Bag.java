@@ -19,4 +19,9 @@ public final class Bag<T> {
     public void set(T content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "Bag{" + content + "}";
+    }
 }
