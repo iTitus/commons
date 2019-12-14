@@ -465,9 +465,23 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return isInt() ? numerator.intValueExact() : toBigDecimal().intValue();
     }
 
+    public int intValueExact() {
+        if (!isInt()) {
+            throw new ArithmeticException();
+        }
+        return numerator.intValueExact();
+    }
+
     @Override
     public long longValue() {
         return isLong() ? numerator.longValueExact() : toBigDecimal().longValue();
+    }
+
+    public long longValueExact() {
+        if (!isLong()) {
+            throw new ArithmeticException();
+        }
+        return numerator.longValueExact();
     }
 
     public BigInteger toBigInteger() {
