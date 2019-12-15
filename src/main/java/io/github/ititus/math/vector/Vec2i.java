@@ -69,6 +69,10 @@ public final class Vec2i {
         return angle;
     }
 
+    public boolean isDirectlyAdjacentTo(Vec2i o) {
+        return manhattanDistanceTo(o) == 1;
+    }
+
     public int getX() {
         return x;
     }

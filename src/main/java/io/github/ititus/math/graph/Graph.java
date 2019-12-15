@@ -36,6 +36,14 @@ public class Graph<T> {
         return v;
     }
 
+    public Edge<T> addEdge(T start, T end) {
+        return addEdge(getVertex(start).orElseThrow(), getVertex(end).orElseThrow());
+    }
+
+    public Edge<T> addEdge(T start, T end, BigRational weight) {
+        return addEdge(getVertex(start).orElseThrow(), getVertex(end).orElseThrow(), weight);
+    }
+
     public Edge<T> addEdge(Vertex<T> start, Vertex<T> end) {
         return addEdge(start, end, BigRationalConstants.ONE);
     }
