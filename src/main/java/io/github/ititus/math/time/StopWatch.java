@@ -1,14 +1,15 @@
 package io.github.ititus.math.time;
 
 import java.time.Duration;
+import java.time.Instant;
 
 public class StopWatch {
 
-    private long time;
+    private Instant time;
     private boolean running;
 
     private StopWatch() {
-        this.time = -1;
+        this.time = null;
         this.running = false;
     }
 
@@ -25,7 +26,7 @@ public class StopWatch {
             throw new IllegalStateException();
         }
 
-        time = System.nanoTime();
+        time = Instant.now();
         running = true;
         return this;
     }
@@ -36,14 +37,14 @@ public class StopWatch {
         }
 
         running = false;
-        return Duration.ofNanos(System.nanoTime() - time);
+        return Duration.between(time, Instant.now());
     }
 
     public boolean isRunning() {
         return running;
     }
 
-    public long getStartTime() {
+    public Instant getStartTime() {
         if (!running) {
             throw new IllegalStateException();
         }
