@@ -1,6 +1,8 @@
 package io.github.ititus.math.graph;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public final class Vertex<T> implements Comparable<Vertex<T>> {
@@ -9,10 +11,13 @@ public final class Vertex<T> implements Comparable<Vertex<T>> {
     private final UUID uuid;
     private final T t;
 
+    private final Set<Edge<T>> edges;
+
     Vertex(Graph<T> graph, UUID uuid, T t) {
         this.graph = Objects.requireNonNull(graph);
         this.uuid = Objects.requireNonNull(uuid);
         this.t = Objects.requireNonNull(t);
+        this.edges = new HashSet<>();
     }
 
     public Graph<T> getGraph() {
@@ -25,6 +30,21 @@ public final class Vertex<T> implements Comparable<Vertex<T>> {
 
     public T get() {
         return t;
+    }
+
+    public boolean isAdjacentTo(Vertex<T> v) {
+        return edges.stream()
+                .anyMatch(e ->
+                        e.getStart().equals(v) || e.getEnd().equals(v)
+                );
+    }
+
+    void addEdge(Edge<T> e) {
+        edges.add(e);
+    }
+
+    Set<Edge<T>> getEdges() {
+        return edges;
     }
 
     @Override

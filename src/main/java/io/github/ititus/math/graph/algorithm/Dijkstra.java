@@ -21,56 +21,16 @@ public class Dijkstra<T> {
 
     private final Graph<T> graph;
     private final Vertex<T> start;
+    private final Result r;
+    private final Comparator<Vertex<T>> distanceComparator;
 
     public Dijkstra(Graph<T> graph, Vertex<T> start) {
         this.graph = graph;
         this.start = start;
-    }
-
-    public Result findShortestPaths() {
-        Result r = new Result();
-
-        Set<Vertex<T>> unvisited = new HashSet<>(graph.getVertices());
-        r.setDist(start, BigRationalConstants.ZERO);
-
-        while (!unvisited.isEmpty()) {
-            Vertex<T> u = findMinDist(unvisited, r);
-
-            Optional<BigRational> distVOpt = r.getDist(u);
-            if (distVOpt.isEmpty()) {
-                // throw new RuntimeException("unreachable vertex " + u);
-                unvisited.remove(u);
-                continue;
-            }
-            BigRational distU = distVOpt.get();
-
-            Set<Edge<T>> adjEdges = graph.getAdjacentEdges(u);
-            for (Edge<T> e : adjEdges) {
-                Vertex<T> v = e.getStart().equals(u) ? e.getEnd() : e.getStart();
-                if (!unvisited.contains(v)) {
-                    continue;
-                }
-
-                BigRational altDist = distU.add(e.getWeight());
-                Optional<BigRational> distV = r.getDist(v);
-                if (distV.isEmpty() || altDist.compareTo(distV.get()) < 0) {
-                    r.setDist(v, altDist);
-                    r.setPrev(v, u);
-                }
-            }
-
-            if (PRINT_DEBUG_INFO) {
-                System.out.printf("visiting=%s | %s%n", u, resultToString(r));
-            }
-        }
-
-        return r;
-    }
-
-    private Vertex<T> findMinDist(Set<Vertex<T>> unvisited, Result res) {
-        Vertex<T> min = Collections.min(unvisited, (v1, v2) -> {
-            Optional<BigRational> r1 = res.getDist(v1);
-            Optional<BigRational> r2 = res.getDist(v2);
+        this.r = new Result();
+        this.distanceComparator = (v1, v2) -> {
+            Optional<BigRational> r1 = r.getDist(v1);
+            Optional<BigRational> r2 = r.getDist(v2);
 
             if (r1.isPresent()) {
                 return r2.map(r -> r1.get().compareTo(r)).orElse(-1);
@@ -78,11 +38,49 @@ public class Dijkstra<T> {
                 return 1;
             }
             return 0;
-        });
+        };
+    }
 
-        unvisited.remove(min);
+    public Result findShortestPaths() {
+        if (!r.done) {
+            SortedSet<Vertex<T>> unvisited = new TreeSet<>(distanceComparator);
+            unvisited.addAll(graph.getVertices());
+            r.setDist(start, BigRationalConstants.ZERO);
 
-        return min;
+            while (!unvisited.isEmpty()) {
+                Vertex<T> u = unvisited.first();
+                unvisited.remove(u);
+
+                Optional<BigRational> distVOpt = r.getDist(u);
+                if (distVOpt.isEmpty()) {
+                    // throw new RuntimeException("unreachable vertex " + u);
+                    continue;
+                }
+                BigRational distU = distVOpt.get();
+
+                Set<Edge<T>> adjEdges = graph.getAdjacentEdges(u);
+                for (Edge<T> e : adjEdges) {
+                    Vertex<T> v = e.getStart().equals(u) ? e.getEnd() : e.getStart();
+                    if (!unvisited.contains(v)) {
+                        continue;
+                    }
+
+                    BigRational altDist = distU.add(e.getWeight());
+                    Optional<BigRational> distV = r.getDist(v);
+                    if (distV.isEmpty() || altDist.compareTo(distV.get()) < 0) {
+                        r.setDist(v, altDist);
+                        r.setPrev(v, u);
+                    }
+                }
+
+                if (PRINT_DEBUG_INFO) {
+                    System.out.printf("visiting=%s | %s%n", u, resultToString(r));
+                }
+            }
+
+            r.done = true;
+        }
+        return r;
     }
 
     private String resultToString(Result r) {
@@ -109,10 +107,12 @@ public class Dijkstra<T> {
 
         private final Map<Vertex<T>, BigRational> dist;
         private final Map<Vertex<T>, Vertex<T>> prev;
+        private boolean done;
 
         private Result() {
             this.dist = new HashMap<>();
             this.prev = new HashMap<>();
+            this.done = false;
         }
 
         private void setDist(Vertex<T> v, BigRational r) {

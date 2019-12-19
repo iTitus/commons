@@ -64,6 +64,8 @@ public class Graph<T> {
 
         Edge<T> e = new Edge<>(this, uuid, start, end, weight);
         edges.add(e);
+        start.addEdge(e);
+        end.addEdge(e);
         return e;
     }
 
@@ -100,10 +102,9 @@ public class Graph<T> {
     public Optional<Edge<T>> getEdgeByVertices(Vertex<T> start, Vertex<T> end) {
         Objects.requireNonNull(start);
         Objects.requireNonNull(end);
-        return edges.stream()
+        return start.getEdges().stream()
                 .filter(e ->
-                        (e.getStart().equals(start) && e.getEnd().equals(end))
-                                || (e.getStart().equals(end) && e.getEnd().equals(start))
+                        e.getStart().equals(end) || e.getEnd().equals(end)
                 )
                 .findAny();
     }
@@ -119,19 +120,15 @@ public class Graph<T> {
 
     public Set<Vertex<T>> getNeighborVertices(Vertex<T> v) {
         Objects.requireNonNull(v);
-        return vertices.stream()
-                .filter(w ->
-                        getEdgeByVertices(v, w).isPresent()
+        return v.getEdges().stream()
+                .map(e ->
+                        v != e.getStart() ? e.getStart() : e.getEnd()
                 )
                 .collect(Collectors.toSet());
     }
 
     public Set<Edge<T>> getAdjacentEdges(Vertex<T> v) {
         Objects.requireNonNull(v);
-        return edges.stream()
-                .filter(e ->
-                        e.getStart().equals(v) || e.getEnd().equals(v)
-                )
-                .collect(Collectors.toSet());
+        return new HashSet<>(v.getEdges());
     }
 }
