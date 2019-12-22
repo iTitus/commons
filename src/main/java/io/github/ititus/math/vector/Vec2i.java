@@ -2,9 +2,9 @@ package io.github.ititus.math.vector;
 
 import io.github.ititus.math.number.JavaMath;
 
-import java.util.Objects;
+import java.util.Arrays;
 
-public final class Vec2i {
+public final class Vec2i implements Comparable<Vec2i> {
 
     private final int x, y;
 
@@ -35,6 +35,10 @@ public final class Vec2i {
 
     public Vec2i reduce() {
         return divide(JavaMath.gcd(x, y));
+    }
+
+    public Vec2i sgn() {
+        return new Vec2i(JavaMath.signum(x), JavaMath.signum(y));
     }
 
     public int manhattanDistance() {
@@ -82,6 +86,12 @@ public final class Vec2i {
     }
 
     @Override
+    public int compareTo(Vec2i o) {
+        int c = Integer.compare(x, o.x);
+        return c != 0 ? c : Integer.compare(y, o.y);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -95,7 +105,7 @@ public final class Vec2i {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Arrays.hashCode(new int[] { x, y });
     }
 
     @Override
