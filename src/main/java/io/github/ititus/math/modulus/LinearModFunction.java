@@ -5,7 +5,7 @@ import io.github.ititus.math.number.BigIntegerMath;
 import java.math.BigInteger;
 import java.util.Objects;
 
-public class LinearModFunction {
+public final class LinearModFunction {
 
     private final BigInteger n, a, b;
 
