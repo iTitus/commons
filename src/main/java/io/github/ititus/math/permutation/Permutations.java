@@ -15,6 +15,26 @@ public final class Permutations {
         return output;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> List<List<T>> permuteObj(List<T> list) {
+        List<List<T>> output = new ArrayList<>();
+        List<T> current = new ArrayList<>(list.size());
+        Collections.addAll(current, (T[]) new Object[list.size()]);
+        fillPermutationsObj(output, current, 0, list);
+        return output;
+    }
+
+    public static <T> Set<Set<T>> permuteWithoutDuplicates(Set<T> set) {
+        if (set.isEmpty()) {
+            return Set.of(Set.of());
+        }
+        Set<Set<T>> output = new HashSet<>(permuteObj(List.copyOf(set)).stream().map(Set::copyOf).collect(Collectors.toUnmodifiableSet()));
+        for (T j : set) {
+            output.addAll(permuteWithoutDuplicates(set.stream().filter(n -> !j.equals(n)).collect(Collectors.toUnmodifiableSet())));
+        }
+        return Set.copyOf(output);
+    }
+
     private static void fillPermutations(List<int[]> output, int[] current, int i, List<Integer> valid) {
         if (valid.isEmpty()) {
             output.add(current);
@@ -22,7 +42,19 @@ public final class Permutations {
             for (int j : valid) {
                 int[] current_ = Arrays.copyOf(current, current.length);
                 current_[i] = j;
-                fillPermutations(output, current_, i + 1, valid.stream().filter(n -> n != j).collect(Collectors.toUnmodifiableList()));
+                fillPermutations(output, current_, i + 1, valid.stream().filter(n -> n != j).collect(Collectors.toList()));
+            }
+        }
+    }
+
+    private static <T> void fillPermutationsObj(List<List<T>> output, List<T> current, int i, List<T> valid) {
+        if (valid.isEmpty()) {
+            output.add(current);
+        } else {
+            for (T j : valid) {
+                List<T> current_ = new ArrayList<>(current);
+                current_.set(i, j);
+                fillPermutationsObj(output, current_, i + 1, valid.stream().filter(n -> !j.equals(n)).collect(Collectors.toList()));
             }
         }
     }
