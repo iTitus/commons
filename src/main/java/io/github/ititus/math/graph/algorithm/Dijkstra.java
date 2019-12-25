@@ -29,6 +29,11 @@ public class Dijkstra<T> {
         this.start = start;
         this.r = new Result();
         this.distanceComparator = (v1, v2) -> {
+            int nativeCompare = v1.compareTo(v2);
+            if (nativeCompare == 0) {
+                return 0;
+            }
+
             Optional<BigRational> r1 = r.getDist(v1);
             Optional<BigRational> r2 = r.getDist(v2);
 
@@ -37,18 +42,17 @@ public class Dijkstra<T> {
             } else if (r2.isPresent()) {
                 return 1;
             }
-            return 0;
+            return nativeCompare;
         };
     }
 
     public Result findShortestPaths() {
         if (!r.done) {
-            SortedSet<Vertex<T>> unvisited = new TreeSet<>(distanceComparator);
-            unvisited.addAll(graph.getVertices());
+            Set<Vertex<T>> unvisited = new HashSet<>(graph.getVertices());
             r.setDist(start, BigRationalConstants.ZERO);
 
             while (!unvisited.isEmpty()) {
-                Vertex<T> u = unvisited.first();
+                Vertex<T> u = Collections.min(unvisited, distanceComparator);
                 unvisited.remove(u);
 
                 Optional<BigRational> distVOpt = r.getDist(u);
