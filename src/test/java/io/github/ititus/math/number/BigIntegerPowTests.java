@@ -81,8 +81,7 @@ public class BigIntegerPowTests {
 
     @Test
     public void pow_42_42() {
-        assertThat(pow(of(42), of(42))).isEqualTo(of("150130937545296572356771972164254457814047970568738777235893533016064"))
-        ;
+        assertThat(pow(of(42), of(42))).isEqualTo(of("150130937545296572356771972164254457814047970568738777235893533016064"));
     }
 
     @Test
