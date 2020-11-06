@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 
 public final class Lazy<T> implements Supplier<T> {
 
-    private final Supplier<T> supplier;
+    private final Supplier<? extends T> supplier;
 
     private T cache;
 
-    private Lazy(Supplier<T> supplier) {
+    private Lazy(Supplier<? extends T> supplier) {
         this.supplier = supplier;
     }
 
@@ -22,7 +22,7 @@ public final class Lazy<T> implements Supplier<T> {
         return cache;
     }
 
-    public static <T> Lazy<T> of(Supplier<T> supplier) {
+    public static <T> Lazy<T> of(Supplier<? extends T> supplier) {
         return new Lazy<>(supplier);
     }
 }
