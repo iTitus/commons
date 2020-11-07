@@ -1,4 +1,7 @@
-package io.github.ititus.unit;
+package io.github.ititus.si.quantity;
+
+import io.github.ititus.si.quantity.type.QuantityType;
+import io.github.ititus.si.unit.Unit;
 
 public interface Quantity<Q extends QuantityType<Q>> {
 
@@ -8,22 +11,14 @@ public interface Quantity<Q extends QuantityType<Q>> {
 
     Quantity<Q> convertTo(Unit<Q> unit);
 
-    @SuppressWarnings("unchecked")
-    default <T extends QuantityType<T>> Quantity<T> as(QuantityType<T> type) throws ClassCastException {
-        if (!getUnit().getDimension().isCommensurableWith(type.getDimension())) {
-            throw new ClassCastException();
-        }
-
-        return (Quantity<T>) this;
+    default Quantity<Q> convertToStandard() {
+        return convertTo(getUnit().getType().getStandardUnit());
     }
 
-    @SuppressWarnings("unchecked")
-    default <T extends QuantityType<T>> Quantity<T> as(Unit<T> unit) throws ClassCastException {
-        if (!getUnit().getDimension().isCommensurableWith(unit.getDimension())) {
-            throw new ClassCastException();
-        }
+    <T extends QuantityType<T>> Quantity<T> as(T type) throws ClassCastException;
 
-        return ((Quantity<T>) this).convertTo(unit);
+    default <T extends QuantityType<T>> Quantity<T> as(Unit<T> unit) throws ClassCastException {
+        return as(unit.getType()).convertTo(unit);
     }
 
     default Quantity<Q> add(Quantity<Q> qty) {

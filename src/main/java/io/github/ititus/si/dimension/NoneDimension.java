@@ -1,8 +1,8 @@
-package io.github.ititus.unit;
+package io.github.ititus.si.dimension;
 
 import java.util.Map;
 
-class NoneDimension implements Dimension {
+final class NoneDimension implements Dimension {
 
     static final NoneDimension NONE = new NoneDimension();
 

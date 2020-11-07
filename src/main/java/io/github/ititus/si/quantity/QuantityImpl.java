@@ -1,4 +1,7 @@
-package io.github.ititus.unit;
+package io.github.ititus.si.quantity;
+
+import io.github.ititus.si.quantity.type.QuantityType;
+import io.github.ititus.si.unit.Unit;
 
 public class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q> {
 
@@ -22,6 +25,11 @@ public class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q>
 
     @Override
     public Quantity<Q> convertTo(Unit<Q> unit) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends QuantityType<T>> Quantity<T> as(T type) throws ClassCastException {
         throw new UnsupportedOperationException();
     }
 

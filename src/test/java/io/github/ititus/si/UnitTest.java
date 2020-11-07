@@ -1,4 +1,9 @@
-package io.github.ititus.unit;
+package io.github.ititus.si;
+
+import io.github.ititus.si.quantity.Quantity;
+import io.github.ititus.si.quantity.type.Length;
+import io.github.ititus.si.quantity.type.Speed;
+import io.github.ititus.si.quantity.type.Time;
 
 public class UnitTest {
 

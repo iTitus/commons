@@ -1,4 +1,4 @@
-package io.github.ititus.unit;
+package io.github.ititus.si.dimension;
 
 import io.github.ititus.data.Lazy;
 
@@ -13,7 +13,7 @@ public enum BaseDimension implements Dimension {
     MASS('M'),
     ELECTRIC_CURRENT('I'),
     THERMODYNAMIC_TEMPERATURE('\u0398'),
-    AMOUNT_OF_SUBSTANCE('N'),
+    SUBSTANCE_AMOUNT('N'),
     LUMINOUS_INTENSITY('J');
 
     private final char symbol;

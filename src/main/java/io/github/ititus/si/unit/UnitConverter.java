@@ -1,4 +1,4 @@
-package io.github.ititus.unit;
+package io.github.ititus.si.unit;
 
 public interface UnitConverter {
 
