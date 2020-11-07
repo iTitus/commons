@@ -17,6 +17,10 @@ public interface Quantity<Q extends QuantityType<Q>> {
 
     <T extends QuantityType<T>> Quantity<T> as(T type) throws ClassCastException;
 
+    default <T extends QuantityType<T>> Quantity<T> asStandard(T type) throws ClassCastException {
+        return as(type.getStandardUnit());
+    }
+
     default <T extends QuantityType<T>> Quantity<T> as(Unit<T> unit) throws ClassCastException {
         return as(unit.getType()).convertTo(unit);
     }
