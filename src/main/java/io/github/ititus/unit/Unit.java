@@ -10,7 +10,7 @@ public interface Unit<Q extends QuantityType<Q>> {
 
     @SuppressWarnings("unchecked")
     default <T extends QuantityType<T>> Unit<T> as(QuantityType<T> type) throws ClassCastException {
-        if (!type.getDimension().isCommensurableWith(type.getDimension())) {
+        if (!getDimension().isCommensurableWith(type.getDimension())) {
             throw new ClassCastException();
         }
 

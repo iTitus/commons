@@ -26,42 +26,12 @@ public class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q>
     }
 
     @Override
-    public Quantity<Q> add(Quantity<Q> qty) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Quantity<Q> negate() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Quantity<Q> subtract(Quantity<Q> qty) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Quantity<Q> multiply(double d) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Quantity<?> multiply(Quantity<?> qty) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public Quantity<?> inverse() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Quantity<Q> divide(double d) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Quantity<?> divide(Quantity<?> qty) {
         throw new UnsupportedOperationException();
     }
 

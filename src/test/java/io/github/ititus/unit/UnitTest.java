@@ -12,6 +12,5 @@ public class UnitTest {
         Quantity<Time> t = Time.HOUR.get(1.7);
         Quantity<Speed> v = l_mi.divide(t).as(Speed.SPEED).convertTo(Speed.METRES_PER_SECOND);
         System.out.println(v);
-
     }
 }

@@ -17,21 +17,42 @@ public interface Quantity<Q extends QuantityType<Q>> {
         return (Quantity<T>) this;
     }
 
-    Quantity<Q> add(Quantity<Q> qty);
+    @SuppressWarnings("unchecked")
+    default <T extends QuantityType<T>> Quantity<T> as(Unit<T> unit) throws ClassCastException {
+        if (!getUnit().getDimension().isCommensurableWith(unit.getDimension())) {
+            throw new ClassCastException();
+        }
 
-    Quantity<Q> negate();
+        return ((Quantity<T>) this).convertTo(unit);
+    }
 
-    Quantity<Q> subtract(Quantity<Q> qty);
+    default Quantity<Q> add(Quantity<Q> qty) {
+        return getUnit().get(getValue() + qty.convertTo(getUnit()).getValue());
+    }
 
-    Quantity<Q> multiply(double d);
+    default Quantity<Q> negate() {
+        return getUnit().get(-getValue());
+    }
+
+    default Quantity<Q> subtract(Quantity<Q> qty) {
+        return add(qty.negate());
+    }
+
+    default Quantity<Q> multiply(double d) {
+        return getUnit().get(getValue() * d);
+    }
 
     Quantity<?> multiply(Quantity<?> qty);
 
     Quantity<?> inverse();
 
-    Quantity<Q> divide(double d);
+    default Quantity<Q> divide(double d) {
+        return getUnit().get(getValue() / d);
+    }
 
-    Quantity<?> divide(Quantity<?> qty);
+    default Quantity<?> divide(Quantity<?> qty) {
+        return multiply(qty.inverse());
+    }
 
     Quantity<?> pow(int n);
 
