@@ -3,7 +3,7 @@ package io.github.ititus.unit;
 public class UnitTest {
 
     public static void main(String[] args) {
-        Quantity<Length> l_km = Length.KILOMETER.get(15.2);
+        Quantity<Length> l_km = Length.KILOMETRE.get(15.2);
         System.out.println(l_km);
 
         Quantity<Length> l_mi = l_km.convertTo(Length.MILE);
