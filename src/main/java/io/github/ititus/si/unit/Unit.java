@@ -3,6 +3,7 @@ package io.github.ititus.si.unit;
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.Quantity;
 import io.github.ititus.si.quantity.type.QuantityType;
+import io.github.ititus.si.unit.converter.UnitConverter;
 
 public interface Unit<Q extends QuantityType<Q>> {
 
@@ -12,9 +13,11 @@ public interface Unit<Q extends QuantityType<Q>> {
 
     UnitConverter getConverterTo(Unit<Q> unit);
 
-    Quantity<Q> get(double value);
+    default Quantity<Q> get(double value) {
+        return Quantity.of(value, this);
+    }
 
-    <T extends QuantityType<T>> Unit<T> as(T type) throws ClassCastException;
+    <T extends QuantityType<T>> Unit<T> as(T type);
 
     Unit<Q> multiply(double d);
 
@@ -22,9 +25,13 @@ public interface Unit<Q extends QuantityType<Q>> {
 
     Unit<?> inverse();
 
-    Unit<Q> divide(double d);
+    default Unit<Q> divide(double d) {
+        return multiply(1 / d);
+    }
 
-    Unit<?> divide(Unit<?> unit);
+    default Unit<?> divide(Unit<?> unit) {
+        return multiply(unit.inverse());
+    }
 
     Unit<?> pow(int n);
 

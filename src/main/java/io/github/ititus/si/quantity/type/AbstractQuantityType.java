@@ -25,4 +25,9 @@ abstract class AbstractQuantityType<Q extends QuantityType<Q>> implements Quanti
     public Unit<Q> getStandardUnit() {
         return standardUnit.get();
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

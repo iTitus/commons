@@ -5,6 +5,10 @@ import io.github.ititus.si.unit.Unit;
 
 public interface Quantity<Q extends QuantityType<Q>> {
 
+    static <T extends QuantityType<T>> Quantity<T> of(double value, Unit<T> unit) {
+        return new QuantityImpl<>(value, unit);
+    }
+
     double getValue();
 
     Unit<Q> getUnit();
@@ -15,13 +19,13 @@ public interface Quantity<Q extends QuantityType<Q>> {
         return convertTo(getUnit().getType().getStandardUnit());
     }
 
-    <T extends QuantityType<T>> Quantity<T> as(T type) throws ClassCastException;
+    <T extends QuantityType<T>> Quantity<T> as(T type);
 
-    default <T extends QuantityType<T>> Quantity<T> asStandard(T type) throws ClassCastException {
+    default <T extends QuantityType<T>> Quantity<T> asStandard(T type) {
         return as(type.getStandardUnit());
     }
 
-    default <T extends QuantityType<T>> Quantity<T> as(Unit<T> unit) throws ClassCastException {
+    default <T extends QuantityType<T>> Quantity<T> as(Unit<T> unit) {
         return as(unit.getType()).convertTo(unit);
     }
 

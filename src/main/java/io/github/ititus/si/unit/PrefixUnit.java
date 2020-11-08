@@ -5,41 +5,40 @@ import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
-public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
+final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
-    private final String symbol;
+    private final Unit<Q> baseUnit;
+    private final Prefix prefix;
 
-    public BaseUnit(Q type, String symbol) {
-        super(type);
-        this.symbol = symbol;
+    PrefixUnit(Unit<Q> baseUnit, Prefix prefix) {
+        super(baseUnit.getType());
+        this.baseUnit = baseUnit;
+        this.prefix = prefix;
     }
 
     @Override
     public String getSymbol() {
-        return symbol;
+        return prefix.getSymbol() + baseUnit.getSymbol();
     }
 
     @Override
     public UnitConverter getConverterTo(Unit<Q> unit) {
-        if (!getType().isCommensurableWith(unit.getType())) {
-            throw new ClassCastException();
-        } else if (equals(unit)) {
+        if (equals(unit)) {
             return UnitConverter.IDENTITY;
         }
 
-        return unit.getConverterTo(this).inverse();
+        UnitConverter c = MultiplicationConverter.of(Math.pow(prefix.getBase(), prefix.getExponent()));
+        return c.concat(baseUnit.getConverterTo(unit));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
-        if (!getType().isCommensurableWith(type)) {
-            throw new ClassCastException();
-        } else if (getType().equals(type)) {
+        if (getType().equals(type)) {
             return (Unit<T>) this;
         }
 
-        return new BaseUnit<>(type, symbol);
+        return new PrefixUnit<>(baseUnit.as(type), prefix);
     }
 
     @Override
@@ -69,11 +68,11 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> alternate(String symbol) {
-        throw new UnsupportedOperationException("cannot assign alternate symbol to a base unit");
+        return new AlternateUnit<>(this, symbol);
     }
 
     @Override
     public Unit<Q> prefix(Prefix prefix) {
-        return new PrefixUnit<>(this, prefix);
+        return new PrefixUnit<>(baseUnit, prefix);
     }
 }

@@ -5,29 +5,29 @@ import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
-public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
+final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
-    private final String symbol;
+    private final Unit<Q> baseUnit;
+    private final UnitConverter converter;
 
-    public BaseUnit(Q type, String symbol) {
-        super(type);
-        this.symbol = symbol;
+    ConvertedUnit(Unit<Q> baseUnit, UnitConverter converter) {
+        super(baseUnit.getType());
+        this.baseUnit = baseUnit;
+        this.converter = converter;
     }
 
     @Override
     public String getSymbol() {
-        return symbol;
+        throw new UnsupportedOperationException("converted units have not symbol");
     }
 
     @Override
     public UnitConverter getConverterTo(Unit<Q> unit) {
-        if (!getType().isCommensurableWith(unit.getType())) {
-            throw new ClassCastException();
-        } else if (equals(unit)) {
+        if (equals(unit)) {
             return UnitConverter.IDENTITY;
         }
 
-        return unit.getConverterTo(this).inverse();
+        return converter.concat(baseUnit.getConverterTo(unit));
     }
 
     @Override
@@ -39,12 +39,12 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             return (Unit<T>) this;
         }
 
-        return new BaseUnit<>(type, symbol);
+        return new ConvertedUnit<>(baseUnit.as(type), converter);
     }
 
     @Override
     public Unit<Q> multiply(double d) {
-        return new ConvertedUnit<>(this, MultiplicationConverter.of(d));
+        return new ConvertedUnit<>(baseUnit, converter.concat(MultiplicationConverter.of(d)));
     }
 
     @Override
@@ -69,7 +69,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> alternate(String symbol) {
-        throw new UnsupportedOperationException("cannot assign alternate symbol to a base unit");
+        return new AlternateUnit<>(this, symbol);
     }
 
     @Override

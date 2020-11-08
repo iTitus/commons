@@ -2,49 +2,42 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
-import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
-public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
+final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
-    private final String symbol;
+    private final Unit<Q> baseUnit;
+    private final String alternateSymbol;
 
-    public BaseUnit(Q type, String symbol) {
-        super(type);
-        this.symbol = symbol;
+    AlternateUnit(Unit<Q> baseUnit, String alternateSymbol) {
+        super(baseUnit.getType());
+        this.baseUnit = baseUnit;
+        this.alternateSymbol = alternateSymbol;
     }
 
     @Override
     public String getSymbol() {
-        return symbol;
+        return alternateSymbol;
     }
 
     @Override
     public UnitConverter getConverterTo(Unit<Q> unit) {
-        if (!getType().isCommensurableWith(unit.getType())) {
-            throw new ClassCastException();
-        } else if (equals(unit)) {
-            return UnitConverter.IDENTITY;
-        }
-
-        return unit.getConverterTo(this).inverse();
+        return baseUnit.getConverterTo(unit);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
-        if (!getType().isCommensurableWith(type)) {
-            throw new ClassCastException();
-        } else if (getType().equals(type)) {
+        if (getType().equals(type)) {
             return (Unit<T>) this;
         }
 
-        return new BaseUnit<>(type, symbol);
+        return new AlternateUnit<>(baseUnit.as(type), alternateSymbol);
     }
 
     @Override
     public Unit<Q> multiply(double d) {
-        return new ConvertedUnit<>(this, MultiplicationConverter.of(d));
+        return baseUnit.multiply(d);
     }
 
     @Override
@@ -69,7 +62,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> alternate(String symbol) {
-        throw new UnsupportedOperationException("cannot assign alternate symbol to a base unit");
+        return new AlternateUnit<>(baseUnit, symbol);
     }
 
     @Override

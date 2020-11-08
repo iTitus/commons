@@ -2,32 +2,22 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
-import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
-public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
+final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
-    private final String symbol;
-
-    public BaseUnit(Q type, String symbol) {
+    CompoundUnit(Q type) {
         super(type);
-        this.symbol = symbol;
     }
 
     @Override
     public String getSymbol() {
-        return symbol;
+        throw new UnsupportedOperationException("NYI");
     }
 
     @Override
     public UnitConverter getConverterTo(Unit<Q> unit) {
-        if (!getType().isCommensurableWith(unit.getType())) {
-            throw new ClassCastException();
-        } else if (equals(unit)) {
-            return UnitConverter.IDENTITY;
-        }
-
-        return unit.getConverterTo(this).inverse();
+        throw new UnsupportedOperationException("NYI");
     }
 
     @Override
@@ -39,12 +29,12 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             return (Unit<T>) this;
         }
 
-        return new BaseUnit<>(type, symbol);
+        return new CompoundUnit<>(type);
     }
 
     @Override
     public Unit<Q> multiply(double d) {
-        return new ConvertedUnit<>(this, MultiplicationConverter.of(d));
+        throw new UnsupportedOperationException("NYI");
     }
 
     @Override
@@ -69,7 +59,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> alternate(String symbol) {
-        throw new UnsupportedOperationException("cannot assign alternate symbol to a base unit");
+        return new AlternateUnit<>(this, symbol);
     }
 
     @Override
