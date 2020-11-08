@@ -2,6 +2,7 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
+import io.github.ititus.si.quantity.type.Dimensionless;
 import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.quantity.type.Unknown;
 import io.github.ititus.si.unit.converter.MultiplicationConverter;
@@ -23,8 +24,24 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
         this.units = units;
     }
 
-    static <Q extends QuantityType<Q>> Unit<Q> of(Q type, Dimension dimension, Map<Unit<?>, Integer> units) {
-        return new CompoundUnit<>(type, dimension, Collections.unmodifiableMap(new LinkedHashMap<>(units)));
+    static Unit<?> of(Dimension dimension, Map<Unit<?>, Integer> units) {
+        units = new LinkedHashMap<>(units);
+
+        units.entrySet().removeIf(e -> e.getValue() == 0);
+        units.entrySet().removeIf(e -> e.getKey() instanceof BaseUnit && e.getKey().getDimension().equals(Dimension.NONE));
+
+        if (units.isEmpty()) {
+            return Dimensionless.ONE;
+        }
+
+        if (units.size() == 1) {
+            Map.Entry<Unit<?>, Integer> entry = units.entrySet().stream().findAny().get();
+            if (entry.getValue() == 1) {
+                return entry.getKey();
+            }
+        }
+
+        return new CompoundUnit<>(Unknown.UNKNOWN, dimension, Collections.unmodifiableMap(units));
     }
 
     static Unit<?> ofProduct(Unit<?> u1, Unit<?> u2) {
@@ -41,7 +58,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             units.merge(u2, 1, Integer::sum);
         }
 
-        return of(Unknown.UNKNOWN, u1.getDimension().multiply(u2.getDimension()), units);
+        return of(u1.getDimension().multiply(u2.getDimension()), units);
     }
 
     static Unit<?> inverse(Unit<?> u) {
@@ -52,7 +69,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             units.put(u, -1);
         }
 
-        return of(Unknown.UNKNOWN, u.getDimension().inverse(), units);
+        return of(u.getDimension().inverse(), units);
     }
 
     static Unit<?> ofPow(Unit<?> u, int power) {
@@ -63,7 +80,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             units.put(u, power);
         }
 
-        return of(Unknown.UNKNOWN, u.getDimension().pow(power), units);
+        return of(u.getDimension().pow(power), units);
     }
 
     static Unit<?> ofRoot(Unit<?> u, int root) {
@@ -79,7 +96,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             throw new ArithmeticException();
         }
 
-        return of(Unknown.UNKNOWN, u.getDimension().root(root), units);
+        return of(u.getDimension().root(root), units);
     }
 
     @Override
@@ -141,7 +158,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             return (Unit<T>) this;
         }
 
-        return of(type, getDimension(), units);
+        return new CompoundUnit<>(type, getDimension(), units);
     }
 
     @Override
