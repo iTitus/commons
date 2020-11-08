@@ -22,6 +22,17 @@ public class ForceTest {
     }
 
     @Test
+    public void compoundWithStandardTest() {
+        Quantity<Mass> twoKilos = KILOGRAM.get(2);
+        Quantity<Acceleration> acceleration = METRES_PER_SECOND_SQUARED.get(5);
+
+        Quantity<Force> expectedForce = NEWTON.get(10);
+
+        Quantity<Force> force = twoKilos.multiply(acceleration).as(FORCE).convertToStandard();
+        assertThat(force).isEqualTo(expectedForce);
+    }
+
+    @Test
     public void compoundSymbolTest() {
         Quantity<Mass> twoKilos = KILOGRAM.get(2);
         Quantity<Acceleration> acceleration = METRES_PER_SECOND_SQUARED.get(5);
