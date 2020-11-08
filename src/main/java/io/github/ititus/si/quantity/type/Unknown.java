@@ -3,7 +3,7 @@ package io.github.ititus.si.quantity.type;
 import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.unit.Unit;
 
-public class Unknown implements QuantityType<Unknown> {
+public final class Unknown implements QuantityType<Unknown> {
 
     public static final Unknown UNKNOWN = new Unknown();
 

@@ -14,11 +14,13 @@ public class UnitTest {
         Quantity<Length> l_mi = l_km.convertTo(Length.MILE);
         System.out.printf("15.2 km in mi = %s%n", l_mi);
 
-        Quantity<Time> t = Time.HOUR.get(1.7);
-        System.out.printf("1.7 h = %s%n", t);
-        System.out.printf("1.7 h in s = %s%n", t.asStandard(Time.TIME));
+        Quantity<Time> t = Time.MINUTE.get(17.5);
+        System.out.printf("17.5 min = %s%n", t);
+        System.out.printf("17.5 min in s = %s%n", t.asStandard(Time.TIME));
 
-        Quantity<Speed> v = l_mi.divide(t).asStandard(Speed.SPEED);
-        System.out.println(v);
+        Quantity<Speed> v_mph = l_mi.divide(t).as(Speed.SPEED).as(Speed.MILES_PER_HOUR);
+        System.out.printf("15.2 km in mi / 17.5 min in mi/h = %s%n", v_mph);
+        System.out.printf("15.2 km in mi / 17.5 min in km/h = %s%n", v_mph.convertTo(Speed.KILOMETRES_PER_HOUR));
+        System.out.printf("15.2 km in mi / 17.5 min in m/s = %s%n", v_mph.convertTo(Speed.METRES_PER_SECOND));
     }
 }

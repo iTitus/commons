@@ -5,6 +5,8 @@ import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
+import java.util.Objects;
+
 final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     private final Unit<Q> baseUnit;
@@ -22,8 +24,10 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     }
 
     @Override
-    public UnitConverter getConverterTo(Unit<Q> unit) {
-        if (equals(unit)) {
+    public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
+        if (!isCommensurableWith(unit.getType())) {
+            throw new ClassCastException();
+        } else if (equals(unit)) {
             return UnitConverter.IDENTITY;
         }
 
@@ -48,27 +52,27 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> multiply(double d) {
-        return new ConvertedUnit<>(this, MultiplicationConverter.of(d));
+        return ConvertedUnit.of(this, MultiplicationConverter.of(d));
     }
 
     @Override
     public Unit<?> multiply(Unit<?> unit) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofProduct(this, unit);
     }
 
     @Override
     public Unit<?> inverse() {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.inverse(this);
     }
 
     @Override
     public Unit<?> pow(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofPow(this, n);
     }
 
     @Override
     public Unit<?> root(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofRoot(this, n);
     }
 
     @Override
@@ -79,5 +83,25 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     public Unit<Q> prefix(Prefix prefix) {
         return new PrefixUnit<>(baseUnit, prefix);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PrefixUnit)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        PrefixUnit<?> that = (PrefixUnit<?>) o;
+        return baseUnit.equals(that.baseUnit) && prefix.equals(that.prefix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), baseUnit, prefix);
     }
 }

@@ -5,6 +5,8 @@ import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
+import java.util.Objects;
+
 public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     private final String symbol;
@@ -20,7 +22,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     }
 
     @Override
-    public UnitConverter getConverterTo(Unit<Q> unit) {
+    public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
         if (!isCommensurableWith(unit.getType())) {
             throw new ClassCastException();
         } else if (equals(unit)) {
@@ -44,27 +46,27 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> multiply(double d) {
-        return new ConvertedUnit<>(this, MultiplicationConverter.of(d));
+        return ConvertedUnit.of(this, MultiplicationConverter.of(d));
     }
 
     @Override
     public Unit<?> multiply(Unit<?> unit) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofProduct(this, unit);
     }
 
     @Override
     public Unit<?> inverse() {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.inverse(this);
     }
 
     @Override
     public Unit<?> pow(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofPow(this, n);
     }
 
     @Override
     public Unit<?> root(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofRoot(this, n);
     }
 
     @Override
@@ -75,5 +77,25 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     public Unit<Q> prefix(Prefix prefix) {
         return new PrefixUnit<>(this, prefix);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BaseUnit)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        BaseUnit<?> baseUnit = (BaseUnit<?>) o;
+        return symbol.equals(baseUnit.symbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), symbol);
     }
 }

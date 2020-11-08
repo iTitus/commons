@@ -2,24 +2,151 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
+import io.github.ititus.si.quantity.type.Dimensionless;
 import io.github.ititus.si.quantity.type.QuantityType;
+import io.github.ititus.si.quantity.type.Unknown;
+import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
-    CompoundUnit(Q type, Dimension dimension) {
-        // TODO: implement
+    private final Map<Unit<?>, Integer> units;
+
+    private CompoundUnit(Q type, Dimension dimension, Map<Unit<?>, Integer> units) {
         super(type, dimension);
+        this.units = units;
+    }
+
+    static Unit<?> of(Dimension dimension, Map<Unit<?>, Integer> units) {
+        units = new LinkedHashMap<>(units);
+
+        units.entrySet().removeIf(e -> e.getValue() == 0);
+        units.entrySet().removeIf(e -> e.getKey() instanceof BaseUnit && e.getKey().getDimension().equals(Dimension.NONE));
+
+        if (units.isEmpty()) {
+            return Dimensionless.ONE;
+        }
+
+        if (units.size() == 1) {
+            Map.Entry<Unit<?>, Integer> entry = units.entrySet().stream().findAny().get();
+            if (entry.getValue() == 1) {
+                return entry.getKey();
+            }
+        }
+
+        return new CompoundUnit<>(Unknown.UNKNOWN, dimension, Collections.unmodifiableMap(units));
+    }
+
+    static Unit<?> ofProduct(Unit<?> u1, Unit<?> u2) {
+        Map<Unit<?>, Integer> units;
+        if (u1 instanceof CompoundUnit) {
+            units = new LinkedHashMap<>(((CompoundUnit<?>) u1).units);
+        } else {
+            units = new LinkedHashMap<>(Map.of(u1, 1));
+        }
+
+        if (u2 instanceof CompoundUnit) {
+            ((CompoundUnit<?>) u2).units.forEach((u, n) -> units.merge(u, n, Integer::sum));
+        } else {
+            units.merge(u2, 1, Integer::sum);
+        }
+
+        return of(u1.getDimension().multiply(u2.getDimension()), units);
+    }
+
+    static Unit<?> inverse(Unit<?> u) {
+        Map<Unit<?>, Integer> units = new LinkedHashMap<>();
+        if (u instanceof CompoundUnit) {
+            ((CompoundUnit<?>) u).units.forEach((u_, n) -> units.put(u, -n));
+        } else {
+            units.put(u, -1);
+        }
+
+        return of(u.getDimension().inverse(), units);
+    }
+
+    static Unit<?> ofPow(Unit<?> u, int power) {
+        Map<Unit<?>, Integer> units = new LinkedHashMap<>();
+        if (u instanceof CompoundUnit) {
+            ((CompoundUnit<?>) u).units.forEach((u_, n) -> units.put(u, n * power));
+        } else {
+            units.put(u, power);
+        }
+
+        return of(u.getDimension().pow(power), units);
+    }
+
+    static Unit<?> ofRoot(Unit<?> u, int root) {
+        Map<Unit<?>, Integer> units = new LinkedHashMap<>();
+        if (u instanceof CompoundUnit) {
+            ((CompoundUnit<?>) u).units.forEach((u_, n) -> {
+                if (n % root != 0) {
+                    throw new ArithmeticException();
+                }
+                units.put(u, n / root);
+            });
+        } else {
+            throw new ArithmeticException();
+        }
+
+        return of(u.getDimension().root(root), units);
     }
 
     @Override
     public String getSymbol() {
-        throw new UnsupportedOperationException("NYI");
+        StringBuilder b = new StringBuilder();
+
+        units.forEach((u, n) -> {
+            b.append(u.getSymbol());
+
+            if (n != 1) {
+                b.append('^').append(n);
+            }
+        });
+
+        return b.toString();
     }
 
     @Override
-    public UnitConverter getConverterTo(Unit<Q> unit) {
-        throw new UnsupportedOperationException("NYI");
+    public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
+        if (!isCommensurableWith(unit.getType())) {
+            throw new ClassCastException();
+        } else if (equals(unit)) {
+            return UnitConverter.IDENTITY;
+        }
+
+        Unit<Q> stdUnit = getType().getStandardUnit();
+
+        UnitConverter toStd = units.entrySet().stream()
+                .flatMap(e -> {
+                    int power = e.getValue();
+                    Unit<?> u = e.getKey();
+                    Unit<?> stdU = u.getType().getStandardUnit();
+
+                    UnitConverter converter = u.getConverterTo(stdU);
+                    UnitConverter finalHack;
+
+                    if (power == 0) {
+                        return Stream.empty();
+                    } else if (power < 0) {
+                        power = -power;
+                        finalHack = converter.inverse();
+                    } else {
+                        finalHack = converter;
+                    }
+
+                    return IntStream.range(0, power).mapToObj(i -> finalHack);
+                })
+                .reduce(UnitConverter.IDENTITY, UnitConverter::concat);
+
+        return toStd.concat(unit.getConverterTo(stdUnit).inverse());
     }
 
     @Override
@@ -31,32 +158,32 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             return (Unit<T>) this;
         }
 
-        return new CompoundUnit<>(type, getDimension());
+        return new CompoundUnit<>(type, getDimension(), units);
     }
 
     @Override
     public Unit<Q> multiply(double d) {
-        throw new UnsupportedOperationException("NYI");
+        return ConvertedUnit.of(this, MultiplicationConverter.of(d));
     }
 
     @Override
     public Unit<?> multiply(Unit<?> unit) {
-        throw new UnsupportedOperationException("NYI");
+        return ofProduct(this, unit);
     }
 
     @Override
     public Unit<?> inverse() {
-        throw new UnsupportedOperationException("NYI");
+        return inverse(this);
     }
 
     @Override
     public Unit<?> pow(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return ofPow(this, n);
     }
 
     @Override
     public Unit<?> root(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return ofRoot(this, n);
     }
 
     @Override
@@ -67,5 +194,25 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     public Unit<Q> prefix(Prefix prefix) {
         return new PrefixUnit<>(this, prefix);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CompoundUnit)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        CompoundUnit<?> that = (CompoundUnit<?>) o;
+        return units.equals(that.units);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), units);
     }
 }

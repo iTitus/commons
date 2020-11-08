@@ -9,29 +9,33 @@ public final class CompoundDimension implements Dimension {
     private final Map<BaseDimension, Integer> baseDimensions;
 
     private CompoundDimension(Map<BaseDimension, Integer> baseDimensions) {
-        this.baseDimensions = Collections.unmodifiableMap(new EnumMap<>(baseDimensions));
+        this.baseDimensions = baseDimensions;
     }
 
     static Dimension of(Map<BaseDimension, Integer> baseDimensions) {
-        baseDimensions.entrySet().removeIf(e -> e.getValue() == 0);
+        Map<BaseDimension, Integer> copy = new EnumMap<>(BaseDimension.class);
+        copy.putAll(baseDimensions);
 
-        if (baseDimensions.isEmpty()) {
+        copy.entrySet().removeIf(e -> e.getValue() == 0);
+
+        if (copy.isEmpty()) {
             return NONE;
         }
 
-        if (baseDimensions.size() == 1) {
-            Map.Entry<BaseDimension, Integer> entry = baseDimensions.entrySet().stream().findAny().get();
+        if (copy.size() == 1) {
+            Map.Entry<BaseDimension, Integer> entry = copy.entrySet().stream().findAny().get();
             if (entry.getValue() == 1) {
                 return entry.getKey();
             }
         }
 
-        return new CompoundDimension(baseDimensions);
+        return new CompoundDimension(Collections.unmodifiableMap(copy));
     }
 
     static Dimension multiply(Map<BaseDimension, Integer> baseDimensions1,
                               Map<BaseDimension, Integer> baseDimensions2) {
-        Map<BaseDimension, Integer> baseDimensions = new EnumMap<>(baseDimensions1);
+        Map<BaseDimension, Integer> baseDimensions = new EnumMap<>(BaseDimension.class);
+        baseDimensions.putAll(baseDimensions1);
         baseDimensions2.forEach(
                 (dim_, n) -> baseDimensions.merge(dim_, n, Integer::sum)
         );
@@ -46,7 +50,8 @@ public final class CompoundDimension implements Dimension {
 
     static Dimension divide(Map<BaseDimension, Integer> baseDimensions1,
                             Map<BaseDimension, Integer> baseDimensions2) {
-        Map<BaseDimension, Integer> baseDimensions = new EnumMap<>(baseDimensions1);
+        Map<BaseDimension, Integer> baseDimensions = new EnumMap<>(BaseDimension.class);
+        baseDimensions.putAll(baseDimensions1);
         baseDimensions2.forEach(
                 (dim_, n) -> baseDimensions.merge(dim_, -n,
                         (oldValue, newValue) -> oldValue - newValue)
