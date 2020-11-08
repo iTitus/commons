@@ -27,6 +27,5 @@ public class LengthTest {
 
         assertThat(miles.getValue()).isCloseTo(1.429E-5, withPercentage(1));
         assertThat(miles.getUnit().getSymbol()).isEqualTo("mi");
-
     }
 }
