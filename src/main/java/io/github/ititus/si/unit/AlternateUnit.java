@@ -4,6 +4,8 @@ import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
+import java.util.Objects;
+
 final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     private final Unit<Q> baseUnit;
@@ -21,7 +23,7 @@ final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     }
 
     @Override
-    public UnitConverter getConverterTo(Unit<Q> unit) {
+    public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
         return baseUnit.getConverterTo(unit);
     }
 
@@ -42,22 +44,22 @@ final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<?> multiply(Unit<?> unit) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofProduct(this, unit);
     }
 
     @Override
     public Unit<?> inverse() {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.inverse(this);
     }
 
     @Override
     public Unit<?> pow(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofPow(this, n);
     }
 
     @Override
     public Unit<?> root(int n) {
-        throw new UnsupportedOperationException("NYI");
+        return CompoundUnit.ofRoot(this, n);
     }
 
     @Override
@@ -68,5 +70,25 @@ final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     public Unit<Q> prefix(Prefix prefix) {
         return new PrefixUnit<>(this, prefix);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AlternateUnit)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        AlternateUnit<?> that = (AlternateUnit<?>) o;
+        return baseUnit.equals(that.baseUnit) && alternateSymbol.equals(that.alternateSymbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), baseUnit, alternateSymbol);
     }
 }

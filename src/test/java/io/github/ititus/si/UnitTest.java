@@ -18,7 +18,8 @@ public class UnitTest {
         System.out.printf("1.7 h = %s%n", t);
         System.out.printf("1.7 h in s = %s%n", t.asStandard(Time.TIME));
 
-        Quantity<Speed> v = l_mi.divide(t).asStandard(Speed.SPEED);
-        System.out.println(v);
+        Quantity<Speed> v_mph = l_mi.divide(t).as(Speed.SPEED);
+        System.out.printf("15.2 km in mi / 1.7 h in mi/h = %s%n", v_mph);
+        System.out.printf("15.2 km in mi / 1.7 h in mi/h = %s%n", v_mph.convertTo(Speed.KILOMETRES_PER_HOUR));
     }
 }

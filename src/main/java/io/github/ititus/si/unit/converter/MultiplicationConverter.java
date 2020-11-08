@@ -1,6 +1,7 @@
 package io.github.ititus.si.unit.converter;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MultiplicationConverter implements UnitConverter {
 
@@ -38,5 +39,22 @@ public class MultiplicationConverter implements UnitConverter {
     @Override
     public boolean isIdentity() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MultiplicationConverter)) {
+            return false;
+        }
+        MultiplicationConverter that = (MultiplicationConverter) o;
+        return Double.compare(that.factor, factor) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(factor);
     }
 }
