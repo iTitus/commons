@@ -10,7 +10,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     private final String symbol;
 
     public BaseUnit(Q type, String symbol) {
-        super(type);
+        super(type, type.getDimension());
         this.symbol = symbol;
     }
 
@@ -21,7 +21,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public UnitConverter getConverterTo(Unit<Q> unit) {
-        if (!getType().isCommensurableWith(unit.getType())) {
+        if (!isCommensurableWith(unit.getType())) {
             throw new ClassCastException();
         } else if (equals(unit)) {
             return UnitConverter.IDENTITY;
@@ -33,7 +33,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
-        if (!getType().isCommensurableWith(type)) {
+        if (!isCommensurableWith(type)) {
             throw new ClassCastException();
         } else if (getType().equals(type)) {
             return (Unit<T>) this;

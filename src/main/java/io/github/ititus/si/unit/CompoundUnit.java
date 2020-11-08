@@ -1,13 +1,15 @@
 package io.github.ititus.si.unit;
 
+import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
 final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
-    CompoundUnit(Q type) {
-        super(type);
+    CompoundUnit(Q type, Dimension dimension) {
+        // TODO: implement
+        super(type, dimension);
     }
 
     @Override
@@ -23,13 +25,13 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
-        if (!getType().isCommensurableWith(type)) {
+        if (!isCommensurableWith(type)) {
             throw new ClassCastException();
         } else if (getType().equals(type)) {
             return (Unit<T>) this;
         }
 
-        return new CompoundUnit<>(type);
+        return new CompoundUnit<>(type, getDimension());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.github.ititus.si.unit;
 
+import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.Quantity;
 import io.github.ititus.si.quantity.type.QuantityType;
@@ -11,10 +12,16 @@ public interface Unit<Q extends QuantityType<Q>> {
 
     Q getType();
 
+    Dimension getDimension();
+
     UnitConverter getConverterTo(Unit<Q> unit);
 
     default Quantity<Q> get(double value) {
         return Quantity.of(value, this);
+    }
+
+    default <T extends QuantityType<T>> boolean isCommensurableWith(T type) {
+        return getDimension().isCommensurableWith(type.getDimension());
     }
 
     <T extends QuantityType<T>> Unit<T> as(T type);

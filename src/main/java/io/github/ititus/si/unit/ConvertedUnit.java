@@ -11,7 +11,7 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     private final UnitConverter converter;
 
     ConvertedUnit(Unit<Q> baseUnit, UnitConverter converter) {
-        super(baseUnit.getType());
+        super(baseUnit.getType(), baseUnit.getDimension());
         this.baseUnit = baseUnit;
         this.converter = converter;
     }
@@ -25,6 +25,8 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     public UnitConverter getConverterTo(Unit<Q> unit) {
         if (equals(unit)) {
             return UnitConverter.IDENTITY;
+        } else if (baseUnit.equals(unit)) {
+            return converter;
         }
 
         return converter.concat(baseUnit.getConverterTo(unit));
@@ -33,7 +35,7 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
-        if (!getType().isCommensurableWith(type)) {
+        if (!isCommensurableWith(type)) {
             throw new ClassCastException();
         } else if (getType().equals(type)) {
             return (Unit<T>) this;

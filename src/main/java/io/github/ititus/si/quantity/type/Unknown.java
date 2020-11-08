@@ -19,9 +19,4 @@ public class Unknown implements QuantityType<Unknown> {
     public Unit<Unknown> getStandardUnit() {
         throw new UnsupportedOperationException();
     }
-
-    @Override
-    public <T extends QuantityType<T>> boolean isCommensurableWith(T type) {
-        return true;
-    }
 }

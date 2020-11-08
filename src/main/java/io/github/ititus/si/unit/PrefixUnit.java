@@ -11,7 +11,7 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     private final Prefix prefix;
 
     PrefixUnit(Unit<Q> baseUnit, Prefix prefix) {
-        super(baseUnit.getType());
+        super(baseUnit.getType(), baseUnit.getDimension());
         this.baseUnit = baseUnit;
         this.prefix = prefix;
     }
@@ -28,6 +28,11 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
         }
 
         UnitConverter c = MultiplicationConverter.of(Math.pow(prefix.getBase(), prefix.getExponent()));
+
+        if (baseUnit.equals(unit)) {
+            return c;
+        }
+
         return c.concat(baseUnit.getConverterTo(unit));
     }
 

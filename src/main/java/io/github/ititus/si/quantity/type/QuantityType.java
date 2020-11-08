@@ -9,7 +9,4 @@ public interface QuantityType<Q extends QuantityType<Q>> {
 
     Unit<Q> getStandardUnit();
 
-    default <T extends QuantityType<T>> boolean isCommensurableWith(T type) {
-        return getDimension().isCommensurableWith(type.getDimension());
-    }
 }

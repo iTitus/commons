@@ -10,7 +10,7 @@ final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     private final String alternateSymbol;
 
     AlternateUnit(Unit<Q> baseUnit, String alternateSymbol) {
-        super(baseUnit.getType());
+        super(baseUnit.getType(), baseUnit.getDimension());
         this.baseUnit = baseUnit;
         this.alternateSymbol = alternateSymbol;
     }
