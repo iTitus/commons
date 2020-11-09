@@ -71,7 +71,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> alternate(String symbol) {
-        throw new UnsupportedOperationException("cannot assign alternate symbol to a base unit");
+        return new AlternateUnit<>(this, symbol);
     }
 
     @Override

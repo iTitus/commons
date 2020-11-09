@@ -12,12 +12,14 @@ public final class Unknown implements QuantityType<Unknown> {
 
     @Override
     public Dimension getDimension() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("the type of this quantity is unknown, thus it has no associated " +
+                "dimension");
     }
 
     @Override
     public Unit<Unknown> getStandardUnit() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("the type of this quantity is unknown, thus it has no associated " +
+                "standard unit");
     }
 
     @Override
