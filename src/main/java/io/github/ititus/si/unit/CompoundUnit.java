@@ -24,7 +24,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
         this.units = units;
     }
 
-    static Unit<?> of(Dimension dimension, Map<Unit<?>, Integer> units) {
+    private static Unit<?> of(Dimension dimension, Map<Unit<?>, Integer> units) {
         units = new LinkedHashMap<>(units);
 
         units.entrySet().removeIf(e -> e.getValue() == 0);
