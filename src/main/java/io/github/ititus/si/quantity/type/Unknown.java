@@ -19,4 +19,9 @@ public final class Unknown implements QuantityType<Unknown> {
     public Unit<Unknown> getStandardUnit() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String toString() {
+        return "Unknown";
+    }
 }

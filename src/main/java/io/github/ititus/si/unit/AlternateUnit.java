@@ -24,6 +24,12 @@ final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
+        if (equals(unit)) {
+            return UnitConverter.IDENTITY;
+        } else if (unit instanceof AlternateUnit) {
+            return baseUnit.getConverterTo(((AlternateUnit<T>) unit).baseUnit);
+        }
+
         return baseUnit.getConverterTo(unit);
     }
 

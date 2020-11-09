@@ -29,7 +29,7 @@ abstract class AbstractUnit<Q extends QuantityType<Q>> implements Unit<Q> {
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "type=" + type +
-                "dimension=" + dimension +
+                ", dimension=" + dimension.getString() +
                 ", symbol=" + getSymbol() +
                 '}';
     }
