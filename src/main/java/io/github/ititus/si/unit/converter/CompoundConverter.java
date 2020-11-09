@@ -7,11 +7,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CompoundConverter implements UnitConverter {
+final class CompoundConverter implements UnitConverter {
 
     private final List<UnitConverter> converters;
 
-    public static UnitConverter of(List<UnitConverter> converters) {
+    private CompoundConverter(List<UnitConverter> converters) {
+        this.converters = converters;
+    }
+
+    static UnitConverter of(List<UnitConverter> converters) {
         converters = converters.stream()
                 .filter(c -> !c.isIdentity())
                 .flatMap(c -> {
@@ -62,10 +66,6 @@ public class CompoundConverter implements UnitConverter {
         return simplified;
     }
 
-    private CompoundConverter(List<UnitConverter> converters) {
-        this.converters = converters;
-    }
-
     @Override
     public double convert(double value) {
         for (UnitConverter converter : converters) {
@@ -80,12 +80,14 @@ public class CompoundConverter implements UnitConverter {
                 .map(UnitConverter::inverse)
                 .collect(Collectors.toList());
         Collections.reverse(list);
-        return of(list);
+        return UnitConverter.compound(list);
     }
 
     @Override
     public UnitConverter concat(UnitConverter converter) {
-        return of(Stream.concat(converters.stream(), Stream.of(converter)).collect(Collectors.toList()));
+        List<UnitConverter> converters = new ArrayList<>(this.converters);
+        converters.add(converter);
+        return UnitConverter.compound(converters);
     }
 
     @Override

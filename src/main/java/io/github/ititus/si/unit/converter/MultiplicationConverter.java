@@ -3,11 +3,15 @@ package io.github.ititus.si.unit.converter;
 import java.util.List;
 import java.util.Objects;
 
-public class MultiplicationConverter implements UnitConverter {
+final class MultiplicationConverter implements UnitConverter {
 
     private final double factor;
 
-    public static UnitConverter of(double factor) {
+    private MultiplicationConverter(double factor) {
+        this.factor = factor;
+    }
+
+    static UnitConverter of(double factor) {
         if (factor == 0) {
             throw new IllegalArgumentException("0 not allowed");
         } else if (factor == 1) {
@@ -15,10 +19,6 @@ public class MultiplicationConverter implements UnitConverter {
         }
 
         return new MultiplicationConverter(factor);
-    }
-
-    private MultiplicationConverter(double factor) {
-        this.factor = factor;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MultiplicationConverter implements UnitConverter {
             return of(factor * ((MultiplicationConverter) converter).factor);
         }
 
-        return CompoundConverter.of(List.of(this, converter));
+        return UnitConverter.compound(List.of(this, converter));
     }
 
     @Override

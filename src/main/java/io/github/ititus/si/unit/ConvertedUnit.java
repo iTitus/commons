@@ -1,9 +1,7 @@
 package io.github.ititus.si.unit;
 
 import io.github.ititus.si.prefix.Prefix;
-import io.github.ititus.si.quantity.Quantity;
 import io.github.ititus.si.quantity.type.QuantityType;
-import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
 import java.util.Objects;
@@ -13,18 +11,18 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     private final Unit<Q> baseUnit;
     private final UnitConverter converter;
 
+    private ConvertedUnit(Unit<Q> baseUnit, UnitConverter converter) {
+        super(baseUnit.getType(), baseUnit.getDimension());
+        this.baseUnit = baseUnit;
+        this.converter = converter;
+    }
+
     public static <Q extends QuantityType<Q>> Unit<Q> of(Unit<Q> baseUnit, UnitConverter converter) {
         if (converter.isIdentity()) {
             return baseUnit;
         }
 
         return new ConvertedUnit<>(baseUnit, converter);
-    }
-
-    private ConvertedUnit(Unit<Q> baseUnit, UnitConverter converter) {
-        super(baseUnit.getType(), baseUnit.getDimension());
-        this.baseUnit = baseUnit;
-        this.converter = converter;
     }
 
     @Override
@@ -59,7 +57,7 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> multiply(double d) {
-        return of(baseUnit, converter.concat(MultiplicationConverter.of(d)));
+        return of(baseUnit, converter.concat(UnitConverter.factor(d)));
     }
 
     @Override

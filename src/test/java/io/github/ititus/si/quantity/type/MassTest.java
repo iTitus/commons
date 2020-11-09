@@ -4,8 +4,8 @@ import io.github.ititus.si.quantity.Quantity;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.si.prefix.MetricPrefix.NANO;
-import static io.github.ititus.si.quantity.type.Mass.GRAM;
-import static io.github.ititus.si.quantity.type.Mass.KILOGRAM;
+import static io.github.ititus.si.unit.Units.GRAM;
+import static io.github.ititus.si.unit.Units.KILOGRAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Percentage.withPercentage;
 

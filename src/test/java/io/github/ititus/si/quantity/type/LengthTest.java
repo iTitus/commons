@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.si.prefix.MetricPrefix.CENTI;
 import static io.github.ititus.si.prefix.MetricPrefix.MILLI;
-import static io.github.ititus.si.quantity.type.Length.METRE;
-import static io.github.ititus.si.quantity.type.Length.MILE;
+import static io.github.ititus.si.unit.Units.METRE;
+import static io.github.ititus.si.unit.Units.MILE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Percentage.withPercentage;
 

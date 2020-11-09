@@ -2,16 +2,15 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
-import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
 import java.util.Objects;
 
-public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
+final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     private final String symbol;
 
-    public BaseUnit(Q type, String symbol) {
+    BaseUnit(Q type, String symbol) {
         super(type, type.getDimension());
         this.symbol = symbol;
     }
@@ -46,7 +45,7 @@ public final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> multiply(double d) {
-        return ConvertedUnit.of(this, MultiplicationConverter.of(d));
+        return ConvertedUnit.of(this, UnitConverter.factor(d));
     }
 
     @Override

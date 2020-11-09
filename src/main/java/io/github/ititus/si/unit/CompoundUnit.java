@@ -2,10 +2,7 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
-import io.github.ititus.si.quantity.type.Dimensionless;
 import io.github.ititus.si.quantity.type.QuantityType;
-import io.github.ititus.si.quantity.type.Unknown;
-import io.github.ititus.si.unit.converter.MultiplicationConverter;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
 import java.util.Collections;
@@ -14,6 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static io.github.ititus.si.quantity.type.Unknown.UNKNOWN;
+import static io.github.ititus.si.unit.Units.ONE;
 
 final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
@@ -31,7 +31,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
         units.entrySet().removeIf(e -> e.getKey() instanceof BaseUnit && e.getKey().getDimension().equals(Dimension.NONE));
 
         if (units.isEmpty()) {
-            return Dimensionless.ONE;
+            return ONE;
         }
 
         if (units.size() == 1) {
@@ -41,7 +41,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
             }
         }
 
-        return new CompoundUnit<>(Unknown.UNKNOWN, dimension, Collections.unmodifiableMap(units));
+        return new CompoundUnit<>(UNKNOWN, dimension, Collections.unmodifiableMap(units));
     }
 
     static Unit<?> ofProduct(Unit<?> u1, Unit<?> u2) {
@@ -163,7 +163,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public Unit<Q> multiply(double d) {
-        return ConvertedUnit.of(this, MultiplicationConverter.of(d));
+        return ConvertedUnit.of(this, UnitConverter.factor(d));
     }
 
     @Override
