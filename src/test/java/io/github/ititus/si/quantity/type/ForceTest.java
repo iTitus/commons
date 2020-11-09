@@ -7,6 +7,7 @@ import static io.github.ititus.si.quantity.type.Acceleration.METRES_PER_SECOND_S
 import static io.github.ititus.si.quantity.type.Force.FORCE;
 import static io.github.ititus.si.quantity.type.Force.NEWTON;
 import static io.github.ititus.si.quantity.type.Mass.KILOGRAM;
+import static io.github.ititus.si.quantity.type.Speed.METRES_PER_SECOND;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ForceTest {
@@ -39,5 +40,17 @@ public class ForceTest {
 
         Quantity<Force> force = twoKilos.multiply(acceleration).as(FORCE);
         assertThat(force.getUnit().getSymbol()).isEqualTo("kgms^-2");
+    }
+
+    @Test
+    public void compoundFromMomentum() {
+        Quantity<Mass> kilogram = KILOGRAM.get(5);
+        Quantity<Speed> metresPerSecond = METRES_PER_SECOND.get(3);
+        Quantity<?> momentumDelta = kilogram.multiply(metresPerSecond);
+        Quantity<Time> timeDelta = Time.SECOND.get(2);
+        Quantity<Force> expectedForce = NEWTON.get(7.5);
+
+        Quantity<Force> force = momentumDelta.divide(timeDelta).as(FORCE).convertToStandard();
+        assertThat(force).isEqualTo(expectedForce);
     }
 }
