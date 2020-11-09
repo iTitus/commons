@@ -33,6 +33,12 @@ public class MultiplicationConverter implements UnitConverter {
 
     @Override
     public UnitConverter concat(UnitConverter converter) {
+        if (converter.isIdentity()) {
+            return this;
+        } else if (converter instanceof MultiplicationConverter) {
+            return of(factor * ((MultiplicationConverter) converter).factor);
+        }
+
         return CompoundConverter.of(List.of(this, converter));
     }
 
