@@ -3,6 +3,8 @@ package io.github.ititus.si.quantity;
 import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.unit.Unit;
 
+import java.util.Objects;
+
 final class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q> {
 
     private final double value;
@@ -58,10 +60,19 @@ final class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q> 
     }
 
     @Override
-    public String toString() {
-        return "QuantityImpl{" +
-                "value=" + value +
-                ", unit=" + unit +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof QuantityImpl)) {
+            return false;
+        }
+        QuantityImpl<?> quantity = (QuantityImpl<?>) o;
+        return Double.compare(quantity.value, value) == 0 && unit.equals(quantity.unit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, unit);
     }
 }

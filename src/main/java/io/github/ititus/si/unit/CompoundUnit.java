@@ -64,7 +64,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     static Unit<?> inverse(Unit<?> u) {
         Map<Unit<?>, Integer> units = new LinkedHashMap<>();
         if (u instanceof CompoundUnit) {
-            ((CompoundUnit<?>) u).units.forEach((u_, n) -> units.put(u, -n));
+            ((CompoundUnit<?>) u).units.forEach((u_, n) -> units.put(u_, -n));
         } else {
             units.put(u, -1);
         }
@@ -75,7 +75,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     static Unit<?> ofPow(Unit<?> u, int power) {
         Map<Unit<?>, Integer> units = new LinkedHashMap<>();
         if (u instanceof CompoundUnit) {
-            ((CompoundUnit<?>) u).units.forEach((u_, n) -> units.put(u, n * power));
+            ((CompoundUnit<?>) u).units.forEach((u_, n) -> units.put(u_, n * power));
         } else {
             units.put(u, power);
         }
@@ -90,7 +90,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
                 if (n % root != 0) {
                     throw new ArithmeticException();
                 }
-                units.put(u, n / root);
+                units.put(u_, n / root);
             });
         } else {
             throw new ArithmeticException();

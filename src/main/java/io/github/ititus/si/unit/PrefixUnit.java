@@ -35,6 +35,11 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
         if (baseUnit.equals(unit)) {
             return c;
+        } else if (unit instanceof PrefixUnit) {
+            PrefixUnit<T> prefixUnit = (PrefixUnit<T>) unit;
+            if (baseUnit.equals(prefixUnit.baseUnit)) {
+                return c.concat(prefixUnit.getConverterTo(prefixUnit.baseUnit).inverse());
+            }
         }
 
         return c.concat(baseUnit.getConverterTo(unit));
