@@ -1,16 +1,19 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.5'
 }
 
-group 'io.github.ititus'
-version '1.0.0-SNAPSHOT'
+group = 'io.github.ititus'
+version = '1.0.0'
 
-sourceCompatibility = JavaVersion.VERSION_11
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+    }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier = 'sources'
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
@@ -26,14 +29,26 @@ dependencies {
 
 publishing {
     publications {
-        defaultPublication(MavenPublication) {
-            artifactId = 'ititus-commons'
+        MyPublication(MavenPublication) {
             from components.java
-            artifact sourcesJar
         }
     }
 }
 
 test {
     useJUnitPlatform()
+}
+
+bintray {
+    user = project.property('bintray_user')
+    key = project.property('bintray_api_key')
+    publications = ['MyPublication']
+    publish = true
+    pkg {
+        repo = 'ititus-commons'
+        name = 'commons'
+        version {
+            name = project.version
+        }
+    }
 }
