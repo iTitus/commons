@@ -1,6 +1,6 @@
 package io.github.ititus.si.quantity.type;
 
-import io.github.ititus.assertions.CustomAssertions;
+import io.github.ititus.assertions.MyAssertions;
 import io.github.ititus.si.quantity.Quantity;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class MassTest {
         Quantity<Mass> kiloGrams = KILOGRAM.get(1.35);
         Quantity<Mass> nanoGrams = kiloGrams.convertTo(GRAM.prefix(NANO));
 
-        CustomAssertions.assertThat(nanoGrams.getValue()).isCloseTo(of(ofExp(135, 10)), withPercentage(1));
+        MyAssertions.assertThat(nanoGrams.getValue()).isCloseTo(of(ofExp(135, 10)), withPercentage(1));
         assertThat(nanoGrams.getUnit().getSymbol()).isEqualTo("ng");
     }
 }
