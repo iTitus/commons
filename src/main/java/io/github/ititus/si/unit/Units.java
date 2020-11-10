@@ -188,10 +188,10 @@ public final class Units {
     public static final Unit<LuminousEfficacy> LUMEN_PER_WATT = LUMEN.divide(WATT).as(LUMINOUS_EFFICACY);
 
     // Illuminance
-    public static final Unit<Illuminance> LUX = LUMEN.divide(SQUARE_METRE).as(ILLUMINANCE);
+    public static final Unit<Illuminance> LUX = LUMEN.divide(SQUARE_METRE).alternate("lx").as(ILLUMINANCE);
 
     // Catalytic Activity
-    public static final Unit<CatalyticActivity> KATAL = MOLE.divide(SECOND).as(CATALYTIC_ACTIVITY);
+    public static final Unit<CatalyticActivity> KATAL = MOLE.divide(SECOND).alternate("kat").as(CATALYTIC_ACTIVITY);
 
     private Units() {
     }
