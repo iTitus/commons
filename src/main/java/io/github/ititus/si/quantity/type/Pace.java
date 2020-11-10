@@ -10,11 +10,11 @@ public final class Pace extends AbstractQuantityType<Pace> {
 
     public static final Pace PACE = new Pace();
 
-    public static Quantity<Pace> asPace(Quantity<Speed> qty) {
-        return qty.inverse().as(PACE);
-    }
-
     private Pace() {
         super(TIME.divide(LENGTH), () -> SECONDS_PER_METRE);
+    }
+
+    public static Quantity<Pace> asPace(Quantity<Speed> qty) {
+        return qty.inverse().as(PACE);
     }
 }

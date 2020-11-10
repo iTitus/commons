@@ -2,6 +2,8 @@ package io.github.ititus.si.unit;
 
 import io.github.ititus.si.quantity.type.*;
 
+import static io.github.ititus.math.number.BigRational.ofExp;
+import static io.github.ititus.si.prefix.MetricPrefix.DECI;
 import static io.github.ititus.si.prefix.MetricPrefix.KILO;
 import static io.github.ititus.si.quantity.type.Acceleration.ACCELERATION;
 import static io.github.ititus.si.quantity.type.Angle.ANGLE;
@@ -66,7 +68,8 @@ public final class Units {
 
     // Length
     public static final Unit<Length> KILOMETRE = METRE.prefix(KILO);
-    public static final Unit<Length> MILE = METRE.multiply(1_609.344).alternate("mi");
+    public static final Unit<Length> DECIMETRE = METRE.prefix(DECI);
+    public static final Unit<Length> MILE = METRE.multiply(ofExp(1_609_344, -3)).alternate("mi");
     public static final Unit<Length> NAUTICAL_MILE = METRE.multiply(1_852).alternate("nmi");
 
     // Mass
@@ -117,7 +120,7 @@ public final class Units {
 
     // Energy & Power
     public static final Unit<Energy> JOULE = NEWTON.multiply(METRE).alternate("J").as(ENERGY);
-    public static final Unit<Energy> ELECTRON_VOLT = JOULE.multiply(1.602_176_634e-19);
+    public static final Unit<Energy> ELECTRON_VOLT = JOULE.multiply(ofExp(1.602_176_634, -19));
     public static final Unit<Power> WATT = JOULE.divide(SECOND).alternate("W").as(POWER);
     public static final Unit<Power> KILOWATT = WATT.prefix(KILO);
     public static final Unit<Energy> KILOWATT_HOUR = KILOWATT.multiply(HOUR).as(ENERGY);
@@ -127,7 +130,8 @@ public final class Units {
 
     // Volume
     public static final Unit<Volume> CUBIC_METRE = METRE.pow(3).as(VOLUME);
-    public static final Unit<Volume> LITRE = CUBIC_METRE.multiply(0.001).alternate("l");
+    public static final Unit<Volume> CUBIC_DECIMETRE = DECIMETRE.pow(3).as(VOLUME);
+    public static final Unit<Volume> LITRE = CUBIC_DECIMETRE.alternate("l");
 
     // Density
     public static final Unit<Density> KILOGRAM_PER_CUBIC_METRE = KILOGRAM.divide(CUBIC_METRE).as(DENSITY);

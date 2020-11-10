@@ -3,6 +3,7 @@ package io.github.ititus.si.unit;
 import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
+import io.github.ititus.si.quantity.value.QuantityValue;
 import io.github.ititus.si.unit.converter.UnitConverter;
 
 import java.util.Collections;
@@ -162,8 +163,8 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     }
 
     @Override
-    public Unit<Q> multiply(double d) {
-        return ConvertedUnit.of(this, UnitConverter.factor(d));
+    public Unit<Q> multiply(QuantityValue v) {
+        return ConvertedUnit.of(this, UnitConverter.factor(v));
     }
 
     @Override

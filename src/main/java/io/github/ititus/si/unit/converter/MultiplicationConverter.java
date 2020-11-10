@@ -1,20 +1,22 @@
 package io.github.ititus.si.unit.converter;
 
+import io.github.ititus.si.quantity.value.QuantityValue;
+
 import java.util.List;
 import java.util.Objects;
 
 final class MultiplicationConverter implements UnitConverter {
 
-    private final double factor;
+    private final QuantityValue factor;
 
-    private MultiplicationConverter(double factor) {
+    private MultiplicationConverter(QuantityValue factor) {
         this.factor = factor;
     }
 
-    static UnitConverter of(double factor) {
-        if (factor == 0) {
+    static UnitConverter of(QuantityValue factor) {
+        if (factor.isZero()) {
             throw new IllegalArgumentException("0 not allowed");
-        } else if (factor == 1) {
+        } else if (factor.isOne()) {
             return IDENTITY;
         }
 
@@ -22,13 +24,13 @@ final class MultiplicationConverter implements UnitConverter {
     }
 
     @Override
-    public double convert(double value) {
-        return factor * value;
+    public QuantityValue convert(QuantityValue value) {
+        return value.multiply(factor);
     }
 
     @Override
     public UnitConverter inverse() {
-        return new MultiplicationConverter(1 / factor);
+        return of(factor.inverse());
     }
 
     @Override
@@ -36,7 +38,7 @@ final class MultiplicationConverter implements UnitConverter {
         if (converter.isIdentity()) {
             return this;
         } else if (converter instanceof MultiplicationConverter) {
-            return of(factor * ((MultiplicationConverter) converter).factor);
+            return of(factor.multiply(((MultiplicationConverter) converter).factor));
         }
 
         return UnitConverter.compound(List.of(this, converter));
@@ -56,7 +58,7 @@ final class MultiplicationConverter implements UnitConverter {
             return false;
         }
         MultiplicationConverter that = (MultiplicationConverter) o;
-        return Double.compare(that.factor, factor) == 0;
+        return factor.equals(that.factor);
     }
 
     @Override

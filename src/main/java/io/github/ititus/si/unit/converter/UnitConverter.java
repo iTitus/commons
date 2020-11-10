@@ -1,12 +1,14 @@
 package io.github.ititus.si.unit.converter;
 
+import io.github.ititus.si.quantity.value.QuantityValue;
+
 import java.util.List;
 
 public interface UnitConverter {
 
     IdentityConverter IDENTITY = IdentityConverter.IDENTITY;
 
-    static UnitConverter factor(double factor) {
+    static UnitConverter factor(QuantityValue factor) {
         return MultiplicationConverter.of(factor);
     }
 
@@ -14,7 +16,7 @@ public interface UnitConverter {
         return CompoundConverter.of(converters);
     }
 
-    double convert(double value);
+    QuantityValue convert(QuantityValue value);
 
     UnitConverter inverse();
 

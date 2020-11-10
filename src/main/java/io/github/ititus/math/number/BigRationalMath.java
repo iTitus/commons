@@ -4,6 +4,7 @@ import io.github.ititus.math.function.PowerSeriesCalculator;
 import io.github.ititus.math.time.DurationFormatter;
 import io.github.ititus.math.time.StopWatch;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Duration;
 
@@ -38,6 +39,24 @@ public final class BigRationalMath {
         }
 
         return r;
+    }
+
+    public static BigRational pow(BigRational base, BigDecimal exponent) {
+        if (base.isOne() || exponent.signum() == 0) {
+            return ONE;
+        } else if (base.isZero()) {
+            return ZERO;
+        } else if (exponent.equals(BigDecimal.ONE)) {
+            return base;
+        } else if (exponent.signum() < 0) {
+            return pow(base, exponent.negate()).inverse();
+        }
+
+        if (exponent.equals(BigDecimalConstants.ONE_OVER_TWO)) {
+            return base.sqrt();
+        }
+
+        return exp(BigRational.of(exponent).multiply(ln(base)));
     }
 
     public static BigRational pow(BigRational base, BigRational exponent) {
