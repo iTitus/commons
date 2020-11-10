@@ -8,6 +8,7 @@ import static io.github.ititus.si.unit.Units.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ForceTest {
+
     @Test
     public void compoundTest() {
         Quantity<Mass> twoKilos = KILOGRAM.get(2);
@@ -26,7 +27,7 @@ public class ForceTest {
 
         Quantity<Force> expectedForce = NEWTON.get(10);
 
-        Quantity<Force> force = twoKilos.multiply(acceleration).as(FORCE).convertToStandard();
+        Quantity<Force> force = twoKilos.multiply(acceleration).asStandard(FORCE);
         assertThat(force).isEqualTo(expectedForce);
     }
 
@@ -47,7 +48,7 @@ public class ForceTest {
         Quantity<Time> timeDelta = SECOND.get(2);
         Quantity<Force> expectedForce = NEWTON.get(7.5);
 
-        Quantity<Force> force = momentumDelta.divide(timeDelta).as(FORCE).convertToStandard();
+        Quantity<Force> force = momentumDelta.divide(timeDelta).asStandard(FORCE);
         assertThat(force).isEqualTo(expectedForce);
     }
 }

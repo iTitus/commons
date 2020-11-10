@@ -9,11 +9,11 @@ public final class Time extends AbstractQuantityType<Time> {
 
     public static final Time TIME = new Time();
 
-    public static Quantity<Time> asFrequency(Quantity<Frequency> qty) {
-        return qty.inverse().as(TIME);
-    }
-
     private Time() {
         super(BaseDimension.TIME, () -> SECOND);
+    }
+
+    public static Quantity<Time> asFrequency(Quantity<Frequency> qty) {
+        return qty.inverse().as(TIME);
     }
 }

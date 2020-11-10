@@ -1,5 +1,7 @@
 package io.github.ititus.si.unit.converter;
 
+import io.github.ititus.si.quantity.value.QuantityValue;
+
 final class IdentityConverter implements UnitConverter {
 
     static final IdentityConverter IDENTITY = new IdentityConverter();
@@ -8,7 +10,7 @@ final class IdentityConverter implements UnitConverter {
     }
 
     @Override
-    public double convert(double value) {
+    public QuantityValue convert(QuantityValue value) {
         return value;
     }
 

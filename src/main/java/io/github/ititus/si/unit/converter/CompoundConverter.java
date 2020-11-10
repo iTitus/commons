@@ -1,5 +1,7 @@
 package io.github.ititus.si.unit.converter;
 
+import io.github.ititus.si.quantity.value.QuantityValue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +69,7 @@ final class CompoundConverter implements UnitConverter {
     }
 
     @Override
-    public double convert(double value) {
+    public QuantityValue convert(QuantityValue value) {
         for (UnitConverter converter : converters) {
             value = converter.convert(value);
         }

@@ -9,11 +9,11 @@ public final class Frequency extends AbstractQuantityType<Frequency> {
 
     public static final Frequency FREQUENCY = new Frequency();
 
-    public static Quantity<Frequency> asFrequency(Quantity<Time> qty) {
-        return qty.inverse().as(FREQUENCY);
-    }
-
     private Frequency() {
         super(TIME.inverse(), () -> HERTZ);
+    }
+
+    public static Quantity<Frequency> asFrequency(Quantity<Time> qty) {
+        return qty.inverse().as(FREQUENCY);
     }
 }

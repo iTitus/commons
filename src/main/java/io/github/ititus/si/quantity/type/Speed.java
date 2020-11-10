@@ -10,11 +10,11 @@ public final class Speed extends AbstractQuantityType<Speed> {
 
     public static final Speed SPEED = new Speed();
 
-    public static Quantity<Speed> asSpeed(Quantity<Pace> qty) {
-        return qty.inverse().as(SPEED);
-    }
-
     private Speed() {
         super(LENGTH.divide(TIME), () -> METRES_PER_SECOND);
+    }
+
+    public static Quantity<Speed> asSpeed(Quantity<Pace> qty) {
+        return qty.inverse().as(SPEED);
     }
 }

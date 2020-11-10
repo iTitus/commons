@@ -135,7 +135,7 @@ public class PowerSeriesCalculator {
                 return BigRationalConstants.ZERO;
             }
 
-            return BigRational.of(BigInteger.ONE, n);
+            return BigRational.ofInv(n);
         }
     }
 
