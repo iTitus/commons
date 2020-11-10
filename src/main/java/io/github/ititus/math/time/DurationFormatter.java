@@ -17,15 +17,18 @@ public class DurationFormatter {
     }
 
     public static String formatMinutes(Duration d) {
-        return String.format("%d:%02d.%03d%06d min", d.toMinutes(), d.toSecondsPart(), d.toMillisPart(), toNanosPartFixed(d));
+        return String.format("%d:%02d.%03d%06d min", d.toMinutes(), d.toSecondsPart(), d.toMillisPart(),
+                toNanosPartFixed(d));
     }
 
     public static String formatHours(Duration d) {
-        return String.format("%d:%02d:%02d.%03d%06d h", d.toHours(), d.toMinutesPart(), d.toSecondsPart(), d.toMillisPart(), toNanosPartFixed(d));
+        return String.format("%d:%02d:%02d.%03d%06d h", d.toHours(), d.toMinutesPart(), d.toSecondsPart(),
+                d.toMillisPart(), toNanosPartFixed(d));
     }
 
     public static String formatDays(Duration d) {
-        return String.format("%d:%02d:%02d:%02d.%03d%06d d", d.toDays(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart(), d.toMillisPart(), toNanosPartFixed(d));
+        return String.format("%d:%02d:%02d:%02d.%03d%06d d", d.toDays(), d.toHoursPart(), d.toMinutesPart(),
+                d.toSecondsPart(), d.toMillisPart(), toNanosPartFixed(d));
     }
 
     public static String format(Duration d) {

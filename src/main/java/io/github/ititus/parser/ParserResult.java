@@ -12,16 +12,16 @@ public final class ParserResult<IN, OUT> {
         this.result = result;
     }
 
+    public static <IN, OUT> ParserResult<IN, OUT> of(IN remaining, OUT result) {
+        return new ParserResult<>(remaining, result);
+    }
+
     public IN getRemaining() {
         return remaining;
     }
 
     public OUT getResult() {
         return result;
-    }
-
-    public static <IN, OUT> ParserResult<IN, OUT> of(IN remaining, OUT result) {
-        return new ParserResult<>(remaining, result);
     }
 
     @Override

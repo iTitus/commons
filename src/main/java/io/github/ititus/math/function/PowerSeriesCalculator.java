@@ -80,11 +80,13 @@ public class PowerSeriesCalculator {
     }
 
     public static BigRational ln(BigRational x) {
-        return BigRationalConstants.TWO.multiply(calculatePowerSeries(LN, x.subtract(BigRationalConstants.ONE).divide(x.add(BigRationalConstants.ONE)), MathContext.DECIMAL128));
+        return BigRationalConstants.TWO.multiply(calculatePowerSeries(LN,
+                x.subtract(BigRationalConstants.ONE).divide(x.add(BigRationalConstants.ONE)), MathContext.DECIMAL128));
     }
 
     public static BigRational lnFast(BigRational x) {
-        return BigRationalConstants.TWO.multiply(calculatePowerSeries(LN, x.subtract(BigRationalConstants.ONE).divide(x.add(BigRationalConstants.ONE)), FAST_APPROX_MC));
+        return BigRationalConstants.TWO.multiply(calculatePowerSeries(LN,
+                x.subtract(BigRationalConstants.ONE).divide(x.add(BigRationalConstants.ONE)), FAST_APPROX_MC));
     }
 
     public static BigRational sin(BigRational x) {
@@ -120,7 +122,8 @@ public class PowerSeriesCalculator {
                 return BigRationalConstants.ONE;
             }
 
-            return cache.computeIfAbsent(n, n_ -> getCoefficient(n_.subtract(BigInteger.ONE)).divide(BigRational.of(n_)));
+            return cache.computeIfAbsent(n,
+                    n_ -> getCoefficient(n_.subtract(BigInteger.ONE)).divide(BigRational.of(n_)));
         }
     }
 
@@ -146,7 +149,8 @@ public class PowerSeriesCalculator {
                 return BigRationalConstants.ZERO;
             }
 
-            return cache.computeIfAbsent(n, n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
+            return cache.computeIfAbsent(n,
+                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
         }
     }
 
@@ -160,7 +164,8 @@ public class PowerSeriesCalculator {
                 return BigRationalConstants.ZERO;
             }
 
-            return cache.computeIfAbsent(n, n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
+            return cache.computeIfAbsent(n,
+                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
         }
     }
 }

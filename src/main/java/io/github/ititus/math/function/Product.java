@@ -27,7 +27,8 @@ public final class Product extends ComplexFunction {
         }
 
         // associativity & neutral element
-        terms = Arrays.stream(terms).filter(not(ComplexFunction::isOne)).flatMap(f -> f instanceof Product ? Arrays.stream(((Product) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
+        terms = Arrays.stream(terms).filter(not(ComplexFunction::isOne)).flatMap(f -> f instanceof Product ?
+                Arrays.stream(((Product) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
@@ -37,9 +38,12 @@ public final class Product extends ComplexFunction {
         }
 
         // combine constant & monomial terms
-        Constant c = Constant.of(Arrays.stream(terms).filter(ComplexFunction::isConstant).map(ComplexFunction::getConstant).reduce(BigComplex.ONE, BigComplex::multiply));
-        ComplexFunction p = Power.of(Arrays.stream(terms).filter(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()).map(f -> f instanceof Power ? ((Power) f).getExponent().getConstant() : BigComplex.ONE).reduce(BigComplex.ZERO, BigComplex::add));
-        Stream<ComplexFunction> stream = Arrays.stream(terms).filter(not(ComplexFunction::isConstant)).filter(not(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()));
+        Constant c =
+                Constant.of(Arrays.stream(terms).filter(ComplexFunction::isConstant).map(ComplexFunction::getConstant).reduce(BigComplex.ONE, BigComplex::multiply));
+        ComplexFunction p =
+                Power.of(Arrays.stream(terms).filter(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()).map(f -> f instanceof Power ? ((Power) f).getExponent().getConstant() : BigComplex.ONE).reduce(BigComplex.ZERO, BigComplex::add));
+        Stream<ComplexFunction> stream =
+                Arrays.stream(terms).filter(not(ComplexFunction::isConstant)).filter(not(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()));
         if (!p.isOne()) {
             stream = Stream.concat(Stream.of(p), stream);
         }

@@ -16,7 +16,10 @@ public class Parsers {
         return in -> Optional.empty();
     }
 
-    public static <IN, P_OUT, ACC, OUT> Parser<IN, OUT> many(Supplier<ACC> emptyAccumulator, Supplier<OUT> emptyResult, BiFunction<ACC, P_OUT, ACC> combinator, Function<ACC, OUT> finalizer, Parser<IN, P_OUT> parser) {
+    public static <IN, P_OUT, ACC, OUT> Parser<IN, OUT> many(Supplier<ACC> emptyAccumulator,
+                                                             Supplier<OUT> emptyResult,
+                                                             BiFunction<ACC, P_OUT, ACC> combinator, Function<ACC,
+            OUT> finalizer, Parser<IN, P_OUT> parser) {
         return in -> {
             boolean empty = true;
             ACC current = emptyAccumulator.get();
@@ -43,7 +46,8 @@ public class Parsers {
     }
 
 
-    public static <IN, P_OUT, ACC, OUT> Parser<IN, OUT> some(Supplier<ACC> emptyAccumulator, BiFunction<ACC, P_OUT, ACC> combinator, Function<ACC, OUT> finalizer, Parser<IN, P_OUT> parser) {
+    public static <IN, P_OUT, ACC, OUT> Parser<IN, OUT> some(Supplier<ACC> emptyAccumulator, BiFunction<ACC, P_OUT,
+            ACC> combinator, Function<ACC, OUT> finalizer, Parser<IN, P_OUT> parser) {
         return in -> {
             boolean empty = true;
             ACC current = emptyAccumulator.get();
@@ -69,7 +73,9 @@ public class Parsers {
         };
     }
 
-    public static <IN, P_OUT, ACC, OUT> Parser<IN, OUT> sequence(Supplier<ACC> emptyAccumulator, BiFunction<ACC, P_OUT, ACC> combinator, Function<ACC, OUT> finalizer, Parser<IN, P_OUT>... parsers) {
+    @SafeVarargs
+    public static <IN, P_OUT, ACC, OUT> Parser<IN, OUT> sequence(Supplier<ACC> emptyAccumulator, BiFunction<ACC,
+            P_OUT, ACC> combinator, Function<ACC, OUT> finalizer, Parser<IN, P_OUT>... parsers) {
         return in -> {
             ACC current = emptyAccumulator.get();
 
@@ -90,6 +96,7 @@ public class Parsers {
         };
     }
 
+    @SafeVarargs
     public static <IN, OUT> Parser<IN, OUT> or(Parser<IN, OUT>... parsers) {
         if (parsers.length == 0) {
             throw new IllegalArgumentException();

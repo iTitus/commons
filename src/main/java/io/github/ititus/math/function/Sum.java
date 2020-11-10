@@ -19,7 +19,8 @@ public final class Sum extends ComplexFunction {
 
     public static ComplexFunction of(ComplexFunction... terms) {
         // associativity & neutral element
-        terms = Arrays.stream(terms).filter(not(ComplexFunction::isZero)).flatMap(f -> f instanceof Sum ? Arrays.stream(((Sum) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
+        terms = Arrays.stream(terms).filter(not(ComplexFunction::isZero)).flatMap(f -> f instanceof Sum ?
+                Arrays.stream(((Sum) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
@@ -29,7 +30,8 @@ public final class Sum extends ComplexFunction {
         }
 
         // combine constant terms
-        BigComplex constant = Arrays.stream(terms).filter(ComplexFunction::isConstant).map(ComplexFunction::getConstant).reduce(BigComplex.ZERO, BigComplex::add);
+        BigComplex constant =
+                Arrays.stream(terms).filter(ComplexFunction::isConstant).map(ComplexFunction::getConstant).reduce(BigComplex.ZERO, BigComplex::add);
         Stream<ComplexFunction> stream = Arrays.stream(terms).filter(not(ComplexFunction::isConstant));
         if (!constant.equals(BigComplex.ZERO)) {
             terms = Stream.concat(Stream.of(Constant.of(constant)), stream).toArray(ComplexFunction[]::new);

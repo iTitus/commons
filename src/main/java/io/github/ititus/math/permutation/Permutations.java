@@ -28,7 +28,8 @@ public final class Permutations {
         if (set.isEmpty()) {
             return Set.of(Set.of());
         }
-        Set<Set<T>> output = new HashSet<>(permuteObj(List.copyOf(set)).stream().map(Set::copyOf).collect(Collectors.toUnmodifiableSet()));
+        Set<Set<T>> output =
+                new HashSet<>(permuteObj(List.copyOf(set)).stream().map(Set::copyOf).collect(Collectors.toUnmodifiableSet()));
         for (T j : set) {
             output.addAll(permuteWithoutDuplicates(set.stream().filter(n -> !j.equals(n)).collect(Collectors.toUnmodifiableSet())));
         }
@@ -42,7 +43,8 @@ public final class Permutations {
             for (int j : valid) {
                 int[] current_ = Arrays.copyOf(current, current.length);
                 current_[i] = j;
-                fillPermutations(output, current_, i + 1, valid.stream().filter(n -> n != j).collect(Collectors.toList()));
+                fillPermutations(output, current_, i + 1,
+                        valid.stream().filter(n -> n != j).collect(Collectors.toList()));
             }
         }
     }
@@ -54,7 +56,8 @@ public final class Permutations {
             for (T j : valid) {
                 List<T> current_ = new ArrayList<>(current);
                 current_.set(i, j);
-                fillPermutationsObj(output, current_, i + 1, valid.stream().filter(n -> !j.equals(n)).collect(Collectors.toList()));
+                fillPermutationsObj(output, current_, i + 1,
+                        valid.stream().filter(n -> !j.equals(n)).collect(Collectors.toList()));
             }
         }
     }

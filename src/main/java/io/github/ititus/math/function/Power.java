@@ -86,14 +86,16 @@ public final class Power extends ComplexFunction {
                     return Product.of(product, of(base, Constant.of(e - n)));
                 }
 
-                Constant c = Constant.of(IntStream.range(0, n).mapToObj(BigComplex::real).map(constant::subtract).reduce(BigComplex.ONE, BigComplex::multiply));
+                Constant c =
+                        Constant.of(IntStream.range(0, n).mapToObj(BigComplex::real).map(constant::subtract).reduce(BigComplex.ONE, BigComplex::multiply));
                 return Product.of(c, of(base, constant.subtract(BigComplex.real(n))));
             }
 
             return Product.of(exponent, base.derivative(), of(base, Sum.of(exponent, Constant.minusOne()))).derivative(n - 1);
         }
 
-        return Product.of(of(base, Sum.of(exponent, Constant.minusOne())), Sum.of(Product.of(base.derivative(), exponent), Product.of(base, Log.of(base), exponent.derivative()))).derivative(n - 1);
+        return Product.of(of(base, Sum.of(exponent, Constant.minusOne())), Sum.of(Product.of(base.derivative(),
+                exponent), Product.of(base, Log.of(base), exponent.derivative()))).derivative(n - 1);
     }
 
     public ComplexFunction getBase() {

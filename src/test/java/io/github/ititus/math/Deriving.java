@@ -37,7 +37,8 @@ public class Deriving {
         System.out.println("f'(z) = " + f.derivative());
         System.out.println();
 
-        f = Sum.of(Power.of(Sum.of(Constant.one(), Product.of(Constant.minusOne(), Identity.get(), Sin.of())), BigRationalConstants.ONE_OVER_TWO), Product.of(Constant.minusOne(), Cos.of()));
+        f = Sum.of(Power.of(Sum.of(Constant.one(), Product.of(Constant.minusOne(), Identity.get(), Sin.of())),
+                BigRationalConstants.ONE_OVER_TWO), Product.of(Constant.minusOne(), Cos.of()));
         System.out.println("f(z) = " + f);
         System.out.println("f'(z) = " + f.derivative());
         System.out.println();

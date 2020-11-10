@@ -7,7 +7,8 @@ public final class BigComplex {
 
     public static final BigComplex ZERO = new BigComplex(BigRationalConstants.ZERO, BigRationalConstants.ZERO);
     public static final BigComplex ONE = new BigComplex(BigRationalConstants.ONE, BigRationalConstants.ZERO);
-    public static final BigComplex MINUS_ONE = new BigComplex(BigRationalConstants.MINUS_ONE, BigRationalConstants.ZERO);
+    public static final BigComplex MINUS_ONE = new BigComplex(BigRationalConstants.MINUS_ONE,
+            BigRationalConstants.ZERO);
     public static final BigComplex I = new BigComplex(BigRationalConstants.ZERO, BigRationalConstants.ONE);
     public static final BigComplex MINUS_I = new BigComplex(BigRationalConstants.ZERO, BigRationalConstants.MINUS_ONE);
 
@@ -119,7 +120,8 @@ public final class BigComplex {
     }
 
     public BigComplex multiply(BigComplex z) {
-        return of(real.multiply(z.real).subtract(imag.multiply(z.imag)), real.multiply(z.imag).add(imag.multiply(z.real)));
+        return of(real.multiply(z.real).subtract(imag.multiply(z.imag)),
+                real.multiply(z.imag).add(imag.multiply(z.real)));
     }
 
     public BigComplex sqrt() {

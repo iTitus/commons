@@ -102,7 +102,8 @@ public final class Constant extends ComplexFunction {
 
     @Override
     protected String toString(boolean inner) {
-        boolean b = inner && (complex.isComplex() || (complex.isReal() && !complex.getReal().isBigInteger()) || (complex.isImaginary() && !complex.getImag().isBigInteger()));
+        boolean b =
+                inner && (complex.isComplex() || (complex.isReal() && !complex.getReal().isBigInteger()) || (complex.isImaginary() && !complex.getImag().isBigInteger()));
         return (b ? "[" : "") + complex + (b ? "]" : "");
     }
 

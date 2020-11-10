@@ -11,7 +11,8 @@ public final class ObjectUtil {
         if (o == null) {
             return "null";
         } else if (o instanceof Collection) {
-            return ((Collection<?>) o).stream().map(ObjectUtil::deepToString).collect(Collectors.joining(", ", "[", "]"));
+            return ((Collection<?>) o).stream().map(ObjectUtil::deepToString).collect(Collectors.joining(", ", "[",
+                    "]"));
         } else if (o instanceof Map) {
             return ((Map<?, ?>) o).entrySet().stream().map(e -> deepToString(e.getKey()) + "=" + deepToString(e.getValue())).collect(Collectors.joining(", ", "{", "}"));
         }

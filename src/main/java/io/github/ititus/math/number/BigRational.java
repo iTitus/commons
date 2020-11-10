@@ -178,7 +178,8 @@ public final class BigRational extends Number implements Comparable<BigRational>
         }
 
         BigInteger lcm = BigIntegerMath.lcm(denominator, r.denominator);
-        return of(numerator.multiply(lcm.divide(denominator)).add(r.numerator.multiply(lcm.divide(r.denominator))), lcm);
+        return of(numerator.multiply(lcm.divide(denominator)).add(r.numerator.multiply(lcm.divide(r.denominator))),
+                lcm);
     }
 
     public BigRational subtract(BigRational r) {
@@ -541,6 +542,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     @Override
     public String toString() {
-        return denominator.equals(BigInteger.ONE) ? String.valueOf(numerator) : numerator + "/" + denominator + " (" + toBigDecimal() + ")";
+        return denominator.equals(BigInteger.ONE) ? String.valueOf(numerator) :
+                numerator + "/" + denominator + " (" + toBigDecimal() + ")";
     }
 }

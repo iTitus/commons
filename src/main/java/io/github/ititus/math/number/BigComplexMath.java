@@ -73,7 +73,8 @@ public final class BigComplexMath {
         }
 
         BigRational r = BigRationalMath.exp(z.getReal());
-        return BigComplex.of(r.multiply(BigRationalMath.cos(z.getImag())), r.multiply(BigRationalMath.sin(z.getImag())));
+        return BigComplex.of(r.multiply(BigRationalMath.cos(z.getImag())),
+                r.multiply(BigRationalMath.sin(z.getImag())));
     }
 
     public static BigComplex ln(BigComplex z) {
