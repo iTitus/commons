@@ -8,6 +8,6 @@ public final class Momentum extends AbstractQuantityType<Momentum> {
     public static final Momentum MOMENTUM = new Momentum();
 
     private Momentum() {
-        super(MASS.multiply(LENGTH.divide(TIME)), () -> KILOGRAM_METRES_PER_SECOND);
+        super(MASS.multiply(LENGTH).divide(TIME), () -> KILOGRAM_METRES_PER_SECOND);
     }
 }

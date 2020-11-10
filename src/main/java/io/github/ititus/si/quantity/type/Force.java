@@ -8,6 +8,6 @@ public final class Force extends AbstractQuantityType<Force> {
     public static final Force FORCE = new Force();
 
     private Force() {
-        super(MASS.multiply(LENGTH.divide(TIME.pow(2))), () -> NEWTON);
+        super(MASS.multiply(LENGTH).divide(TIME.pow(2)), () -> NEWTON);
     }
 }

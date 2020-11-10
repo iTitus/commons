@@ -8,6 +8,6 @@ public final class Power extends AbstractQuantityType<Power> {
     public static final Power POWER = new Power();
 
     private Power() {
-        super(MASS.multiply(LENGTH.pow(2).divide(TIME.pow(3))), () -> WATT);
+        super(MASS.multiply(LENGTH.pow(2)).divide(TIME.pow(3)), () -> WATT);
     }
 }
