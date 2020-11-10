@@ -1,9 +1,9 @@
 package io.github.ititus.si.quantity.type;
 
-import io.github.ititus.assertions.MyAssertions;
 import io.github.ititus.si.quantity.Quantity;
 import org.junit.jupiter.api.Test;
 
+import static io.github.ititus.assertions.Assertions.assertThat;
 import static io.github.ititus.math.number.BigRational.ofExp;
 import static io.github.ititus.si.prefix.MetricPrefix.NANO;
 import static io.github.ititus.si.quantity.value.QuantityValue.of;
@@ -19,7 +19,7 @@ public class MassTest {
         Quantity<Mass> kiloGrams = KILOGRAM.get(1.35);
         Quantity<Mass> nanoGrams = kiloGrams.convertTo(GRAM.prefix(NANO));
 
-        MyAssertions.assertThat(nanoGrams.getValue()).isCloseTo(of(ofExp(135, 10)), withPercentage(1));
+        assertThat(nanoGrams.getValue()).isCloseTo(of(ofExp(135, 10)), withPercentage(1));
         assertThat(nanoGrams.getUnit().getSymbol()).isEqualTo("ng");
     }
 }

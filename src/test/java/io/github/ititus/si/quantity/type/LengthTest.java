@@ -1,9 +1,9 @@
 package io.github.ititus.si.quantity.type;
 
-import io.github.ititus.assertions.MyAssertions;
 import io.github.ititus.si.quantity.Quantity;
 import org.junit.jupiter.api.Test;
 
+import static io.github.ititus.assertions.Assertions.assertThat;
 import static io.github.ititus.math.number.BigRational.ofExp;
 import static io.github.ititus.si.prefix.MetricPrefix.CENTI;
 import static io.github.ititus.si.prefix.MetricPrefix.MILLI;
@@ -20,7 +20,7 @@ public class LengthTest {
         Quantity<Length> metres = METRE.get(1.35);
         Quantity<Length> centiMetres = metres.convertTo(METRE.prefix(CENTI));
 
-        MyAssertions.assertThat(centiMetres.getValue()).isCloseTo(of(135), withPercentage(1.0));
+        assertThat(centiMetres.getValue()).isCloseTo(of(135), withPercentage(1.0));
         assertThat(centiMetres.getUnit().getSymbol()).isEqualTo("cm");
     }
 
@@ -29,7 +29,7 @@ public class LengthTest {
         Quantity<Length> milliMetre = METRE.prefix(MILLI).get(23);
         Quantity<Length> miles = milliMetre.convertTo(MILE);
 
-        MyAssertions.assertThat(miles.getValue()).isCloseTo(of(ofExp(1429, -8)), withPercentage(1.0));
+        assertThat(miles.getValue()).isCloseTo(of(ofExp(1429, -8)), withPercentage(1.0));
         assertThat(miles.getUnit().getSymbol()).isEqualTo("mi");
     }
 }

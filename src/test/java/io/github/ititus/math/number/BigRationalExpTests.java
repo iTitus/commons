@@ -3,7 +3,7 @@ package io.github.ititus.math.number;
 
 import org.junit.jupiter.api.Test;
 
-import static io.github.ititus.assertions.MyAssertions.assertThat;
+import static io.github.ititus.assertions.Assertions.assertThat;
 import static io.github.ititus.math.number.BigRational.of;
 import static io.github.ititus.math.number.BigRationalConstants.*;
 import static io.github.ititus.math.number.BigRationalMath.exp;
