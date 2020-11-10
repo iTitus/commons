@@ -30,6 +30,30 @@ dependencies {
 publishing {
     publications {
         MyPublication(MavenPublication) {
+            pom {
+                name = 'iTitus Commons'
+                description = 'Library for commonly needed functionality'
+                url = 'https://github.com/iTitus/commons'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://mit-license.org'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'iTitus'
+                        name = 'iTitus'
+                        email = 'ititus@users.noreply.github.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/iTitus/commons.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:iTitus/commons.git'
+                    url = 'https://github.com/iTitus/commons'
+                }
+            }
+
             from components.java
         }
     }
@@ -49,6 +73,7 @@ bintray {
         name = 'commons'
         version {
             name = project.version
+            vcsTag = "v${project.version}"
         }
     }
 }
