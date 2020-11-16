@@ -3,8 +3,7 @@ package io.github.ititus.si.unit;
 import io.github.ititus.si.quantity.type.*;
 
 import static io.github.ititus.math.number.BigRational.ofExp;
-import static io.github.ititus.si.prefix.MetricPrefix.DECI;
-import static io.github.ititus.si.prefix.MetricPrefix.KILO;
+import static io.github.ititus.si.prefix.MetricPrefix.*;
 import static io.github.ititus.si.quantity.type.Acceleration.ACCELERATION;
 import static io.github.ititus.si.quantity.type.Angle.ANGLE;
 import static io.github.ititus.si.quantity.type.Area.AREA;
@@ -69,12 +68,28 @@ public final class Units {
     // Length
     public static final Unit<Length> KILOMETRE = METRE.prefix(KILO);
     public static final Unit<Length> DECIMETRE = METRE.prefix(DECI);
-    public static final Unit<Length> MILE = METRE.multiply(ofExp(1_609_344, -3)).alternate("mi");
+    public static final Unit<Length> MILLIMETRE = METRE.prefix(MILLI);
+    public static final Unit<Length> INCH = MILLIMETRE.multiply(ofExp(254, -1)).alternate("in");
+    public static final Unit<Length> FOOT = INCH.multiply(12).alternate("ft");
+    public static final Unit<Length> YARD = FOOT.multiply(3).alternate("yd");
+    public static final Unit<Length> MILE = FOOT.multiply(1760).alternate("mi");
+    public static final Unit<Length> PICA = INCH.divide(6).alternate("pica");
+    public static final Unit<Length> POINT = PICA.divide(12).alternate("pt");
+    public static final Unit<Length> FATHOM = YARD.multiply(2).alternate("ftm");
     public static final Unit<Length> NAUTICAL_MILE = METRE.multiply(1_852).alternate("nmi");
+    public static final Unit<Length> CABLE = NAUTICAL_MILE.divide(10).alternate("cb");
 
     // Mass
     public static final Unit<Mass> KILOGRAM = GRAM.prefix(KILO);
     public static final Unit<Mass> TONNE = KILOGRAM.multiply(1_000).alternate("t");
+    public static final Unit<Mass> CARAT = GRAM.divide(5).alternate("ct");
+    public static final Unit<Mass> POUND = KILOGRAM.multiply(ofExp(45_359_237, -8)).alternate("lb");
+    public static final Unit<Mass> OUNCE = POUND.divide(16).alternate("oz");
+    public static final Unit<Mass> DRAM = OUNCE.divide(16).alternate("dr");
+    public static final Unit<Mass> GRAIN = POUND.divide(7_000).alternate("gr");
+    public static final Unit<Mass> PENNYWEIGHT = GRAIN.multiply(24).alternate("dwt");
+    public static final Unit<Mass> TROY_OUNCE = PENNYWEIGHT.multiply(20).alternate("oz t");
+    public static final Unit<Mass> TROY_POUND = TROY_OUNCE.multiply(12).alternate("lb t");
 
     // Time
     public static final Unit<Time> MINUTE = SECOND.multiply(60).alternate("min");
