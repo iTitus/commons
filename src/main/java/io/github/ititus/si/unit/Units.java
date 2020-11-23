@@ -72,7 +72,7 @@ public final class Units {
     public static final Unit<Length> INCH = MILLIMETRE.multiply(ofExp(254, -1)).alternate("in");
     public static final Unit<Length> FOOT = INCH.multiply(12).alternate("ft");
     public static final Unit<Length> YARD = FOOT.multiply(3).alternate("yd");
-    public static final Unit<Length> MILE = FOOT.multiply(1760).alternate("mi");
+    public static final Unit<Length> MILE = YARD.multiply(1760).alternate("mi");
     public static final Unit<Length> PICA = INCH.divide(6).alternate("pica");
     public static final Unit<Length> POINT = PICA.divide(12).alternate("pt");
     public static final Unit<Length> FATHOM = YARD.multiply(2).alternate("ftm");
