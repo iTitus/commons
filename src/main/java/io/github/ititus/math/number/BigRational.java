@@ -11,7 +11,7 @@ import static io.github.ititus.math.number.BigRationalConstants.*;
 
 public final class BigRational extends Number implements Comparable<BigRational> {
 
-    private static final Pattern RATIONAL_SEPARATOR_PATTERN = Pattern.compile("( )*[:/]( )*");
+    private static final Pattern RATIONAL_SEPARATOR_PATTERN = Pattern.compile("\\s*[:/]\\s*");
 
     private final BigInteger numerator, denominator;
 

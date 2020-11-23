@@ -2,8 +2,9 @@ name: Gradle Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
+    branches: [ master, develop ]
 
 jobs:
   build:
@@ -16,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Load Cache
@@ -32,7 +33,7 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
