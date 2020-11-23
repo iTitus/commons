@@ -34,13 +34,28 @@ jobs:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - run: git checkout HEAD^2
+          if: ${{ github.event_name == 'pull_request' }}
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
