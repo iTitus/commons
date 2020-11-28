@@ -118,11 +118,13 @@ public final class Product extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (!(f instanceof Product)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Product)) {
             return false;
         }
-        Product p = (Product) f;
+        Product p = (Product) o;
         if (terms.length != p.terms.length) {
             return false;
         }

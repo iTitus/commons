@@ -115,11 +115,13 @@ public final class Power extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Power.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Power)) {
             return false;
         }
-        Power p = (Power) f;
+        Power p = (Power) o;
         return base.equals(p.base) && exponent.equals(p.exponent);
     }
 

@@ -108,11 +108,13 @@ public final class Constant extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Constant.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Constant)) {
             return false;
         }
-        Constant c = (Constant) f;
+        Constant c = (Constant) o;
         return complex.equals(c.complex);
     }
 

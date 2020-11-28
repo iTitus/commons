@@ -53,12 +53,14 @@ public final class Exp extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Exp.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Exp)) {
             return false;
         }
-
-        return this.f.equals(((Exp) f).f);
+        Exp e = (Exp) o;
+        return f.equals(e.f);
     }
 
     @Override

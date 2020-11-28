@@ -53,18 +53,8 @@ public abstract class ComplexFunction {
         return toString(false);
     }
 
-    protected abstract boolean equals0(ComplexFunction f);
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ComplexFunction)) {
-            return false;
-        }
-        return equals0((ComplexFunction) o);
-    }
+    public abstract boolean equals(Object o);
 
     @Override
     public abstract int hashCode();

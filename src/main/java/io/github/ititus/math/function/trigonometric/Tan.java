@@ -47,12 +47,14 @@ public final class Tan extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Tan.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Tan)) {
             return false;
         }
-
-        return this.f.equals(((Tan) f).f);
+        Tan s = (Tan) o;
+        return f.equals(s.f);
     }
 
     @Override

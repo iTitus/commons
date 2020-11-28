@@ -105,11 +105,13 @@ public final class Sum extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (!(f instanceof Sum)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Sum)) {
             return false;
         }
-        Sum s = (Sum) f;
+        Sum s = (Sum) o;
         if (terms.length != s.terms.length) {
             return false;
         }

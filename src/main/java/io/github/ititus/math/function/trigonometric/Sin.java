@@ -67,12 +67,14 @@ public final class Sin extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Sin.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Sin)) {
             return false;
         }
-
-        return this.f.equals(((Sin) f).f);
+        Sin s = (Sin) o;
+        return f.equals(s.f);
     }
 
     @Override

@@ -56,11 +56,13 @@ public final class Rational extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Rational.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Rational)) {
             return false;
         }
-        Rational r = (Rational) f;
+        Rational r = (Rational) o;
         return numerator.equals(r.numerator) && denominator.equals(r.denominator);
     }
 

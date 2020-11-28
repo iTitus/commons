@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PowerSeriesCalculator {
+public final class PowerSeriesCalculator {
 
     private static final MathContext FAST_APPROX_MC = new MathContext(2, RoundingMode.HALF_EVEN);
 

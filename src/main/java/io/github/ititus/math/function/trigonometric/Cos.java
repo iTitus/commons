@@ -67,12 +67,14 @@ public final class Cos extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Cos.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Cos)) {
             return false;
         }
-
-        return this.f.equals(((Cos) f).f);
+        Cos s = (Cos) o;
+        return f.equals(s.f);
     }
 
     @Override
