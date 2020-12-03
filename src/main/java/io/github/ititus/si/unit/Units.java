@@ -95,6 +95,9 @@ public final class Units {
     public static final Unit<Time> MINUTE = SECOND.multiply(60).alternate("min");
     public static final Unit<Time> HOUR = MINUTE.multiply(60).alternate("h");
     public static final Unit<Time> DAY = HOUR.multiply(24).alternate("d");
+    public static final Unit<Time> NANOSECOND = SECOND.prefix(NANO);
+    public static final Unit<Time> MICROSECOND = SECOND.prefix(MICRO);
+    public static final Unit<Time> MILLISECOND = SECOND.prefix(MILLI);
 
     // Electric Current
 
