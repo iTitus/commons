@@ -1,5 +1,7 @@
 package io.github.ititus.si.prefix;
 
+import io.github.ititus.Config;
+
 public enum MetricPrefix implements Prefix {
 
     YOTTA("Y", 24),
@@ -15,7 +17,7 @@ public enum MetricPrefix implements Prefix {
     DECI("d", -1),
     CENTI("c", -2),
     MILLI("m", -3),
-    MICRO("\u00b5", -6),
+    MICRO(Config.FORCE_ASCII ? "u" : "\u00b5", -6),
     NANO("n", -9),
     PICO("p", -12),
     FEMTO("f", -15),
