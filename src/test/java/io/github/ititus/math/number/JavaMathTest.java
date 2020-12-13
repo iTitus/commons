@@ -36,8 +36,9 @@ class JavaMathTest {
     @Test
     void test_gcd_mixed_sign() {
         assertThat(gcd(-42, 36)).isEqualTo(6);
-        assertThat(gcd(42, -36)).isEqualTo(6);
         assertThat(gcd(-36, 42)).isEqualTo(6);
+
+        assertThat(gcd(42, -36)).isEqualTo(6);
         assertThat(gcd(36, -42)).isEqualTo(6);
     }
 }
