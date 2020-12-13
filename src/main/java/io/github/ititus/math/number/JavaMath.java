@@ -22,22 +22,150 @@ public final class JavaMath {
     }
 
     public static int gcd(int a, int b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+
         if (a == 0) {
             return Math.abs(b);
         } else if (b == 0) {
             return Math.abs(a);
         }
-        return gcd(b, a % b);
+
+        int i = Integer.numberOfTrailingZeros(a);
+        a >>>= i;
+
+        int j = Integer.numberOfTrailingZeros(b);
+        b >>>= j;
+
+        int k = Math.min(i, j);
+
+        while (true) {
+            if (a > b) {
+                int tmp = a;
+                a = b;
+                b = tmp;
+            }
+
+            b -= a;
+
+            if (b == 0) {
+                return a << k;
+            }
+
+            b >>= Integer.numberOfTrailingZeros(b);
+        }
+    }
+
+    public static long gcd(long a, long b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+
+        if (a == 0) {
+            return b;
+        } else if (b == 0) {
+            return a;
+        }
+
+        int i = Long.numberOfTrailingZeros(a);
+        a >>>= i;
+
+        int j = Long.numberOfTrailingZeros(b);
+        b >>>= j;
+
+        int k = Math.min(i, j);
+
+        while (true) {
+            if (a > b) {
+                long tmp = a;
+                a = b;
+                b = tmp;
+            }
+
+            b -= a;
+
+            if (b == 0) {
+                return a << k;
+            }
+
+            b >>= Long.numberOfTrailingZeros(b);
+        }
     }
 
     public static int lcm(int a, int b) {
         if (a == 0 || b == 0) {
             throw new ArithmeticException();
         }
+
         return Math.multiplyExact(Math.abs(a) / gcd(a, b), Math.abs(b));
     }
 
+    public static long lcm(long a, long b) {
+        if (a == 0 || b == 0) {
+            throw new ArithmeticException();
+        }
+
+        return Math.multiplyExact(Math.abs(a) / gcd(a, b), Math.abs(b));
+    }
+
+    public static ExtendedGdcIntResult extendedGcd(int a, int b) {
+        int old_r = Math.abs(a);
+        int r = Math.abs(b);
+        int old_s = 1;
+        int s = 0;
+        int old_t = 0;
+        int t = 1;
+
+        while (r != 0) {
+            int q = old_r / r;
+
+            int tmp = r;
+            r = old_r - (q * r);
+            old_r = tmp;
+
+            tmp = s;
+            s = old_s - (q * s);
+            old_s = tmp;
+
+            tmp = t;
+            t = old_t - (q * t);
+            old_t = tmp;
+        }
+
+        return new ExtendedGdcIntResult(old_r, old_s, old_t);
+    }
+
+    public static ExtendedGdcLongResult extendedGcd(long a, long b) {
+        long old_r = Math.abs(a);
+        long r = Math.abs(b);
+        long old_s = 1;
+        long s = 0;
+        long old_t = 0;
+        long t = 1;
+
+        while (r != 0) {
+            long q = old_r / r;
+
+            long tmp = r;
+            r = old_r - (q * r);
+            old_r = tmp;
+
+            tmp = s;
+            s = old_s - (q * s);
+            old_s = tmp;
+
+            tmp = t;
+            t = old_t - (q * t);
+            old_t = tmp;
+        }
+
+        return new ExtendedGdcLongResult(old_r, old_s, old_t);
+    }
+
     public static int signum(int n) {
+        return n < 0 ? -1 : n > 0 ? 1 : 0;
+    }
+
+    public static int signum(long n) {
         return n < 0 ? -1 : n > 0 ? 1 : 0;
     }
 }

@@ -1,12 +1,9 @@
 package io.github.ititus.math.number;
 
 import io.github.ititus.math.function.PowerSeriesCalculator;
-import io.github.ititus.math.time.DurationFormatter;
-import io.github.ititus.math.time.StopWatch;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.Duration;
 
 import static io.github.ititus.math.number.BigRational.of;
 import static io.github.ititus.math.number.BigRationalConstants.*;
@@ -100,38 +97,8 @@ public final class BigRationalMath {
             return ZERO;
         }
 
-        StopWatch w = StopWatch.createRunning();
-
         BigRational lnFast = PowerSeriesCalculator.lnFast(x);
-
-        Duration d = w.stop();
-        System.out.println("lnFast: " + DurationFormatter.formatMillis(d));
-        w.start();
-
-        BigRational exp = lnFast.exp();
-
-        d = w.stop();
-        System.out.println("exp: " + DurationFormatter.formatMillis(d));
-        w.start();
-
-        BigRational newX = x.divide(exp);
-
-        d = w.stop();
-        System.out.println("div: " + DurationFormatter.formatMillis(d));
-        w.start();
-
-        BigRational ln = PowerSeriesCalculator.ln(newX);
-
-        d = w.stop();
-        System.out.println("ln: " + DurationFormatter.formatMillis(d));
-        w.start();
-
-        BigRational realLn = lnFast.add(ln);
-
-        d = w.stop();
-        System.out.println("add: " + DurationFormatter.formatMillis(d));
-
-        return realLn;
+        return lnFast.add(PowerSeriesCalculator.ln(x.divide(lnFast.exp())));
     }
 
     public static BigRational sin(BigRational x) {
