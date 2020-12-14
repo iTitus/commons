@@ -12,6 +12,10 @@ public final class IntIntPair {
         this.b = b;
     }
 
+    public static IntIntPair of(int a, int b) {
+        return new IntIntPair(a, b);
+    }
+
     public int a() {
         return a;
     }
@@ -40,9 +44,5 @@ public final class IntIntPair {
     @Override
     public String toString() {
         return "<" + a + "," + b + ">";
-    }
-
-    public static IntIntPair of(int a, int b) {
-        return new IntIntPair(a, b);
     }
 }

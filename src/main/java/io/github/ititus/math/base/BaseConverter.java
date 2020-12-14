@@ -6,9 +6,9 @@ import java.math.BigInteger;
 
 public class BaseConverter {
 
-    protected static final char[] CHARACTERS;
     private static final byte MIN_BASE = 2;
     private static final byte MAX_BASE = 36;
+    private static final char[] CHARACTERS;
     private static final BigInteger[] BASES;
 
     static {
@@ -46,6 +46,18 @@ public class BaseConverter {
         }
 
         throw new IllegalArgumentException("Unrecognized digit '" + c + "'");
+    }
+
+    protected BigInteger base() {
+        return BASES[base - MIN_BASE];
+    }
+
+    protected char character(int value) {
+        if (value < 0 || value >= base) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        return CHARACTERS[value];
     }
 
     public String encode(int n) {
@@ -88,7 +100,7 @@ public class BaseConverter {
         }
 
         StringBuilder sb = new StringBuilder();
-        BigInteger b = BASES[base];
+        BigInteger b = base();
         do {
             BigInteger[] dr = n.divideAndRemainder(b);
             sb.append(CHARACTERS[dr[1].intValueExact()]);
@@ -153,7 +165,7 @@ public class BaseConverter {
 
         for (int i = chars.length - 1; i >= 0; i--) {
             n = n.add(b.multiply(BigIntegerMath.of(digitToInt(chars[i]))));
-            b = b.multiply(BASES[base]);
+            b = b.multiply(base());
         }
 
         return n;

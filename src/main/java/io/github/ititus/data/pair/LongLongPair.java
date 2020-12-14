@@ -12,6 +12,10 @@ public final class LongLongPair {
         this.b = b;
     }
 
+    public static LongLongPair of(long a, long b) {
+        return new LongLongPair(a, b);
+    }
+
     public long a() {
         return a;
     }
@@ -40,9 +44,5 @@ public final class LongLongPair {
     @Override
     public String toString() {
         return "<" + a + "," + b + ">";
-    }
-
-    public static LongLongPair of(long a, long b) {
-        return new LongLongPair(a, b);
     }
 }
