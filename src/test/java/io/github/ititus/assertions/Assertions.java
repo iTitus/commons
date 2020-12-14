@@ -6,14 +6,14 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 
 public class Assertions implements InstanceOfAssertFactories {
 
+    protected Assertions() {
+    }
+
     public static BigRationalAssert assertThat(BigRational actual) {
         return new BigRationalAssert(actual);
     }
 
     public static QuantityValueAssert assertThat(QuantityValue actual) {
         return new QuantityValueAssert(actual);
-    }
-
-    protected Assertions() {
     }
 }
