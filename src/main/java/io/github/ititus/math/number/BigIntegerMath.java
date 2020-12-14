@@ -28,8 +28,12 @@ public final class BigIntegerMath {
         return BigInteger.valueOf(n);
     }
 
-    public static BigInteger of(String n) {
-        return new BigInteger(n);
+    public static BigInteger of(String s) {
+        return new BigInteger(s);
+    }
+
+    public static BigInteger of(String s, int radix) {
+        return new BigInteger(s, radix);
     }
 
     @SuppressWarnings("Duplicates")

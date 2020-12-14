@@ -6,6 +6,8 @@ import java.math.BigInteger;
 
 public class BaseConverter {
 
+    // TODO: add unsigned converters back
+
     private static final byte MIN_BASE = 2;
     private static final byte MAX_BASE = 36;
     private static final char[] CHARACTERS;
@@ -36,8 +38,9 @@ public class BaseConverter {
         this.base = base;
     }
 
-    private static int digitToInt(char c) {
-        if (c >= '0' && c <= '9') {
+    protected int digit(char c) {
+        return Character.digit(c, base);
+        /*if (c >= '0' && c <= '9') {
             return c - '0';
         } else if (c >= 'a' && c <= 'z') {
             return c - 'a' + 10;
@@ -45,7 +48,7 @@ public class BaseConverter {
             return c - 'A' + 10;
         }
 
-        throw new IllegalArgumentException("Unrecognized digit '" + c + "'");
+        throw new IllegalArgumentException("Unrecognized digit '" + c + "'");*/
     }
 
     protected BigInteger base() {
@@ -61,7 +64,8 @@ public class BaseConverter {
     }
 
     public String encode(int n) {
-        if (n < 0) {
+        return Integer.toString(n, base);
+        /*if (n < 0) {
             throw new IllegalArgumentException();
         } else if (n == 0) {
             return String.valueOf(CHARACTERS[0]);
@@ -73,11 +77,12 @@ public class BaseConverter {
             n /= base;
         } while (n > 0);
 
-        return b.reverse().toString();
+        return b.reverse().toString();*/
     }
 
     public String encode(long n) {
-        if (n < 0) {
+        return Long.toString(n, base);
+        /*if (n < 0) {
             throw new IllegalArgumentException();
         } else if (n == 0) {
             return String.valueOf(CHARACTERS[0]);
@@ -89,11 +94,12 @@ public class BaseConverter {
             n /= base;
         } while (n > 0);
 
-        return b.reverse().toString();
+        return b.reverse().toString();*/
     }
 
     public String encode(BigInteger n) {
-        if (n == null || n.signum() < 0) {
+        return n.toString(base);
+        /*if (n == null || n.signum() < 0) {
             throw new IllegalArgumentException();
         } else if (n.signum() == 0) {
             return String.valueOf(CHARACTERS[0]);
@@ -107,17 +113,18 @@ public class BaseConverter {
             n = dr[0];
         } while (n.signum() > 0);
 
-        return sb.reverse().toString();
+        return sb.reverse().toString();*/
     }
 
-    @SuppressWarnings("Duplicates")
+    //@SuppressWarnings("Duplicates")
     public int decodeToInt(String s) {
-        char[] chars = s.toCharArray();
+        return Integer.parseInt(s, base);
+        /*char[] chars = s.toCharArray();
         int n = 0;
         int b = 1;
 
         for (int i = chars.length - 1; i >= 0; i--) {
-            int d = digitToInt(chars[i]);
+            int d = digit(chars[i]);
             if (d > 0) {
                 if (b < 0) {
                     throw new ArithmeticException("integer overflow");
@@ -131,17 +138,18 @@ public class BaseConverter {
             }
         }
 
-        return n;
+        return n;*/
     }
 
     @SuppressWarnings("Duplicates")
     public long decodeToLong(String s) {
-        char[] chars = s.toCharArray();
+        return Long.parseLong(s, base);
+        /*char[] chars = s.toCharArray();
         long n = 0;
         long b = 1;
 
         for (int i = chars.length - 1; i >= 0; i--) {
-            int d = digitToInt(chars[i]);
+            int d = digit(chars[i]);
             if (d > 0) {
                 if (b < 0) {
                     throw new ArithmeticException("long overflow");
@@ -155,19 +163,20 @@ public class BaseConverter {
             }
         }
 
-        return n;
+        return n;*/
     }
 
     public BigInteger decodeToBigInteger(String s) {
-        char[] chars = s.toCharArray();
+        return BigIntegerMath.of(s, base);
+        /*char[] chars = s.toCharArray();
         BigInteger n = BigInteger.ZERO;
         BigInteger b = BigInteger.ONE;
 
         for (int i = chars.length - 1; i >= 0; i--) {
-            n = n.add(b.multiply(BigIntegerMath.of(digitToInt(chars[i]))));
+            n = n.add(b.multiply(BigIntegerMath.of(digit(chars[i]))));
             b = b.multiply(base());
         }
 
-        return n;
+        return n;*/
     }
 }

@@ -10,7 +10,7 @@ public final class HexConverter extends BaseConverter {
         super(16);
     }
 
-    public String encode(byte[] bytes) {
+    public String encodeUnsigned(byte[] bytes) {
         if (Objects.requireNonNull(bytes).length == 0) {
             throw new IllegalArgumentException();
         } else if (bytes.length == 1 && bytes[0] == 0) {

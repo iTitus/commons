@@ -9,16 +9,16 @@ public class BinaryCalc {
     public static void main(String[] args) {
         String hex1 = "12A";
         int dec1 = BaseConverters.HEXADECIMAL.decodeToInt(hex1);
-        BinaryNumber bin1 = BaseConverters.BINARY.encodeToBinaryNumber(dec1);
+        BinaryNumber bin1 = BaseConverters.BINARY.encodeToBinaryNumberUnsigned(dec1);
         System.out.printf("%d %s %s%n", dec1, bin1, hex1);
 
         BinaryNumber bin2 = BinaryNumber.of("11_1000");
-        int dec2 = BaseConverters.BINARY.decodeToInt(bin2);
+        int dec2 = BaseConverters.BINARY.decodeToIntUnsigned(bin2);
         String hex2 = BaseConverters.HEXADECIMAL.encode(dec2);
         System.out.printf("%d %s %s%n", dec2, bin2, hex2);
 
         int dec = 1234;
-        BinaryNumber bin = BaseConverters.BINARY.encodeToBinaryNumber(dec);
+        BinaryNumber bin = BaseConverters.BINARY.encodeToBinaryNumberUnsigned(dec);
         System.out.printf("%d %s%n", dec, bin);
 
         QFixedPoint q = new QFixedPoint(4, 3);
