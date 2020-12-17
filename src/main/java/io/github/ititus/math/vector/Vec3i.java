@@ -1,8 +1,7 @@
 package io.github.ititus.math.vector;
 
+import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.number.JavaMath;
-
-import java.util.Arrays;
 
 public final class Vec3i implements Comparable<Vec3i> {
 
@@ -29,10 +28,10 @@ public final class Vec3i implements Comparable<Vec3i> {
     }
 
     public Vec3i sgn() {
-        return new Vec3i(JavaMath.signum(x), JavaMath.signum(y), JavaMath.signum(z));
+        return new Vec3i(JavaMath.sgn(x), JavaMath.sgn(y), JavaMath.sgn(z));
     }
 
-    public int manhattenDistance() {
+    public int manhattanDistance() {
         return Math.abs(x) + Math.abs(y) + Math.abs(z);
     }
 
@@ -54,6 +53,7 @@ public final class Vec3i implements Comparable<Vec3i> {
         if (c1 != 0) {
             return c1;
         }
+
         int c2 = Integer.compare(y, o.y);
         return c2 != 0 ? c2 : Integer.compare(z, o.z);
     }
@@ -72,7 +72,7 @@ public final class Vec3i implements Comparable<Vec3i> {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(new int[] { x, y, z });
+        return ArrayUtil.hash(x, y, z);
     }
 
     @Override

@@ -38,7 +38,7 @@ public final class Vec2i implements Comparable<Vec2i> {
     }
 
     public Vec2i sgn() {
-        return new Vec2i(JavaMath.signum(x), JavaMath.signum(y));
+        return new Vec2i(JavaMath.sgn(x), JavaMath.sgn(y));
     }
 
     public int manhattanDistance() {

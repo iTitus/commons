@@ -161,11 +161,11 @@ public final class JavaMath {
         return new ExtendedGdcLongResult(old_r, old_s, old_t);
     }
 
-    public static int signum(int n) {
+    public static int sgn(int n) {
         return n < 0 ? -1 : n > 0 ? 1 : 0;
     }
 
-    public static int signum(long n) {
+    public static int sgn(long n) {
         return n < 0 ? -1 : n > 0 ? 1 : 0;
     }
 }
