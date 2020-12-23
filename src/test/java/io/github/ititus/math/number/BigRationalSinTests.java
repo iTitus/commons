@@ -48,8 +48,8 @@ public class BigRationalSinTests {
 
     @Test
     public void sin_seven_pi_over_four() {
-        assertThat(sin(PI.add(PI.multiply(THREE_OVER_FOUR)))).isCloseTo(TWO.sqrt().inverse().negate(), offset(of("0" +
-                ".001")));
+        assertThat(sin(PI.add(PI.multiply(THREE_OVER_FOUR)))).isCloseTo(TWO.sqrt().inverse().negate(),
+                offset(of("0.001")));
     }
 
     @Test

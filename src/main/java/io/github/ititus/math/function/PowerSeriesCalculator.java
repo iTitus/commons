@@ -11,6 +11,9 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.github.ititus.math.number.BigRationalConstants.ONE;
+import static io.github.ititus.math.number.BigRationalConstants.ZERO;
+
 public final class PowerSeriesCalculator {
 
     private static final MathContext FAST_APPROX_MC = new MathContext(2, RoundingMode.HALF_EVEN);
@@ -20,6 +23,7 @@ public final class PowerSeriesCalculator {
     private static final LnPowerSeries LN = new LnPowerSeries();
     private static final SinPowerSeries SIN = new SinPowerSeries();
     private static final CosPowerSeries COS = new CosPowerSeries();
+    private static final AtanPowerSeries ATAN = new AtanPowerSeries();
 
     @SuppressWarnings("Duplicates")
     private static BigRational calculatePowerSeries(PowerSeries powerSeries, BigRational x, MathContext mc) {
@@ -27,11 +31,12 @@ public final class PowerSeriesCalculator {
         if (precision == 0) {
             throw new ArithmeticException();
         }
+
         BigRational minDiff = BigRationalMath.pow(BigRationalConstants.TEN, BigIntegerMath.of(precision + 1)).inverse();
         x = x.round(mc);
 
-        BigRational result = BigRationalConstants.ZERO;
-        BigRational power = BigRationalConstants.ONE;
+        BigRational result = ZERO;
+        BigRational power = ONE;
 
         for (BigInteger n = BigInteger.ZERO; n.compareTo(N) <= 0; n = n.add(BigInteger.ONE)) {
             BigRational coeff = powerSeries.getCoefficient(n).round(mc);
@@ -59,7 +64,7 @@ public final class PowerSeriesCalculator {
         BigRational minDiff = BigRationalMath.pow(BigRationalConstants.TEN, BigIntegerMath.of(precision + 1)).inverse();
         x = x.round(mc);
 
-        BigRational result = BigRationalConstants.ZERO;
+        BigRational result = ZERO;
 
         for (BigInteger n = BigInteger.ZERO; n.compareTo(N) <= 0; n = n.add(BigInteger.ONE)) {
             BigRational term = series.getTerm(n, x).round(mc);
@@ -81,12 +86,12 @@ public final class PowerSeriesCalculator {
 
     public static BigRational ln(BigRational x) {
         return BigRationalConstants.TWO.multiply(calculatePowerSeries(LN,
-                x.subtract(BigRationalConstants.ONE).divide(x.add(BigRationalConstants.ONE)), MathContext.DECIMAL128));
+                x.subtract(ONE).divide(x.add(ONE)), MathContext.DECIMAL128));
     }
 
     public static BigRational lnFast(BigRational x) {
         return BigRationalConstants.TWO.multiply(calculatePowerSeries(LN,
-                x.subtract(BigRationalConstants.ONE).divide(x.add(BigRationalConstants.ONE)), FAST_APPROX_MC));
+                x.subtract(ONE).divide(x.add(ONE)), FAST_APPROX_MC));
     }
 
     public static BigRational sin(BigRational x) {
@@ -95,6 +100,10 @@ public final class PowerSeriesCalculator {
 
     public static BigRational cos(BigRational x) {
         return calculatePowerSeries(COS, x, MathContext.DECIMAL128);
+    }
+
+    public static BigRational atan(BigRational x) {
+        return calculatePowerSeries(ATAN, x, MathContext.DECIMAL128);
     }
 
     private static abstract class Series {
@@ -119,7 +128,7 @@ public final class PowerSeriesCalculator {
         @Override
         protected BigRational getCoefficient(BigInteger n) {
             if (n.signum() == 0) {
-                return BigRationalConstants.ONE;
+                return ONE;
             }
 
             return cache.computeIfAbsent(n,
@@ -132,7 +141,7 @@ public final class PowerSeriesCalculator {
         @Override
         protected BigRational getCoefficient(BigInteger n) {
             if (BigIntegerMath.isEven(n)) {
-                return BigRationalConstants.ZERO;
+                return ZERO;
             }
 
             return BigRational.ofInv(n);
@@ -144,9 +153,9 @@ public final class PowerSeriesCalculator {
         @Override
         protected BigRational getCoefficient(BigInteger n) {
             if (n.equals(BigInteger.ONE)) {
-                return BigRationalConstants.ONE;
+                return ONE;
             } else if (BigIntegerMath.isEven(n)) {
-                return BigRationalConstants.ZERO;
+                return ZERO;
             }
 
             return cache.computeIfAbsent(n,
@@ -159,13 +168,30 @@ public final class PowerSeriesCalculator {
         @Override
         protected BigRational getCoefficient(BigInteger n) {
             if (n.signum() == 0) {
-                return BigRationalConstants.ONE;
+                return ONE;
             } else if (BigIntegerMath.isOdd(n)) {
-                return BigRationalConstants.ZERO;
+                return ZERO;
             }
 
             return cache.computeIfAbsent(n,
                     n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
+        }
+    }
+
+    private static class AtanPowerSeries extends PowerSeries {
+
+        private static final BigInteger FOUR = BigIntegerMath.FOUR;
+
+        @Override
+        protected BigRational getCoefficient(BigInteger n) {
+            if (n.equals(BigInteger.ONE)) {
+                return ONE;
+            } else if (BigIntegerMath.isEven(n)) {
+                return ZERO;
+            }
+
+            BigRational result = BigRational.ofInv(n);
+            return n.mod(FOUR).equals(BigInteger.ONE) ? result : result.negate();
         }
     }
 }

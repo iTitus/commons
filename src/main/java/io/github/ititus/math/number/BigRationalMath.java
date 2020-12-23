@@ -114,14 +114,14 @@ public final class BigRationalMath {
     public static BigRational cos(BigRational x) {
         if (x.isNegative()) {
             return cos(x.negate());
-        } else if (x.compareTo(PI) > 0) {
-            return cos(x.subtract(PI)).negate();
         }
         while (x.compareTo(TWO_PI) > 0) {
             x = x.subtract(TWO_PI);
         }
         if (x.isZero()) {
             return ONE;
+        } else if (x.compareTo(PI) > 0) {
+            return cos(x.subtract(PI)).negate();
         }
 
         return PowerSeriesCalculator.cos(x);
@@ -152,7 +152,13 @@ public final class BigRationalMath {
     }
 
     public static BigRational atan(BigRational x) {
-        throw new UnsupportedOperationException();
+        if (x.isZero()) {
+            return ZERO;
+        } else if (x.abs().compareTo(ONE) > 0) {
+            return TWO.multiply(atan(x.divide(ONE.add(ONE.add(x.squared()).sqrt()))));
+        }
+
+        return PowerSeriesCalculator.atan(x);
     }
 
     public static BigRational atan2(BigRational y, BigRational x) {
@@ -166,9 +172,9 @@ public final class BigRationalMath {
         } else if (x.isPositive()) {
             return atan(y.divide(x));
         } else if (y.isPositive()) {
-            return atan(y.divide(x)).add((PI));
+            return atan(y.divide(x)).add(PI);
         } else {
-            return atan(y.divide(x)).subtract((PI));
+            return atan(y.divide(x)).subtract(PI);
         }
     }
 
