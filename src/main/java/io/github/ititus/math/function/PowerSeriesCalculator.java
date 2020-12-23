@@ -17,7 +17,7 @@ public final class PowerSeriesCalculator {
 
     private static final MathContext FAST_APPROX_MC = new MathContext(2, RoundingMode.HALF_EVEN);
 
-    private static final BigInteger N = BigIntegerMath.of(1_000);
+    private static final BigInteger MAX_ITER = BigIntegerMath.of(1_000);
     private static final ExpPowerSeries EXP = new ExpPowerSeries();
     private static final LnPowerSeries LN = new LnPowerSeries();
     private static final SinPowerSeries SIN = new SinPowerSeries();
@@ -37,7 +37,7 @@ public final class PowerSeriesCalculator {
         BigRational result = ZERO;
         BigRational power = ONE;
 
-        for (BigInteger n = BigInteger.ZERO; n.compareTo(N) <= 0; n = n.add(BigInteger.ONE)) {
+        for (BigInteger n = BigInteger.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigInteger.ONE)) {
             BigRational coeff = powerSeries.getCoefficient(n)/*.round(mc)*/;
             if (!coeff.isZero()) {
                 BigRational term = coeff.multiply(power)/*.round(mc)*/;
@@ -65,7 +65,7 @@ public final class PowerSeriesCalculator {
 
         BigRational result = ZERO;
 
-        for (BigInteger n = BigInteger.ZERO; n.compareTo(N) <= 0; n = n.add(BigInteger.ONE)) {
+        for (BigInteger n = BigInteger.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigInteger.ONE)) {
             BigRational term = series.getTerm(n, x)/*.round(mc)*/;
             if (!term.isZero()) {
                 if (term.abs().compareTo(minDiff) < 0) {
