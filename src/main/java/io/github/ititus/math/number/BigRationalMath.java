@@ -1,5 +1,6 @@
 package io.github.ititus.math.number;
 
+import io.github.ititus.math.function.NewtonApproximator;
 import io.github.ititus.math.function.PowerSeriesCalculator;
 
 import java.math.BigDecimal;
@@ -158,7 +159,8 @@ public final class BigRationalMath {
             return TWO.multiply(atan(x.divide(ONE.add(ONE.add(x.squared()).sqrt()))));
         }
 
-        return PowerSeriesCalculator.atan(x);
+        //return PowerSeriesCalculator.atan(x);
+        return NewtonApproximator.atan(x);
     }
 
     public static BigRational atan2(BigRational y, BigRational x) {

@@ -3,7 +3,6 @@ package io.github.ititus.math.function;
 import io.github.ititus.math.number.BigIntegerMath;
 import io.github.ititus.math.number.BigRational;
 import io.github.ititus.math.number.BigRationalConstants;
-import io.github.ititus.math.number.BigRationalMath;
 
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -32,24 +31,24 @@ public final class PowerSeriesCalculator {
             throw new ArithmeticException();
         }
 
-        BigRational minDiff = BigRationalMath.pow(BigRationalConstants.TEN, BigIntegerMath.of(precision + 1)).inverse();
+        BigRational minDiff = BigRational.ofExp(1, -precision);
         x = x.round(mc);
 
         BigRational result = ZERO;
         BigRational power = ONE;
 
         for (BigInteger n = BigInteger.ZERO; n.compareTo(N) <= 0; n = n.add(BigInteger.ONE)) {
-            BigRational coeff = powerSeries.getCoefficient(n).round(mc);
+            BigRational coeff = powerSeries.getCoefficient(n)/*.round(mc)*/;
             if (!coeff.isZero()) {
-                BigRational term = coeff.multiply(power).round(mc);
+                BigRational term = coeff.multiply(power)/*.round(mc)*/;
 
-                if (term.abs().compareTo(minDiff) <= 0) {
+                if (term.abs().compareTo(minDiff) < 0) {
                     break;
                 }
 
-                result = result.add(term).round(mc);
+                result = result.add(term)/*.round(mc)*/;
             }
-            power = power.multiply(x).round(mc);
+            power = power.multiply(x)/*.round(mc)*/;
         }
 
         return result.round(mc);
@@ -61,19 +60,19 @@ public final class PowerSeriesCalculator {
         if (precision == 0) {
             throw new ArithmeticException();
         }
-        BigRational minDiff = BigRationalMath.pow(BigRationalConstants.TEN, BigIntegerMath.of(precision + 1)).inverse();
+        BigRational minDiff = BigRational.ofExp(1, -precision);
         x = x.round(mc);
 
         BigRational result = ZERO;
 
         for (BigInteger n = BigInteger.ZERO; n.compareTo(N) <= 0; n = n.add(BigInteger.ONE)) {
-            BigRational term = series.getTerm(n, x).round(mc);
+            BigRational term = series.getTerm(n, x)/*.round(mc)*/;
             if (!term.isZero()) {
-                if (term.abs().compareTo(minDiff) <= 0) {
+                if (term.abs().compareTo(minDiff) < 0) {
                     break;
                 }
 
-                result = result.add(term).round(mc);
+                result = result.add(term)/*.round(mc)*/;
             }
         }
 
