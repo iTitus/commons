@@ -19,6 +19,7 @@ public class NewtonApproximator {
         if (precision == 0) {
             throw new ArithmeticException();
         }
+
         BigRational minDiff = BigRational.ofExp(1, -precision);
 
         int n = 0;
