@@ -137,11 +137,11 @@ public final class BigIntegerMath {
     }
 
     public static boolean isInt(BigInteger n) {
-        return n.bitLength() <= 31;
+        return n.bitLength() < Integer.SIZE;
     }
 
     public static boolean isLong(BigInteger n) {
-        return n.bitLength() <= 63;
+        return n.bitLength() < Long.SIZE;
     }
 
     public static BigInteger binomial(BigInteger n, BigInteger k) {

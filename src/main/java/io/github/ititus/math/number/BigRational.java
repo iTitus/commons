@@ -358,88 +358,33 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public BigRational sqrt() {
         if (sqrtCache == null) {
             sqrtCache = of(toBigDecimal().sqrt(BigDecimalMath.MC));
+            sqrtCache.sqCache = this;
         }
 
         return sqrtCache;
     }
 
-    @SuppressWarnings("Duplicates")
     public BigRational pow(int exponent) {
-        if (exponent == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent == 1) {
-            return this;
-        } else if (exponent == 2) {
-            return squared();
-        }
-
-        return BigRationalMath.pow(this, BigIntegerMath.of(exponent));
+        return BigRationalMath.pow(this, exponent);
     }
 
-    @SuppressWarnings("Duplicates")
     public BigRational pow(long exponent) {
-        if (exponent == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent == 1) {
-            return this;
-        } else if (exponent == 2) {
-            return squared();
-        }
-
-        return BigRationalMath.pow(this, BigIntegerMath.of(exponent));
+        return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational pow(BigInteger exponent) {
-        if (exponent.signum() == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent.equals(BigInteger.ONE)) {
-            return this;
-        } else if (exponent.equals(BigInteger.TWO)) {
-            return squared();
-        }
-
         return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational pow(BigDecimal exponent) {
-        if (exponent.signum() == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent.equals(BigDecimal.ONE)) {
-            return this;
-        } else if (exponent.equals(BigDecimalConstants.TWO)) {
-            return squared();
-        }
-
         return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational pow(BigRational exponent) {
-        if (exponent.isZero()) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent.isBigInteger()) {
-            return pow(exponent.toBigInteger());
-        }
-
         return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational exp() {
-        if (isZero()) {
-            return ONE;
-        } else if (isNegative()) {
-            return negate().exp().inverse();
-        }
-
         return BigRationalMath.exp(this);
     }
 
@@ -596,6 +541,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
         if (!isInt()) {
             throw new ArithmeticException();
         }
+
         return numerator.intValueExact();
     }
 
@@ -608,17 +554,28 @@ public final class BigRational extends Number implements Comparable<BigRational>
         if (!isLong()) {
             throw new ArithmeticException();
         }
+
         return numerator.longValueExact();
     }
 
     public BigInteger toBigInteger() {
-        if (isBigInteger()) {
-            return numerator;
-        } else if (intCache == null) {
-            intCache = toBigDecimal().toBigInteger();
+        if (intCache == null) {
+            if (isBigInteger()) {
+                intCache = numerator;
+            } else {
+                intCache = toBigDecimal().toBigInteger();
+            }
         }
 
         return intCache;
+    }
+
+    public BigInteger toBigIntegerExact() {
+        if (!isBigInteger()) {
+            throw new ArithmeticException();
+        }
+
+        return toBigInteger();
     }
 
     @Override
@@ -668,7 +625,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     @Override
     public String toString() {
-        return denominator.equals(BigInteger.ONE) ? String.valueOf(numerator) :
+        return isBigInteger() ? toBigInteger().toString() :
                 numerator + "/" + denominator + " (" + toBigDecimal() + ")";
     }
 }

@@ -48,4 +48,14 @@ public final class BigDecimalMath {
     public static BigDecimal of(String s) {
         return new BigDecimal(s);
     }
+
+    public static boolean isBigInteger(BigDecimal x) {
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            x.toBigIntegerExact();
+            return true;
+        } catch (ArithmeticException ignored) {
+            return false;
+        }
+    }
 }

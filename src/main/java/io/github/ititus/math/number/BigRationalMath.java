@@ -15,17 +15,76 @@ public final class BigRationalMath {
     }
 
     @SuppressWarnings("Duplicates")
+    public static BigRational pow(BigRational base, int exponent) {
+        if (base.isOne() || exponent == 0) {
+            return ONE;
+        } else if (base.isZero()) {
+            return ZERO;
+        } else if (exponent == 1) {
+            return base;
+        } else if (exponent == 2) {
+            return base.squared();
+        } else if (exponent < 0) {
+            return pow(base, -exponent).inverse();
+        }
+
+        BigRational r = ONE;
+        while (exponent > 0) {
+            if (exponent % 2 != 0) {
+                r = r.multiply(base);
+                exponent -= 1;
+            } else {
+                base = base.squared();
+                exponent /= 2;
+            }
+        }
+
+        return r;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static BigRational pow(BigRational base, long exponent) {
+        if (base.isOne() || exponent == 0) {
+            return ONE;
+        } else if (base.isZero()) {
+            return ZERO;
+        } else if (exponent == 1) {
+            return base;
+        } else if (exponent == 2) {
+            return base.squared();
+        } else if (exponent < 0) {
+            return pow(base, -exponent).inverse();
+        }
+
+        BigRational r = ONE;
+        while (exponent > 0) {
+            if (exponent % 2 != 0) {
+                r = r.multiply(base);
+                exponent -= 1;
+            } else {
+                base = base.squared();
+                exponent /= 2;
+            }
+        }
+
+        return r;
+    }
+
+    @SuppressWarnings("Duplicates")
     public static BigRational pow(BigRational base, BigInteger exponent) {
         if (base.isOne() || exponent.signum() == 0) {
             return ONE;
         } else if (base.isZero()) {
             return ZERO;
+        } else if (exponent.equals(BigInteger.ONE)) {
+            return base;
+        } else if (exponent.equals(BigInteger.TWO)) {
+            return base.squared();
         } else if (exponent.signum() < 0) {
             return pow(base, exponent.negate()).inverse();
         }
 
         BigRational r = ONE;
-
         while (exponent.signum() > 0) {
             if (BigIntegerMath.isOdd(exponent)) {
                 r = r.multiply(base);
@@ -46,12 +105,19 @@ public final class BigRationalMath {
             return ZERO;
         } else if (exponent.equals(BigDecimal.ONE)) {
             return base;
-        } else if (exponent.signum() < 0) {
-            return pow(base, exponent.negate()).inverse();
+        } else if (exponent.equals(BigDecimalConstants.TWO)) {
+            return base.squared();
+        } else if (exponent.equals(BigDecimalConstants.ONE_OVER_TWO)) {
+            return base.sqrt();
         }
 
-        if (exponent.equals(BigDecimalConstants.ONE_OVER_TWO)) {
-            return base.sqrt();
+        try {
+            return pow(base, exponent.toBigIntegerExact());
+        } catch (ArithmeticException ignored) {
+        }
+
+        if (exponent.signum() < 0) {
+            return pow(base, exponent.negate()).inverse();
         }
 
         return exp(BigRational.of(exponent).multiply(ln(base)));
@@ -64,14 +130,14 @@ public final class BigRationalMath {
             return ZERO;
         } else if (exponent.isOne()) {
             return base;
+        } else if (exponent.equals(TWO)) {
+            return base.squared();
         } else if (exponent.isBigInteger()) {
             return pow(base, exponent.toBigInteger());
+        } else if (exponent.equals(ONE_OVER_TWO)) {
+            return base.sqrt();
         } else if (exponent.isNegative()) {
             return pow(base, exponent.negate()).inverse();
-        }
-
-        if (exponent.equals(ONE_OVER_TWO)) {
-            return base.sqrt();
         }
 
         return exp(exponent.multiply(ln(base)));
@@ -82,7 +148,9 @@ public final class BigRationalMath {
             return ONE;
         } else if (x.isNegative()) {
             return exp(x.negate()).inverse();
-        } else if (x.compareTo(ONE) >= 0) {
+        } else if (x.isBigInteger()) {
+            return E.pow(x.toBigInteger());
+        } else if (x.compareTo(ONE) > 0) {
             BigInteger n = TWO.multiply(x).toBigInteger();
             BigRational exp = PowerSeriesCalculator.exp(x.divide(of(n)));
             return exp.pow(n);
