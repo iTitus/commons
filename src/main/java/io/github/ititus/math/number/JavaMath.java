@@ -1,6 +1,15 @@
 package io.github.ititus.math.number;
 
+import java.math.BigInteger;
+
+import static java.math.BigInteger.ONE;
+
 public final class JavaMath {
+
+    public static final short UNSIGNED_BYTE_MAX_VALUE = (1 << Byte.SIZE) - 1;
+    public static final int UNSIGNED_SHORT_MAX_VALUE = (1 << Short.SIZE) - 1;
+    public static final long UNSIGNED_INT_MAX_VALUE = (1L << Integer.SIZE) - 1;
+    public static final BigInteger UNSIGNED_LONG_MAX_VALUE = ONE.shiftLeft(Long.SIZE).subtract(ONE);
 
     private JavaMath() {
     }
@@ -167,5 +176,9 @@ public final class JavaMath {
 
     public static int sgn(long n) {
         return n < 0 ? -1 : n > 0 ? 1 : 0;
+    }
+
+    public static BigInteger toUnsignedBigInteger(long n) {
+        return BigIntegerMath.of(n).and(UNSIGNED_LONG_MAX_VALUE);
     }
 }
