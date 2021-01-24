@@ -2,6 +2,7 @@ package io.github.ititus.math.function.constant;
 
 import io.github.ititus.math.function.ComplexFunction;
 import io.github.ititus.math.number.BigComplex;
+import io.github.ititus.math.number.BigComplexConstants;
 import io.github.ititus.math.number.BigIntegerMath;
 import io.github.ititus.math.number.BigRational;
 
@@ -11,9 +12,9 @@ import java.util.Objects;
 
 public final class Constant extends ComplexFunction {
 
-    private static final Constant ZERO = new Constant(BigComplex.ZERO);
-    private static final Constant ONE = new Constant(BigComplex.ONE);
-    private static final Constant MINUS_ONE = new Constant(BigComplex.MINUS_ONE);
+    private static final Constant ZERO = new Constant(BigComplexConstants.ZERO);
+    private static final Constant ONE = new Constant(BigComplexConstants.ONE);
+    private static final Constant MINUS_ONE = new Constant(BigComplexConstants.MINUS_ONE);
 
     private final BigComplex complex;
 
@@ -48,11 +49,11 @@ public final class Constant extends ComplexFunction {
     public static Constant of(BigComplex complex) {
         Objects.requireNonNull(complex);
 
-        if (complex.equals(BigComplex.ZERO)) {
+        if (complex.equals(BigComplexConstants.ZERO)) {
             return ZERO;
-        } else if (complex.equals(BigComplex.ONE)) {
+        } else if (complex.equals(BigComplexConstants.ONE)) {
             return ONE;
-        } else if (complex.equals(BigComplex.MINUS_ONE)) {
+        } else if (complex.equals(BigComplexConstants.MINUS_ONE)) {
             return MINUS_ONE;
         }
 

@@ -8,6 +8,8 @@ import io.github.ititus.math.number.BigRational;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+import static io.github.ititus.math.number.BigComplexConstants.ONE;
+
 public final class Power extends ComplexFunction {
 
     private final ComplexFunction base, exponent;
@@ -86,8 +88,12 @@ public final class Power extends ComplexFunction {
                     return Product.of(product, of(base, Constant.of(e - n)));
                 }
 
-                Constant c =
-                        Constant.of(IntStream.range(0, n).mapToObj(BigComplex::real).map(constant::subtract).reduce(BigComplex.ONE, BigComplex::multiply));
+                Constant c = Constant.of(
+                        IntStream.range(0, n)
+                                .mapToObj(BigComplex::real)
+                                .map(constant::subtract)
+                                .reduce(ONE, BigComplex::multiply)
+                );
                 return Product.of(c, of(base, constant.subtract(BigComplex.real(n))));
             }
 

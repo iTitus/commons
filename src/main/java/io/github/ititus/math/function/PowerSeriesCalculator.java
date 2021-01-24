@@ -23,6 +23,8 @@ public final class PowerSeriesCalculator {
     private static final SinPowerSeries SIN = new SinPowerSeries();
     private static final CosPowerSeries COS = new CosPowerSeries();
     private static final AtanPowerSeries ATAN = new AtanPowerSeries();
+    private static final SinhPowerSeries SINH = new SinhPowerSeries();
+    private static final CoshPowerSeries COSH = new CoshPowerSeries();
 
     @SuppressWarnings("Duplicates")
     private static BigRational calculatePowerSeries(PowerSeries powerSeries, BigRational x, MathContext mc) {
@@ -103,6 +105,14 @@ public final class PowerSeriesCalculator {
 
     public static BigRational atan(BigRational x) {
         return calculatePowerSeries(ATAN, x, MathContext.DECIMAL128);
+    }
+
+    public static BigRational sinh(BigRational x) {
+        return calculatePowerSeries(SINH, x, MathContext.DECIMAL128);
+    }
+
+    public static BigRational cosh(BigRational x) {
+        return calculatePowerSeries(COSH, x, MathContext.DECIMAL128);
     }
 
     private static abstract class Series {
@@ -191,6 +201,36 @@ public final class PowerSeriesCalculator {
 
             BigRational result = BigRational.ofInv(n);
             return n.mod(FOUR).equals(BigInteger.ONE) ? result : result.negate();
+        }
+    }
+
+    private static class SinhPowerSeries extends PowerSeries {
+
+        @Override
+        protected BigRational getCoefficient(BigInteger n) {
+            if (n.equals(BigInteger.ONE)) {
+                return ONE;
+            } else if (BigIntegerMath.isEven(n)) {
+                return ZERO;
+            }
+
+            return cache.computeIfAbsent(n,
+                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)));
+        }
+    }
+
+    private static class CoshPowerSeries extends PowerSeries {
+
+        @Override
+        protected BigRational getCoefficient(BigInteger n) {
+            if (n.signum() == 0) {
+                return ONE;
+            } else if (BigIntegerMath.isOdd(n)) {
+                return ZERO;
+            }
+
+            return cache.computeIfAbsent(n,
+                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)));
         }
     }
 }

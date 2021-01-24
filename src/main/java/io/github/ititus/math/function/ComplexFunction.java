@@ -2,6 +2,9 @@ package io.github.ititus.math.function;
 
 import io.github.ititus.math.number.BigComplex;
 
+import static io.github.ititus.math.number.BigComplexConstants.ONE;
+import static io.github.ititus.math.number.BigComplexConstants.ZERO;
+
 public abstract class ComplexFunction {
 
     protected static final String VAR = "z";
@@ -35,11 +38,11 @@ public abstract class ComplexFunction {
     }
 
     public boolean isZero() {
-        return isConstant() && getConstant().equals(BigComplex.ZERO);
+        return isConstant() && getConstant().equals(ZERO);
     }
 
     public boolean isOne() {
-        return isConstant() && getConstant().equals(BigComplex.ONE);
+        return isConstant() && getConstant().equals(ONE);
     }
 
     public boolean isIdentity() {

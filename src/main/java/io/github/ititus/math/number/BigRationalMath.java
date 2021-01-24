@@ -213,11 +213,11 @@ public final class BigRationalMath {
     }
 
     public static BigRational asin(BigRational x) {
-        throw new UnsupportedOperationException();
+        return TWO.multiply(atan(x.divide(ONE.add(ONE.subtract(x.squared()).sqrt()))));
     }
 
     public static BigRational acos(BigRational x) {
-        throw new UnsupportedOperationException();
+        return PI_OVER_TWO.subtract(asin(x));
     }
 
     public static BigRational atan(BigRational x) {
@@ -249,23 +249,23 @@ public final class BigRationalMath {
     }
 
     public static BigRational acot(BigRational x) {
-        throw new UnsupportedOperationException();
+        return PI_OVER_TWO.subtract(atan(x));
     }
 
     public static BigRational asec(BigRational x) {
-        throw new UnsupportedOperationException();
+        return acos(x.inverse());
     }
 
     public static BigRational acsc(BigRational x) {
-        throw new UnsupportedOperationException();
+        return asin(x.inverse());
     }
 
     public static BigRational sinh(BigRational x) {
-        throw new UnsupportedOperationException();
+        return PowerSeriesCalculator.sinh(x);
     }
 
     public static BigRational cosh(BigRational x) {
-        throw new UnsupportedOperationException();
+        return PowerSeriesCalculator.cosh(x);
     }
 
     public static BigRational tanh(BigRational x) {
@@ -285,26 +285,26 @@ public final class BigRationalMath {
     }
 
     public static BigRational asinh(BigRational x) {
-        throw new UnsupportedOperationException();
+        return ln(x.add(x.squared().add(ONE).sqrt()));
     }
 
     public static BigRational acosh(BigRational x) {
-        throw new UnsupportedOperationException();
+        return ln(x.add(x.squared().subtract(ONE).sqrt()));
     }
 
     public static BigRational atanh(BigRational x) {
-        throw new UnsupportedOperationException();
+        return ONE_OVER_TWO.multiply(ln(ONE.add(x).divide(ONE.subtract(x))));
     }
 
     public static BigRational acoth(BigRational x) {
-        throw new UnsupportedOperationException();
+        return atanh(x.inverse());
     }
 
     public static BigRational asech(BigRational x) {
-        throw new UnsupportedOperationException();
+        return acosh(x.inverse());
     }
 
     public static BigRational acsch(BigRational x) {
-        throw new UnsupportedOperationException();
+        return asinh(x.inverse());
     }
 }

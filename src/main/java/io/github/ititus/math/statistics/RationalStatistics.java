@@ -4,6 +4,7 @@ import io.github.ititus.math.number.BigRational;
 import io.github.ititus.math.number.BigRationalConstants;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -43,13 +44,13 @@ public class RationalStatistics {
 
         ARITHMETIC(numbers -> numbers.stream().reduce(BigRationalConstants.ZERO, BigRational::add).divide(BigRational.of(numbers.size())));
 
-        private final Function<List<BigRational>, BigRational> averagingFunction;
+        private final Function<Collection<BigRational>, BigRational> averagingFunction;
 
-        AveragingMode(Function<List<BigRational>, BigRational> averagingFunction) {
+        AveragingMode(Function<Collection<BigRational>, BigRational> averagingFunction) {
             this.averagingFunction = averagingFunction;
         }
 
-        public BigRational average(List<BigRational> numbers) {
+        public BigRational average(Collection<BigRational> numbers) {
             return averagingFunction.apply(numbers);
         }
     }

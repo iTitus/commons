@@ -304,6 +304,30 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return add(r.negate());
     }
 
+    public BigRational multiply(int n) {
+        if (isZero() || n == 0) {
+            return ZERO;
+        } else if (isOne()) {
+            return of(n);
+        } else if (n == 1) {
+            return this;
+        }
+
+        return of(numerator.multiply(BigIntegerMath.of(n)), denominator);
+    }
+
+    public BigRational multiply(long n) {
+        if (isZero() || n == 0) {
+            return ZERO;
+        } else if (isOne()) {
+            return of(n);
+        } else if (n == 1) {
+            return this;
+        }
+
+        return of(numerator.multiply(BigIntegerMath.of(n)), denominator);
+    }
+
     public BigRational multiply(BigInteger n) {
         if (isZero() || n.signum() == 0) {
             return ZERO;
@@ -332,17 +356,19 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return of(numerator.multiply(r.numerator), denominator.multiply(r.denominator));
     }
 
-    public BigRational divide(BigRational r) {
-        if (r.isZero()) {
-            throw new ArithmeticException();
-        } else if (isZero()) {
-            return ZERO;
-        } else if (isOne()) {
-            return r.inverse();
-        } else if (r.isOne()) {
-            return this;
-        }
+    public BigRational divide(int n) {
+        return multiply(ofInv(n));
+    }
 
+    public BigRational divide(long n) {
+        return multiply(ofInv(n));
+    }
+
+    public BigRational divide(BigInteger n) {
+        return multiply(ofInv(n));
+    }
+
+    public BigRational divide(BigRational r) {
         return multiply(r.inverse());
     }
 

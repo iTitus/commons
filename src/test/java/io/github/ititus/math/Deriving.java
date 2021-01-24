@@ -4,7 +4,7 @@ import io.github.ititus.math.function.*;
 import io.github.ititus.math.function.constant.Constant;
 import io.github.ititus.math.function.trigonometric.Cos;
 import io.github.ititus.math.function.trigonometric.Sin;
-import io.github.ititus.math.number.BigComplex;
+import io.github.ititus.math.number.BigComplexConstants;
 import io.github.ititus.math.number.BigRationalConstants;
 
 public class Deriving {
@@ -51,6 +51,6 @@ public class Deriving {
         System.out.println("f^(4)(z) = " + f.derivative(4));
         System.out.println();
 
-        System.out.println(BigComplex.I.pow(BigComplex.I));
+        System.out.println(BigComplexConstants.I.pow(BigComplexConstants.I));
     }
 }
