@@ -16,7 +16,7 @@ public class BigComplexTests {
     public static final BigRational TWICE_TWO_SQRT = BigRational.of(2).sqrt().multiply(BigRational.of(2));
     public static final Offset<BigRational> EPSILON = offset(of("0.001"));
     public static final BigComplex ONE_I_TWO = BigComplex.of(BigRationalConstants.ONE, TWO);
-    public static final Offset<BigComplex> STRICT_EPS = offset(of("0.000001"));
+    public static final Offset<BigRational> STRICT_EPS = offset(of("0.000001"));
 
     @Test
     public void test_one_real() {
@@ -65,18 +65,18 @@ public class BigComplexTests {
 
     @Test
     public void test_add() {
-        assertThat(TWO_I_TWO.add(ONE_I_TWO)).isCloseTo(BigComplex.of(THREE, FOUR));
+        assertThat(TWO_I_TWO.add(ONE_I_TWO)).isCloseTo(BigComplex.of(THREE, FOUR), EPSILON);
     }
 
     @Test
     public void test_subtract() {
         assertThat(TWO_I_TWO.subtract(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRationalConstants.ONE,
-                BigRationalConstants.ZERO));
+                BigRationalConstants.ZERO), EPSILON);
     }
 
     @Test
     public void test_multiply() {
-        assertThat(TWO_I_TWO.multiply(ONE_I_TWO)).isCloseTO(BigComplex.of(MINUS_TWO, SIX));
+        assertThat(TWO_I_TWO.multiply(ONE_I_TWO)).isCloseTo(BigComplex.of(MINUS_TWO, SIX), EPSILON);
     }
 
     @Test
@@ -101,10 +101,5 @@ public class BigComplexTests {
         // expected = e^2*(cos(2)+i*sin(2))
         BigComplex expected = BigComplex.of(E.squared().multiply(TWO.cos()), E.squared().multiply(TWO.sin()));
         assertThat(TWO_I_TWO.exp()).isCloseTo(expected, STRICT_EPS);
-    }
-
-    @Test
-    public void test_ln() {
-        assertThat()
     }
 }
