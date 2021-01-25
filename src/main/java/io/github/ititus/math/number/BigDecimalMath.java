@@ -3,6 +3,9 @@ package io.github.ititus.math.number;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
+
+import static io.github.ititus.math.number.BigDecimalConstants.ONE;
 
 public final class BigDecimalMath {
 
@@ -57,5 +60,21 @@ public final class BigDecimalMath {
         } catch (ArithmeticException ignored) {
             return false;
         }
+    }
+
+    public static BigDecimal inverseExact(BigDecimal d) {
+        return ONE.divide(d, RoundingMode.UNNECESSARY);
+    }
+
+    public static BigDecimal inverse(BigDecimal d) {
+        return inverse(d, MC);
+    }
+
+    public static BigDecimal inverse(BigDecimal d, RoundingMode rm) {
+        return ONE.divide(d, rm);
+    }
+
+    public static BigDecimal inverse(BigDecimal d, MathContext mc) {
+        return ONE.divide(d, mc);
     }
 }

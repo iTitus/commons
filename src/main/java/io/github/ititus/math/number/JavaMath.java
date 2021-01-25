@@ -2,7 +2,7 @@ package io.github.ititus.math.number;
 
 import java.math.BigInteger;
 
-import static java.math.BigInteger.ONE;
+import static io.github.ititus.math.number.BigIntegerConstants.ONE;
 
 public final class JavaMath {
 

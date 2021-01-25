@@ -70,7 +70,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     }
 
     public static BigRational of(BigInteger n) {
-        return of(n, BigInteger.ONE);
+        return of(n, BigIntegerConstants.ONE);
     }
 
     public static BigRational of(float f) {
@@ -84,7 +84,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public static BigRational of(BigDecimal d) {
         BigInteger unscaled = d.unscaledValue();
         int scale = d.scale();
-        BigInteger scalar = BigInteger.TEN.pow(Math.abs(scale));
+        BigInteger scalar = BigIntegerConstants.TEN.pow(Math.abs(scale));
 
         if (scale < 0) {
             return of(unscaled.multiply(scalar));
@@ -222,7 +222,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     @SuppressWarnings("Duplicates")
     public static BigRational of(BigInteger numerator, BigInteger denominator) {
-        if (denominator.equals(BigInteger.ZERO)) {
+        if (denominator.equals(BigIntegerConstants.ZERO)) {
             throw new ArithmeticException();
         } else if (numerator.signum() == 0) {
             return ZERO;
@@ -236,7 +236,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
         }
 
         BigInteger gcd = BigIntegerMath.gcd(numerator, denominator);
-        if (!gcd.equals(BigInteger.ONE)) {
+        if (!gcd.equals(BigIntegerConstants.ONE)) {
             numerator = numerator.divide(gcd);
             denominator = denominator.divide(gcd);
         }
@@ -333,7 +333,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
             return ZERO;
         } else if (isOne()) {
             return of(n);
-        } else if (n.equals(BigInteger.ONE)) {
+        } else if (n.equals(BigIntegerConstants.ONE)) {
             return this;
         } else if (isBigInteger() && numerator.equals(n)) {
             return squared();
@@ -547,7 +547,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     }
 
     public boolean isBigInteger() {
-        return denominator.equals(BigInteger.ONE);
+        return denominator.equals(BigIntegerConstants.ONE);
     }
 
     public boolean isInt() {

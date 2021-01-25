@@ -169,8 +169,8 @@ public class BaseConverter {
     public BigInteger decodeToBigInteger(String s) {
         return BigIntegerMath.of(s, base);
         /*char[] chars = s.toCharArray();
-        BigInteger n = BigInteger.ZERO;
-        BigInteger b = BigInteger.ONE;
+        BigInteger n = BigIntegerConstants.ZERO;
+        BigInteger b = BigIntegerConstants.ONE;
 
         for (int i = chars.length - 1; i >= 0; i--) {
             n = n.add(b.multiply(BigIntegerMath.of(digit(chars[i]))));

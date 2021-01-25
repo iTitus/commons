@@ -76,9 +76,9 @@ public final class BigRationalMath {
             return ONE;
         } else if (base.isZero()) {
             return ZERO;
-        } else if (exponent.equals(BigInteger.ONE)) {
+        } else if (exponent.equals(BigIntegerConstants.ONE)) {
             return base;
-        } else if (exponent.equals(BigInteger.TWO)) {
+        } else if (exponent.equals(BigIntegerConstants.TWO)) {
             return base.squared();
         } else if (exponent.signum() < 0) {
             return pow(base, exponent.negate()).inverse();
@@ -88,7 +88,7 @@ public final class BigRationalMath {
         while (exponent.signum() > 0) {
             if (BigIntegerMath.isOdd(exponent)) {
                 r = r.multiply(base);
-                exponent = exponent.subtract(BigInteger.ONE);
+                exponent = exponent.subtract(BigIntegerConstants.ONE);
             } else {
                 base = base.squared();
                 exponent = exponent.shiftRight(1);
@@ -103,7 +103,7 @@ public final class BigRationalMath {
             return ONE;
         } else if (base.isZero()) {
             return ZERO;
-        } else if (exponent.equals(BigDecimal.ONE)) {
+        } else if (exponent.equals(BigDecimalConstants.ONE)) {
             return base;
         } else if (exponent.equals(BigDecimalConstants.TWO)) {
             return base.squared();

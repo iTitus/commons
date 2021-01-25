@@ -5,6 +5,9 @@ import io.github.ititus.math.base.BaseConverter;
 import java.math.BigInteger;
 import java.util.BitSet;
 
+import static io.github.ititus.math.number.BigIntegerConstants.ONE;
+import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
+
 public final class BinaryConverter extends BaseConverter {
 
     public static final BinaryConverter INSTANCE = new BinaryConverter();
@@ -101,8 +104,8 @@ public final class BinaryConverter extends BaseConverter {
     }
 
     public BigInteger decodeToBigIntegerUnsigned(BinaryNumber bn) {
-        BigInteger n = BigInteger.ZERO;
-        BigInteger b = BigInteger.ONE;
+        BigInteger n = ZERO;
+        BigInteger b = ONE;
 
         for (int i = 0; i < bn.getLength(); i++) {
             if (bn.get(i)) {

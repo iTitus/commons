@@ -5,15 +5,10 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import static java.math.BigInteger.ONE;
-import static java.math.BigInteger.ZERO;
+import static io.github.ititus.math.number.BigIntegerConstants.ONE;
+import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
 
 public final class BigIntegerMath {
-
-    public static final BigInteger THREE = of(3);
-    public static final BigInteger FOUR = of(4);
-    public static final BigInteger FIVE = of(5);
-    public static final BigInteger MINUS_ONE = of(-1);
 
     private static final NavigableMap<BigInteger, BigInteger> FACTORIAL_CACHE = new TreeMap<>();
 

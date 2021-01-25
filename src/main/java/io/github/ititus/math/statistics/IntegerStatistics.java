@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
+
 public class IntegerStatistics {
 
     private final AveragingMode averagingMode;
@@ -42,7 +44,7 @@ public class IntegerStatistics {
 
     public enum AveragingMode {
 
-        ARITHMETIC(numbers -> BigRational.of(numbers.stream().reduce(BigInteger.ZERO, BigInteger::add)).divide(BigRational.of(numbers.size())));
+        ARITHMETIC(numbers -> BigRational.of(numbers.stream().reduce(ZERO, BigInteger::add)).divide(BigRational.of(numbers.size())));
 
         private final Function<Collection<BigInteger>, BigRational> averagingFunction;
 

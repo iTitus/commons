@@ -3,8 +3,9 @@ package io.github.ititus.math.number;
 
 import org.junit.jupiter.api.Test;
 
-import static io.github.ititus.math.number.BigIntegerMath.*;
-import static java.math.BigInteger.*;
+import static io.github.ititus.math.number.BigIntegerConstants.*;
+import static io.github.ititus.math.number.BigIntegerMath.factorial;
+import static io.github.ititus.math.number.BigIntegerMath.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BigIntegerFactorialTests {
@@ -26,37 +27,37 @@ public class BigIntegerFactorialTests {
 
     @Test
     public void fact_3() {
-        assertThat(factorial(THREE)).isEqualTo(of(6));
+        assertThat(factorial(THREE)).isEqualTo(SIX);
     }
 
     @Test
     public void fact_4() {
-        assertThat(factorial(of(4))).isEqualTo(of(24));
+        assertThat(factorial(FOUR)).isEqualTo(of(24));
     }
 
     @Test
     public void fact_5() {
-        assertThat(factorial(of(5))).isEqualTo(of(120));
+        assertThat(factorial(FIVE)).isEqualTo(of(120));
     }
 
     @Test
     public void fact_6() {
-        assertThat(factorial(of(6))).isEqualTo(of(720));
+        assertThat(factorial(SIX)).isEqualTo(of(720));
     }
 
     @Test
     public void fact_7() {
-        assertThat(factorial(of(7))).isEqualTo(of(5040));
+        assertThat(factorial(SEVEN)).isEqualTo(of(5040));
     }
 
     @Test
     public void fact_8() {
-        assertThat(factorial(of(8))).isEqualTo(of(40320));
+        assertThat(factorial(EIGHT)).isEqualTo(of(40320));
     }
 
     @Test
     public void fact_9() {
-        assertThat(factorial(of(9))).isEqualTo(of(362880));
+        assertThat(factorial(NINE)).isEqualTo(of(362880));
     }
 
     @Test

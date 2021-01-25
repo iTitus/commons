@@ -1,6 +1,5 @@
 package io.github.ititus.math.number;
 
-
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +10,11 @@ import static io.github.ititus.math.number.BigRationalMath.sin;
 import static org.assertj.core.data.Offset.strictOffset;
 
 public class BigRationalSinTests {
+
+    private static final BigRational THREE_OVER_FOUR = new BigRational(BigIntegerConstants.THREE,
+            BigIntegerConstants.FOUR);
+    private static final BigRational FIVE_OVER_FOUR = new BigRational(BigIntegerConstants.FIVE,
+            BigIntegerConstants.FOUR);
 
     private static final Offset<BigRational> EPS = strictOffset(ofExp(1, -3));
 

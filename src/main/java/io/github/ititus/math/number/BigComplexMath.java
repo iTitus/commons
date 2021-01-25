@@ -30,7 +30,7 @@ public final class BigComplexMath {
         while (exponent.signum() > 0) {
             if (BigIntegerMath.isOdd(exponent)) {
                 z = z.multiply(base);
-                exponent = exponent.subtract(BigInteger.ONE);
+                exponent = exponent.subtract(BigIntegerConstants.ONE);
             } else {
                 base = base.squared();
                 exponent = exponent.shiftRight(1);

@@ -1,5 +1,6 @@
 package io.github.ititus.math.function;
 
+import io.github.ititus.math.number.BigIntegerConstants;
 import io.github.ititus.math.number.BigIntegerMath;
 import io.github.ititus.math.number.BigRational;
 import io.github.ititus.math.number.BigRationalConstants;
@@ -39,7 +40,7 @@ public final class PowerSeriesCalculator {
         BigRational result = ZERO;
         BigRational power = ONE;
 
-        for (BigInteger n = BigInteger.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigInteger.ONE)) {
+        for (BigInteger n = BigIntegerConstants.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigIntegerConstants.ONE)) {
             BigRational coeff = powerSeries.getCoefficient(n)/*.round(mc)*/;
             if (!coeff.isZero()) {
                 BigRational term = coeff.multiply(power)/*.round(mc)*/;
@@ -67,7 +68,7 @@ public final class PowerSeriesCalculator {
 
         BigRational result = ZERO;
 
-        for (BigInteger n = BigInteger.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigInteger.ONE)) {
+        for (BigInteger n = BigIntegerConstants.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigIntegerConstants.ONE)) {
             BigRational term = series.getTerm(n, x)/*.round(mc)*/;
             if (!term.isZero()) {
                 if (term.abs().compareTo(minDiff) < 0) {
@@ -141,7 +142,7 @@ public final class PowerSeriesCalculator {
             }
 
             return cache.computeIfAbsent(n,
-                    n_ -> getCoefficient(n_.subtract(BigInteger.ONE)).divide(BigRational.of(n_)));
+                    n_ -> getCoefficient(n_.subtract(BigIntegerConstants.ONE)).divide(BigRational.of(n_)));
         }
     }
 
@@ -161,14 +162,14 @@ public final class PowerSeriesCalculator {
 
         @Override
         protected BigRational getCoefficient(BigInteger n) {
-            if (n.equals(BigInteger.ONE)) {
+            if (n.equals(BigIntegerConstants.ONE)) {
                 return ONE;
             } else if (BigIntegerMath.isEven(n)) {
                 return ZERO;
             }
 
             return cache.computeIfAbsent(n,
-                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
+                    n_ -> getCoefficient(n_.subtract(BigIntegerConstants.TWO)).divide(BigRational.of(n_.subtract(BigIntegerConstants.ONE))).divide(BigRational.of(n_)).negate());
         }
     }
 
@@ -183,24 +184,22 @@ public final class PowerSeriesCalculator {
             }
 
             return cache.computeIfAbsent(n,
-                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)).negate());
+                    n_ -> getCoefficient(n_.subtract(BigIntegerConstants.TWO)).divide(BigRational.of(n_.subtract(BigIntegerConstants.ONE))).divide(BigRational.of(n_)).negate());
         }
     }
 
     private static class AtanPowerSeries extends PowerSeries {
 
-        private static final BigInteger FOUR = BigIntegerMath.FOUR;
-
         @Override
         protected BigRational getCoefficient(BigInteger n) {
-            if (n.equals(BigInteger.ONE)) {
+            if (n.equals(BigIntegerConstants.ONE)) {
                 return ONE;
             } else if (BigIntegerMath.isEven(n)) {
                 return ZERO;
             }
 
             BigRational result = BigRational.ofInv(n);
-            return n.mod(FOUR).equals(BigInteger.ONE) ? result : result.negate();
+            return n.mod(BigIntegerConstants.FOUR).equals(BigIntegerConstants.ONE) ? result : result.negate();
         }
     }
 
@@ -208,14 +207,14 @@ public final class PowerSeriesCalculator {
 
         @Override
         protected BigRational getCoefficient(BigInteger n) {
-            if (n.equals(BigInteger.ONE)) {
+            if (n.equals(BigIntegerConstants.ONE)) {
                 return ONE;
             } else if (BigIntegerMath.isEven(n)) {
                 return ZERO;
             }
 
             return cache.computeIfAbsent(n,
-                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)));
+                    n_ -> getCoefficient(n_.subtract(BigIntegerConstants.TWO)).divide(BigRational.of(n_.subtract(BigIntegerConstants.ONE))).divide(BigRational.of(n_)));
         }
     }
 
@@ -230,7 +229,7 @@ public final class PowerSeriesCalculator {
             }
 
             return cache.computeIfAbsent(n,
-                    n_ -> getCoefficient(n_.subtract(BigInteger.TWO)).divide(BigRational.of(n_.subtract(BigInteger.ONE))).divide(BigRational.of(n_)));
+                    n_ -> getCoefficient(n_.subtract(BigIntegerConstants.TWO)).divide(BigRational.of(n_.subtract(BigIntegerConstants.ONE))).divide(BigRational.of(n_)));
         }
     }
 }
