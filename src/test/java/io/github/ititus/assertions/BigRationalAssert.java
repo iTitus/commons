@@ -17,78 +17,78 @@ public class BigRationalAssert extends AbstractComparableAssert<BigRationalAsser
     @Override
     public BigRationalAssert isZero() {
         bigRationals.assertIsZero(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isNotZero() {
         bigRationals.assertIsNotZero(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isOne() {
         bigRationals.assertIsOne(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isPositive() {
         bigRationals.assertIsPositive(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isNegative() {
         bigRationals.assertIsNegative(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isNotNegative() {
         bigRationals.assertIsNotNegative(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isNotPositive() {
         bigRationals.assertIsNotPositive(info, actual);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isBetween(BigRational start, BigRational end) {
         bigRationals.assertIsBetween(info, actual, start, end);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isStrictlyBetween(BigRational start, BigRational end) {
         bigRationals.assertIsStrictlyBetween(info, actual, start, end);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isCloseTo(BigRational expected, Offset<BigRational> offset) {
         bigRationals.assertIsCloseTo(info, actual, expected, offset);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isNotCloseTo(BigRational expected, Offset<BigRational> offset) {
         bigRationals.assertIsNotCloseTo(info, actual, expected, offset);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isCloseTo(BigRational expected, Percentage percentage) {
         bigRationals.assertIsCloseToPercentage(info, actual, expected, percentage);
-        return this;
+        return myself;
     }
 
     @Override
     public BigRationalAssert isNotCloseTo(BigRational expected, Percentage percentage) {
         bigRationals.assertIsNotCloseToPercentage(info, actual, expected, percentage);
-        return this;
+        return myself;
     }
 }
