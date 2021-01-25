@@ -8,8 +8,8 @@ import static io.github.ititus.math.number.BigComplexConstants.ONE;
 import static io.github.ititus.math.number.BigComplexConstants.ZERO;
 import static io.github.ititus.math.number.BigRational.of;
 import static io.github.ititus.math.number.BigRationalConstants.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.data.Offset.strictOffset;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BigComplexTests {
     public static final BigComplex ONE_I_TWO = BigComplex.of(BigRationalConstants.ONE, TWO);
@@ -60,7 +60,7 @@ public class BigComplexTests {
 
     @Test
     public void test_inverse_zero() {
-        assertThrows(ArithmeticException.class, () -> ZERO.inverse());
+        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(() -> ZERO.inverse());
     }
 
     @Test
