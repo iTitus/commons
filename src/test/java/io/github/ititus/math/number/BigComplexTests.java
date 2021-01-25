@@ -16,6 +16,7 @@ public class BigComplexTests {
     public static final BigRational TWICE_TWO_SQRT = BigRational.of(2).sqrt().multiply(BigRational.of(2));
     public static final Offset<BigRational> EPSILON = offset(of("0.001"));
     public static final BigComplex ONE_I_TWO = BigComplex.of(BigRationalConstants.ONE, TWO);
+    public static final Offset<BigComplex> STRICT_EPS = offset(of("0.000001"));
 
     @Test
     public void test_one_real() {
@@ -81,7 +82,7 @@ public class BigComplexTests {
     @Test
     public void test_sqrt() {
         assertThat(TWO_I_TWO.sqrt()).isCloseTo(BigComplex.of(BigRational.of(1.55377), BigRational.of(0.64359)),
-                offset(of("0.000001")));
+                STRICT_EPS);
     }
 
     @Test
@@ -93,5 +94,10 @@ public class BigComplexTests {
     @Test
     public void test_squared() {
         assertThat(TWO_I_TWO.squared()).isCloseTo(BigComplex.of(EIGHT, BigRationalConstants.ONE), EPSILON);
+    }
+
+    @Test
+    public void test_exp() {
+        assertThat(TWO_I_TWO.exp()).isCloseTo()
     }
 }
