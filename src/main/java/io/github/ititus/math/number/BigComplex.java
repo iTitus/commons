@@ -10,6 +10,10 @@ import static io.github.ititus.math.number.BigComplexConstants.*;
 
 public final class BigComplex {
 
+    private static final Pattern FULL_COMPLEX_PATTERN = Pattern.compile(
+            "^(?<realsign>[+\\-]?)(?<real>[^+\\-]+)(?<imagsign>[+\\-])(?<imag>[^+\\-]*)[ij]$"
+    );
+
     private final BigRational real, imag;
 
     BigComplex(BigRational real, BigRational imag) {
@@ -70,10 +74,6 @@ public final class BigComplex {
     public static BigComplex of(BigComplex z) {
         return z;
     }
-
-    private static final Pattern FULL_COMPLEX_PATTERN = Pattern.compile(
-            "^(?<realsign>[+\\-]?)(?<real>[^+\\-]+)(?<imagsign>[+\\-])(?<imag>[^+\\-]*)[ij]$"
-    );
 
     public static BigComplex of(String s) {
         if (s == null || s.isEmpty()) {
