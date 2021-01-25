@@ -9,4 +9,9 @@ public class BigComplexTests {
     public void test_one_real() {
         assertThat(BigComplex.ONE.getReal()).isOne();
     }
+
+    @Test
+    public void test_one_imag() {
+        assertThat(BigComplex.ONE.getImag()).isZero();
+    }
 }
