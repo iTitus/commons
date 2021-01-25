@@ -5,13 +5,16 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.github.ititus.math.number.BigRationalConstants.*;
 
 public final class BigRational extends Number implements Comparable<BigRational> {
 
-    private static final Pattern RATIONAL_SEPARATOR_PATTERN = Pattern.compile("\\s*[:/]\\s*");
+    private static final Pattern RATIONAL_PATTERN = Pattern.compile(
+            "^(?<sign>[+\\-]?)(?<num>[^:/+\\-]+)(?:[:/](?<denom>[^:/+\\-]+))?$"
+    );
 
     private final BigInteger numerator, denominator;
 
@@ -31,16 +34,20 @@ public final class BigRational extends Number implements Comparable<BigRational>
     }
 
     public static BigRational of(Object o) {
-        if (o instanceof String) {
+        if (o instanceof BigRational) {
+            return (BigRational) o;
+        } else if (o instanceof String) {
             return of((String) o);
         } else if (o instanceof Integer) {
-            return of(((Number) o).intValue());
+            return of((int) o);
         } else if (o instanceof Long) {
-            return of(((Number) o).longValue());
+            return of((long) o);
+        } else if (o instanceof BigInteger) {
+            return of((BigInteger) o);
         } else if (o instanceof Float) {
-            return of(((Number) o).floatValue());
+            return of((float) o);
         } else if (o instanceof Double) {
-            return of(((Number) o).doubleValue());
+            return of((double) o);
         } else if (o instanceof BigDecimal) {
             return of((BigDecimal) o);
         }
@@ -48,17 +55,39 @@ public final class BigRational extends Number implements Comparable<BigRational>
         throw new IllegalArgumentException();
     }
 
+    public static BigRational of(BigRational r) {
+        return r;
+    }
+
     public static BigRational of(String s) {
         if (s == null || s.isEmpty()) {
             throw new IllegalArgumentException();
         }
 
-        String[] split = RATIONAL_SEPARATOR_PATTERN.split(s, 2);
-        if (split.length == 2) {
-            return of(BigIntegerMath.of(split[0]), BigIntegerMath.of(split[1]));
+        s = s.replaceAll("[\\s_]", "");
+        if (s.isEmpty()) {
+            throw new IllegalArgumentException();
         }
 
-        return of(BigDecimalMath.of(s));
+        Matcher m = RATIONAL_PATTERN.matcher(s);
+        if (!m.matches()) {
+            throw new IllegalArgumentException();
+        }
+
+        BigRational numerator = of(BigDecimalMath.of(m.group("num")));
+        if (m.group("sign").equals("-")) {
+            numerator = numerator.negate();
+        }
+
+        String denominatorString = m.group("denom");
+        BigRational denominator;
+        if (denominatorString == null) {
+            denominator = ONE;
+        } else {
+            denominator = of(BigDecimalMath.of(denominatorString));
+        }
+
+        return numerator.divide(denominator);
     }
 
     public static BigRational of(int n) {
@@ -256,6 +285,58 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     public BigInteger getDenominator() {
         return denominator;
+    }
+
+    public BigRational withNumerator(int numerator) {
+        BigInteger n = BigIntegerMath.of(numerator);
+        if (this.numerator.equals(n)) {
+            return this;
+        }
+
+        return of(n, denominator);
+    }
+
+    public BigRational withNumerator(long numerator) {
+        BigInteger n = BigIntegerMath.of(numerator);
+        if (this.numerator.equals(n)) {
+            return this;
+        }
+
+        return of(n, denominator);
+    }
+
+    public BigRational withNumerator(BigInteger numerator) {
+        if (this.numerator.equals(numerator)) {
+            return this;
+        }
+
+        return of(numerator, denominator);
+    }
+
+    public BigRational withDenominator(int denominator) {
+        BigInteger n = BigIntegerMath.of(denominator);
+        if (this.denominator.equals(n)) {
+            return this;
+        }
+
+        return of(numerator, n);
+    }
+
+    public BigRational withDenominator(long denominator) {
+        BigInteger n = BigIntegerMath.of(denominator);
+        if (this.denominator.equals(n)) {
+            return this;
+        }
+
+        return of(numerator, n);
+    }
+
+    public BigRational withDenominator(BigInteger denominator) {
+        if (this.denominator.equals(denominator)) {
+            return this;
+        }
+
+        return of(numerator, denominator);
     }
 
     public BigRational negate() {
