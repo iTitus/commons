@@ -83,4 +83,10 @@ public class BigComplexTests {
         assertThat(TWO_I_TWO.sqrt()).isCloseTo(BigComplex.of(BigRational.of(1.55377), BigRational.of(0.64359)),
                 offset(of("0.000001")));
     }
+
+    @Test
+    public void test_divide() {
+        assertThat(TWO_I_TWO.divide(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRational.of(6 / 5), BigRational.of(-2 / 5)),
+                EPSILON);
+    }
 }
