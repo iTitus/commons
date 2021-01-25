@@ -61,4 +61,20 @@ public class BigComplexTests {
     public void test_inverse_zero() {
         assertThrows(ArithmeticException.class, () -> ZERO.inverse());
     }
+
+    @Test
+    public void test_add() {
+        assertThat(TWO_I_TWO.add(ONE_I_TWO)).isCloseTo(BigComplex.of(THREE, FOUR));
+    }
+
+    @Test
+    public void test_subtract() {
+        assertThat(TWO_I_TWO.subtract(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRationalConstants.ONE,
+                BigRationalConstants.ZERO));
+    }
+
+    @Test
+    public void test_multiply() {
+        assertThat(TWO_I_TWO.multiply(ONE_I_TWO)).isCloseTO(BigComplex.of(MINUS_TWO, SIX));
+    }
 }
