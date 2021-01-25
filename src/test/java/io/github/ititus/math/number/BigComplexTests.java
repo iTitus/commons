@@ -32,4 +32,9 @@ public class BigComplexTests {
     public void test_abs() {
         assertThat(TWO_I_TWO.abs()).isCloseTo(TWICE_TWO_SQRT, EPSILON);
     }
+
+    @Test
+    public void test_angle() {
+        assertThat(TWO_I_TWO.angle()).isCloseTo(PI.divide(4), EPSILON);
+    }
 }
