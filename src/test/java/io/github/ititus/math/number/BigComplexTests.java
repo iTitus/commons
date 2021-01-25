@@ -82,7 +82,7 @@ public class BigComplexTests {
     @Test
     public void test_sqrt() {
         assertThat(TWO_I_TWO.sqrt()).isCloseTo(BigComplex.of(BigRational.of(1.55377), BigRational.of(0.64359)),
-                STRICT_EPS);
+                EPSILON);
     }
 
     @Test
