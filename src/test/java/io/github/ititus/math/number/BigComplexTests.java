@@ -8,15 +8,15 @@ import static io.github.ititus.math.number.BigComplexConstants.ONE;
 import static io.github.ititus.math.number.BigComplexConstants.ZERO;
 import static io.github.ititus.math.number.BigRational.of;
 import static io.github.ititus.math.number.BigRationalConstants.*;
-import static org.assertj.core.data.Offset.offset;
+import static org.assertj.core.data.Offset.strictOffset;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BigComplexTests {
     public static final BigComplex ONE_I_TWO = BigComplex.of(BigRationalConstants.ONE, TWO);
     public static final BigComplex TWO_I_TWO = BigComplex.of(BigRational.of(2), BigRational.of(2));
     public static final BigRational TWICE_TWO_SQRT = BigRational.of(2).sqrt().multiply(BigRational.of(2));
-    public static final Offset<BigRational> EPSILON = offset(of("0.001"));
-    public static final Offset<BigRational> STRICT_EPS = offset(of("0.000001"));
+    public static final Offset<BigRational> EPSILON = strictOffset(of("0.001"));
+    public static final Offset<BigRational> STRICT_EPS = strictOffset(of("0.000001"));
 
     @Test
     public void test_one_real() {
