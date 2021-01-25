@@ -4,6 +4,7 @@ import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.assertions.Assertions.assertThat;
+import static io.github.ititus.math.number.BigComplexConstants.ONE;
 import static io.github.ititus.math.number.BigRational.of;
 import static io.github.ititus.math.number.BigRationalConstants.PI;
 import static org.assertj.core.data.Offset.offset;
@@ -15,12 +16,12 @@ public class BigComplexTests {
 
     @Test
     public void test_one_real() {
-        assertThat(BigComplexConstants.ONE.getReal()).isOne();
+        assertThat(ONE.getReal()).isOne();
     }
 
     @Test
     public void test_one_imag() {
-        assertThat(BigComplexConstants.ONE.getImag()).isZero();
+        assertThat(ONE.getImag()).isZero();
     }
 
     @Test
