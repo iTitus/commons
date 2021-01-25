@@ -181,4 +181,16 @@ public final class JavaMath {
     public static BigInteger toUnsignedBigInteger(long n) {
         return BigIntegerMath.of(n).and(UNSIGNED_LONG_MAX_VALUE);
     }
+
+    public static int ceilDiv(int x, int y) {
+        return Math.floorDiv(x, y) + (x % y == 0 ? 0 : 1);
+    }
+
+    public static long ceilDiv(long x, int y) {
+        return Math.floorDiv(x, y) + (x % y == 0 ? 0 : 1);
+    }
+
+    public static long ceilDiv(long x, long y) {
+        return Math.floorDiv(x, y) + (x % y == 0 ? 0 : 1);
+    }
 }
