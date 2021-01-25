@@ -45,7 +45,7 @@ public class BigComplexTests {
 
     @Test
     public void test_negate() {
-        assertThat(TWO_I_TWO.negate()).isCloseTo(BigComplex.of(TWO, MINUS_TWO), EPSILON);
+        assertThat(TWO_I_TWO.negate()).isCloseTo(BigComplex.of(MINUS_TWO, MINUS_TWO), EPSILON);
     }
 
     @Test
