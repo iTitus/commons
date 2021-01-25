@@ -35,8 +35,11 @@ public final class Identity extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        return f.getClass() == Identity.class;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o instanceof Identity;
     }
 
     @Override

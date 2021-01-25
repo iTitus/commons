@@ -2,6 +2,9 @@ package io.github.ititus.math.number;
 
 import java.math.BigInteger;
 
+import static io.github.ititus.math.number.BigComplex.*;
+import static io.github.ititus.math.number.BigComplexConstants.*;
+
 public final class BigComplexMath {
 
     private BigComplexMath() {
@@ -13,7 +16,8 @@ public final class BigComplexMath {
 
     public static BigComplex sqrt(BigComplex z) {
         BigRational abs = z.abs();
-        return BigComplex.real(abs.sqrt()).multiply(z.add(BigComplex.real(abs)).unit());
+        return of(abs.add(z.getReal()).divide(BigRationalConstants.TWO).sqrt(),
+                abs.subtract(z.getReal()).divide(BigRationalConstants.TWO).sqrt());
     }
 
     @SuppressWarnings("Duplicates")
@@ -22,12 +26,11 @@ public final class BigComplexMath {
             return pow(base, exponent.negate()).inverse();
         }
 
-        BigComplex z = BigComplex.ONE;
-
+        BigComplex z = ONE;
         while (exponent.signum() > 0) {
             if (BigIntegerMath.isOdd(exponent)) {
                 z = z.multiply(base);
-                exponent = exponent.subtract(BigInteger.ONE);
+                exponent = exponent.subtract(BigIntegerConstants.ONE);
             } else {
                 base = base.squared();
                 exponent = exponent.shiftRight(1);
@@ -50,14 +53,14 @@ public final class BigComplexMath {
 
         BigRational a = BigRationalMath.pow(base.abs(), exponent);
         BigRational b = angle(base).multiply(exponent);
-        return BigComplex.of(a.multiply(BigRationalMath.cos(b)), a.multiply(BigRationalMath.sin(b)));
+        return of(a.multiply(BigRationalMath.cos(b)), a.multiply(BigRationalMath.sin(b)));
     }
 
     public static BigComplex pow(BigComplex base, BigComplex exponent) {
         if (base.isOne() || exponent.isZero()) {
-            return BigComplex.ONE;
+            return ONE;
         } else if (base.isZero()) {
-            return BigComplex.ZERO;
+            return ZERO;
         } else if (exponent.isOne()) {
             return base;
         } else if (exponent.isReal()) {
@@ -69,23 +72,24 @@ public final class BigComplexMath {
 
     public static BigComplex exp(BigComplex z) {
         if (z.isZero()) {
-            return BigComplex.ONE;
+            return ONE;
         }
 
         BigRational r = BigRationalMath.exp(z.getReal());
-        return BigComplex.of(r.multiply(BigRationalMath.cos(z.getImag())), r.multiply(BigRationalMath.sin(z.getImag())));
+        return of(r.multiply(BigRationalMath.cos(z.getImag())),
+                r.multiply(BigRationalMath.sin(z.getImag())));
     }
 
     public static BigComplex ln(BigComplex z) {
         if (z.isZero()) {
             throw new ArithmeticException();
         } else if (z.isOne()) {
-            return BigComplex.ZERO;
+            return ZERO;
         } else if (z.isReal()) {
-            return BigComplex.real(BigRationalMath.ln(z.getReal()));
+            return real(BigRationalMath.ln(z.getReal()));
         }
 
-        return BigComplex.of(BigRationalMath.ln(z.abs()), angle(z));
+        return of(BigRationalMath.ln(z.abs()), angle(z));
     }
 
     public static BigComplex log(BigComplex base, BigComplex z) {
@@ -93,18 +97,18 @@ public final class BigComplexMath {
     }
 
     public static BigComplex sin(BigComplex z) {
-        BigComplex exp = exp(BigComplex.I.multiply(z));
-        return BigComplex.imag(BigRationalConstants.ONE_OVER_TWO.negate()).multiply(exp.subtract(exp.inverse()));
+        BigComplex exp = exp(I.multiply(z));
+        return imag(BigRationalConstants.ONE_OVER_TWO.negate()).multiply(exp.subtract(exp.inverse()));
     }
 
     public static BigComplex cos(BigComplex z) {
-        BigComplex exp = exp(BigComplex.I.multiply(z));
-        return BigComplex.real(BigRationalConstants.ONE_OVER_TWO).multiply(exp.add(exp.inverse()));
+        BigComplex exp = exp(I.multiply(z));
+        return ONE_OVER_TWO.multiply(exp.add(exp.inverse()));
     }
 
     public static BigComplex tan(BigComplex z) {
-        BigComplex exp = exp(BigComplex.imag(BigRationalConstants.TWO).multiply(z));
-        return BigComplex.MINUS_I.multiply(exp.subtract(BigComplex.ONE).divide(exp.add(BigComplex.ONE)));
+        BigComplex exp = exp(imag(BigRationalConstants.TWO).multiply(z));
+        return MINUS_I.multiply(exp.subtract(ONE).divide(exp.add(ONE)));
     }
 
     public static BigComplex cot(BigComplex z) {
@@ -120,43 +124,43 @@ public final class BigComplexMath {
     }
 
     public static BigComplex asin(BigComplex z) {
-        return BigComplex.MINUS_I.multiply(ln(BigComplex.I.multiply(z).add(sqrt(BigComplex.ONE.subtract(z.squared())))));
+        return I.multiply(ln(sqrt(ONE.subtract(z.squared())).subtract(I.multiply(z))));
     }
 
     public static BigComplex acos(BigComplex z) {
-        return BigComplex.MINUS_I.multiply(ln(z.add(BigComplex.I.multiply(sqrt(BigComplex.ONE.subtract(z.squared()))))));
+        return PI_OVER_TWO.subtract(asin(z));
     }
 
     public static BigComplex atan(BigComplex z) {
-        BigComplex iz = BigComplex.I.multiply(z);
-        return BigComplex.imag(BigRationalConstants.ONE_OVER_TWO.negate()).multiply(ln(BigComplex.ONE.add(iz).divide(BigComplex.ONE.subtract(iz))));
+        return MINUS_I.divide(TWO).multiply(ln(I.subtract(z).divide(I.add(z))));
     }
 
     public static BigComplex acot(BigComplex z) {
-        return atan(z.inverse());
+        return PI_OVER_TWO.subtract(atan(z));
     }
 
     public static BigComplex asec(BigComplex z) {
-        return acos(z.inverse());
+        BigComplex zInv = z.inverse();
+        return MINUS_I.multiply(ln(I.multiply(sqrt(ONE.subtract(zInv.squared()))).add(zInv)));
     }
 
     public static BigComplex acsc(BigComplex z) {
-        return asin(z.inverse());
+        return PI_OVER_TWO.subtract(asec(z));
     }
 
     public static BigComplex sinh(BigComplex z) {
         BigComplex exp = exp(z);
-        return BigComplex.real(BigRationalConstants.ONE_OVER_TWO).multiply(exp.subtract(exp.inverse()));
+        return ONE_OVER_TWO.multiply(exp.subtract(exp.inverse()));
     }
 
     public static BigComplex cosh(BigComplex z) {
         BigComplex exp = exp(z);
-        return BigComplex.real(BigRationalConstants.ONE_OVER_TWO).multiply(exp.add(exp.inverse()));
+        return ONE_OVER_TWO.multiply(exp.add(exp.inverse()));
     }
 
     public static BigComplex tanh(BigComplex z) {
-        BigComplex exp = exp(BigComplex.real(BigRationalConstants.TWO).multiply(z));
-        return exp.subtract(BigComplex.ONE).divide(exp.add(BigComplex.ONE));
+        BigComplex exp = exp(TWO.multiply(z));
+        return exp.subtract(ONE).divide(exp.add(ONE));
     }
 
     public static BigComplex coth(BigComplex z) {
@@ -172,26 +176,28 @@ public final class BigComplexMath {
     }
 
     public static BigComplex asinh(BigComplex z) {
-        return ln(z.add(sqrt(z.squared().add(BigComplex.ONE))));
+        return ln(z.add(sqrt(z.squared().add(ONE))));
     }
 
     public static BigComplex acosh(BigComplex z) {
-        return ln(z.add(sqrt(z.squared().subtract(BigComplex.ONE))));
+        return ln(z.add(sqrt(z.add(ONE)).multiply(sqrt(z.subtract(ONE)))));
     }
 
     public static BigComplex atanh(BigComplex z) {
-        return BigComplex.real(BigRationalConstants.ONE_OVER_TWO).multiply(ln(BigComplex.ONE.add(z).divide(BigComplex.ONE.subtract(z))));
+        return ONE_OVER_TWO.multiply(ln(ONE.add(z).divide(ONE.subtract(z))));
     }
 
     public static BigComplex acoth(BigComplex z) {
-        return atanh(z.inverse());
+        return ONE_OVER_TWO.multiply(ln(z.add(ONE).divide(z.subtract(ONE))));
     }
 
     public static BigComplex asech(BigComplex z) {
-        return acosh(z.inverse());
+        BigComplex zInv = z.inverse();
+        return ln(zInv.add(sqrt(zInv.add(ONE)).multiply(sqrt(zInv.subtract(ONE)))));
     }
 
     public static BigComplex acsch(BigComplex z) {
-        return asinh(z.inverse());
+        BigComplex zInv = z.inverse();
+        return ln(zInv.add(sqrt(zInv.squared().add(ONE))));
     }
 }

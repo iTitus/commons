@@ -19,6 +19,6 @@ public final class HashResult {
     }
 
     public String asString() {
-        return BaseConverters.HEXADECIMAL.encode(hash);
+        return BaseConverters.HEXADECIMAL.encodeUnsigned(hash);
     }
 }

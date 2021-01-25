@@ -1,39 +1,47 @@
 package io.github.ititus.si.unit.converter;
 
+import io.github.ititus.si.quantity.value.QuantityValue;
+
 import java.util.List;
 import java.util.Objects;
 
-public class MultiplicationConverter implements UnitConverter {
+final class MultiplicationConverter implements UnitConverter {
 
-    private final double factor;
+    private final QuantityValue factor;
 
-    public static UnitConverter of(double factor) {
-        if (factor == 0) {
+    private MultiplicationConverter(QuantityValue factor) {
+        this.factor = factor;
+    }
+
+    static UnitConverter of(QuantityValue factor) {
+        if (factor.isZero()) {
             throw new IllegalArgumentException("0 not allowed");
-        } else if (factor == 1) {
+        } else if (factor.isOne()) {
             return IDENTITY;
         }
 
         return new MultiplicationConverter(factor);
     }
 
-    private MultiplicationConverter(double factor) {
-        this.factor = factor;
-    }
-
     @Override
-    public double convert(double value) {
-        return factor * value;
+    public QuantityValue convert(QuantityValue value) {
+        return value.multiply(factor);
     }
 
     @Override
     public UnitConverter inverse() {
-        return new MultiplicationConverter(1 / factor);
+        return of(factor.inverse());
     }
 
     @Override
     public UnitConverter concat(UnitConverter converter) {
-        return CompoundConverter.of(List.of(this, converter));
+        if (converter.isIdentity()) {
+            return this;
+        } else if (converter instanceof MultiplicationConverter) {
+            return of(factor.multiply(((MultiplicationConverter) converter).factor));
+        }
+
+        return UnitConverter.compound(List.of(this, converter));
     }
 
     @Override
@@ -50,7 +58,7 @@ public class MultiplicationConverter implements UnitConverter {
             return false;
         }
         MultiplicationConverter that = (MultiplicationConverter) o;
-        return Double.compare(that.factor, factor) == 0;
+        return factor.equals(that.factor);
     }
 
     @Override

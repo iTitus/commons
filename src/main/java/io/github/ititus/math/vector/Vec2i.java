@@ -38,7 +38,7 @@ public final class Vec2i implements Comparable<Vec2i> {
     }
 
     public Vec2i sgn() {
-        return new Vec2i(JavaMath.signum(x), JavaMath.signum(y));
+        return new Vec2i(JavaMath.sgn(x), JavaMath.sgn(y));
     }
 
     public int manhattanDistance() {
@@ -47,6 +47,10 @@ public final class Vec2i implements Comparable<Vec2i> {
 
     public int manhattanDistanceTo(Vec2i o) {
         return Math.abs(x - o.x) + Math.abs(y - o.y);
+    }
+
+    public boolean isDirectlyAdjacentTo(Vec2i o) {
+        return manhattanDistanceTo(o) == 1;
     }
 
     public double distance() {
@@ -61,8 +65,42 @@ public final class Vec2i implements Comparable<Vec2i> {
         return x * o.x + y * o.y;
     }
 
+    public Vec2i flipY() {
+        if (y == 0) {
+            return this;
+        }
+
+        return new Vec2i(x, -y);
+    }
+
+    public Vec2i flipX() {
+        if (x == 0) {
+            return this;
+        }
+
+        return new Vec2i(-x, y);
+    }
+
     /**
-     * In clockwise rotation, always returns positive angle in [0, 2pi).
+     * Assumes a right-handed coordinate system (y is up).
+     * Returns the counter-clockwise angle between the vector (1, 0) and this angle.
+     * Always returns a positive angle in [0, 2pi).
+     * When using a left-handed coordinate system the angle is clockwise.
+     */
+    public double getAngle() {
+        double angle = Math.atan2(y, x);
+        if (angle < 0) {
+            angle += 2 * Math.PI;
+        }
+
+        return angle;
+    }
+
+    /**
+     * Assumes a right-handed coordinate system (y is up).
+     * Returns the counter-clockwise angle between this vector and the given vector.
+     * Always returns a positive angle in [0, 2pi).
+     * When using a left-handed coordinate system the angle is clockwise.
      */
     public double getAngleTo(Vec2i o) {
         double angle = Math.atan2(o.y, o.x) - Math.atan2(y, x);
@@ -73,8 +111,56 @@ public final class Vec2i implements Comparable<Vec2i> {
         return angle;
     }
 
-    public boolean isDirectlyAdjacentTo(Vec2i o) {
-        return manhattanDistanceTo(o) == 1;
+    /**
+     * Assumes a right-handed coordinate system (y is up).
+     * Rotates clockwise by the given degrees, only multiples of 90° supported.
+     * When using a left-handed coordinate system the angle is counter-clockwise.
+     */
+    public Vec2i rotateCW(int degrees) {
+        if (degrees % 90 != 0) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (Math.floorMod(degrees / 90, 4)) {
+            case 0:
+                return this;
+            case 1:
+                //noinspection SuspiciousNameCombination
+                return new Vec2i(y, -x);
+            case 2:
+                return new Vec2i(-x, -y);
+            case 3:
+                //noinspection SuspiciousNameCombination
+                return new Vec2i(-y, x);
+            default:
+                throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Assumes a right-handed coordinate system (y is up).
+     * Rotates counter-clockwise by the given degrees, only multiples of 90° supported.
+     * When using a left-handed coordinate system the angle is clockwise.
+     */
+    public Vec2i rotateCCW(int degrees) {
+        if (degrees % 90 != 0) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (Math.floorMod(degrees / 90, 4)) {
+            case 0:
+                return this;
+            case 1:
+                //noinspection SuspiciousNameCombination
+                return new Vec2i(-y, x);
+            case 2:
+                return new Vec2i(-x, -y);
+            case 3:
+                //noinspection SuspiciousNameCombination
+                return new Vec2i(y, -x);
+            default:
+                throw new RuntimeException();
+        }
     }
 
     public int getX() {

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.ititus.math.number.BigComplexConstants.ONE;
+import static io.github.ititus.math.number.BigComplexConstants.ZERO;
 import static java.util.function.Predicate.not;
 
 public final class Product extends ComplexFunction {
@@ -27,7 +29,8 @@ public final class Product extends ComplexFunction {
         }
 
         // associativity & neutral element
-        terms = Arrays.stream(terms).filter(not(ComplexFunction::isOne)).flatMap(f -> f instanceof Product ? Arrays.stream(((Product) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
+        terms = Arrays.stream(terms).filter(not(ComplexFunction::isOne)).flatMap(f -> f instanceof Product ?
+                Arrays.stream(((Product) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
@@ -37,9 +40,20 @@ public final class Product extends ComplexFunction {
         }
 
         // combine constant & monomial terms
-        Constant c = Constant.of(Arrays.stream(terms).filter(ComplexFunction::isConstant).map(ComplexFunction::getConstant).reduce(BigComplex.ONE, BigComplex::multiply));
-        ComplexFunction p = Power.of(Arrays.stream(terms).filter(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()).map(f -> f instanceof Power ? ((Power) f).getExponent().getConstant() : BigComplex.ONE).reduce(BigComplex.ZERO, BigComplex::add));
-        Stream<ComplexFunction> stream = Arrays.stream(terms).filter(not(ComplexFunction::isConstant)).filter(not(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()));
+        Constant c = Constant.of(
+                Arrays.stream(terms)
+                        .filter(ComplexFunction::isConstant)
+                        .map(ComplexFunction::getConstant)
+                        .reduce(ONE, BigComplex::multiply)
+        );
+        ComplexFunction p = Power.of(
+                Arrays.stream(terms)
+                        .filter(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()).map(f -> f instanceof Power ? ((Power) f).getExponent().getConstant() : ONE)
+                        .reduce(ZERO, BigComplex::add)
+        );
+        Stream<ComplexFunction> stream = Arrays.stream(terms)
+                .filter(not(ComplexFunction::isConstant))
+                .filter(not(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()));
         if (!p.isOne()) {
             stream = Stream.concat(Stream.of(p), stream);
         }
@@ -83,7 +97,9 @@ public final class Product extends ComplexFunction {
 
     @Override
     public BigComplex evaluate(BigComplex z) {
-        return Arrays.stream(terms).map(f -> f.evaluate(z)).reduce(BigComplex.ONE, BigComplex::multiply);
+        return Arrays.stream(terms)
+                .map(f -> f.evaluate(z))
+                .reduce(ONE, BigComplex::multiply);
     }
 
     @Override
@@ -114,11 +130,13 @@ public final class Product extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (!(f instanceof Product)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Product)) {
             return false;
         }
-        Product p = (Product) f;
+        Product p = (Product) o;
         if (terms.length != p.terms.length) {
             return false;
         }

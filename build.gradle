@@ -1,16 +1,21 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.5'
 }
 
-group 'io.github.ititus'
-version '1.0.0-SNAPSHOT'
+group = 'io.github.ititus'
+version = '1.3.1'
 
-sourceCompatibility = JavaVersion.VERSION_11
+wrapper {
+    gradleVersion '6.8.1'
+}
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier = 'sources'
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
@@ -20,20 +25,57 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.7.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.assertj:assertj-core:3.18.0'
-    testImplementation 'org.mockito:mockito-core:3.6.0'
-}
-
-publishing {
-    publications {
-        defaultPublication(MavenPublication) {
-            artifactId = 'ititus-commons'
-            from components.java
-            artifact sourcesJar
-        }
-    }
+    testImplementation 'org.assertj:assertj-core:3.19.0'
+    testImplementation 'org.mockito:mockito-core:3.7.7'
 }
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            pom {
+                name = 'iTitus Commons'
+                description = 'Library for commonly needed functionality'
+                url = 'https://github.com/iTitus/commons'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://mit-license.org'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'iTitus'
+                        name = 'iTitus'
+                        email = 'ititus@users.noreply.github.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/iTitus/commons.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:iTitus/commons.git'
+                    url = 'https://github.com/iTitus/commons'
+                }
+            }
+
+            from components.java
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintray_user') ? project.property('bintray_user') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintray_api_key') ? project.property('bintray_api_key') : System.getenv('BINTRAY_API_KEY')
+    publications = ['MyPublication']
+    publish = true
+    pkg {
+        repo = 'ititus-commons'
+        name = 'commons'
+        version {
+            name = project.version
+            vcsTag = "v${project.version}"
+        }
+    }
 }

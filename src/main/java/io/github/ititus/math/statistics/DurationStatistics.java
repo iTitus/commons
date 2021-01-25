@@ -2,6 +2,7 @@ package io.github.ititus.math.statistics;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -41,13 +42,13 @@ public class DurationStatistics {
 
         ARITHMETIC(durations -> durations.stream().reduce(Duration.ZERO, Duration::plus).dividedBy(durations.size()));
 
-        private final Function<List<Duration>, Duration> averagingFunction;
+        private final Function<Collection<Duration>, Duration> averagingFunction;
 
-        AveragingMode(Function<List<Duration>, Duration> averagingFunction) {
+        AveragingMode(Function<Collection<Duration>, Duration> averagingFunction) {
             this.averagingFunction = averagingFunction;
         }
 
-        public Duration average(List<Duration> durations) {
+        public Duration average(Collection<Duration> durations) {
             return averagingFunction.apply(durations);
         }
     }

@@ -8,9 +8,9 @@ import java.util.Map;
 
 public enum BaseDimension implements Dimension {
 
-    TIME('T'),
     LENGTH('L'),
     MASS('M'),
+    TIME('T'),
     ELECTRIC_CURRENT('I'),
     THERMODYNAMIC_TEMPERATURE('\u0398'),
     SUBSTANCE_AMOUNT('N'),

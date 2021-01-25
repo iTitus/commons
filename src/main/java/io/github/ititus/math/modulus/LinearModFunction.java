@@ -5,6 +5,9 @@ import io.github.ititus.math.number.BigIntegerMath;
 import java.math.BigInteger;
 import java.util.Objects;
 
+import static io.github.ititus.math.number.BigIntegerConstants.ONE;
+import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
+
 public final class LinearModFunction {
 
     private final BigInteger n, a, b;
@@ -24,7 +27,7 @@ public final class LinearModFunction {
     }
 
     public static LinearModFunction identity(BigInteger n) {
-        return new LinearModFunction(n, BigInteger.ONE, BigInteger.ZERO);
+        return new LinearModFunction(n, ONE, ZERO);
     }
 
     public BigInteger getSlope() {
@@ -71,13 +74,13 @@ public final class LinearModFunction {
             return identity(n);
         } else if (pow.signum() < 0) {
             return inverse().selfCompose(pow.negate());
-        } else if (BigInteger.ONE.equals(pow)) {
+        } else if (ONE.equals(pow)) {
             return this;
         }
 
         BigInteger aModPow = a.modPow(pow, n);
-        BigInteger oneMinusAModPow = BigInteger.ONE.subtract(aModPow);
-        BigInteger oneMinusAModInv = BigInteger.ONE.subtract(a).modInverse(n);
+        BigInteger oneMinusAModPow = ONE.subtract(aModPow);
+        BigInteger oneMinusAModInv = ONE.subtract(a).modInverse(n);
 
         return new LinearModFunction(n, aModPow, b.multiply(oneMinusAModPow).multiply(oneMinusAModInv));
     }

@@ -13,6 +13,10 @@ public final class Lazy<T> implements Supplier<T> {
         this.supplier = supplier;
     }
 
+    public static <T> Lazy<T> of(Supplier<? extends T> supplier) {
+        return new Lazy<>(supplier);
+    }
+
     @Override
     public T get() {
         if (cache == null) {
@@ -20,9 +24,5 @@ public final class Lazy<T> implements Supplier<T> {
         }
 
         return cache;
-    }
-
-    public static <T> Lazy<T> of(Supplier<? extends T> supplier) {
-        return new Lazy<>(supplier);
     }
 }

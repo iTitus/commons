@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.ititus.math.number.BigComplexConstants.ONE;
+import static io.github.ititus.math.number.BigComplexConstants.ZERO;
 import static java.util.function.Predicate.not;
 
 public final class Sum extends ComplexFunction {
@@ -19,7 +21,8 @@ public final class Sum extends ComplexFunction {
 
     public static ComplexFunction of(ComplexFunction... terms) {
         // associativity & neutral element
-        terms = Arrays.stream(terms).filter(not(ComplexFunction::isZero)).flatMap(f -> f instanceof Sum ? Arrays.stream(((Sum) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
+        terms = Arrays.stream(terms).filter(not(ComplexFunction::isZero)).flatMap(f -> f instanceof Sum ?
+                Arrays.stream(((Sum) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
@@ -29,13 +32,17 @@ public final class Sum extends ComplexFunction {
         }
 
         // combine constant terms
-        BigComplex constant = Arrays.stream(terms).filter(ComplexFunction::isConstant).map(ComplexFunction::getConstant).reduce(BigComplex.ZERO, BigComplex::add);
-        Stream<ComplexFunction> stream = Arrays.stream(terms).filter(not(ComplexFunction::isConstant));
-        if (!constant.equals(BigComplex.ZERO)) {
-            terms = Stream.concat(Stream.of(Constant.of(constant)), stream).toArray(ComplexFunction[]::new);
-        } else {
-            terms = stream.toArray(ComplexFunction[]::new);
+        BigComplex constant = Arrays.stream(terms)
+                .filter(ComplexFunction::isConstant)
+                .map(ComplexFunction::getConstant)
+                .reduce(ZERO, BigComplex::add);
+
+        Stream<ComplexFunction> stream = Arrays.stream(terms)
+                .filter(not(ComplexFunction::isConstant));
+        if (!constant.isZero()) {
+            stream = Stream.concat(Stream.of(Constant.of(constant)), stream);
         }
+        terms = stream.toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
@@ -61,7 +68,7 @@ public final class Sum extends ComplexFunction {
                                     return f;
                                 },
                                 LinkedHashMap::new,
-                                Collectors.reducing(BigComplex.ZERO, f -> {
+                                Collectors.reducing(ZERO, f -> {
                                     if (f instanceof Product) {
                                         Product p = (Product) f;
                                         ComplexFunction first = p.getTerms()[0];
@@ -69,7 +76,7 @@ public final class Sum extends ComplexFunction {
                                             return first.getConstant();
                                         }
                                     }
-                                    return BigComplex.ONE;
+                                    return ONE;
                                 }, BigComplex::add)
                         )
                 );
@@ -83,12 +90,16 @@ public final class Sum extends ComplexFunction {
 
     @Override
     public BigComplex evaluate(BigComplex z) {
-        return Arrays.stream(terms).map(f -> f.evaluate(z)).reduce(BigComplex.ZERO, BigComplex::add);
+        return Arrays.stream(terms)
+                .map(f -> f.evaluate(z))
+                .reduce(ZERO, BigComplex::add);
     }
 
     @Override
     protected ComplexFunction derivative0(int n) {
-        return Sum.of(Arrays.stream(terms).map(f -> f.derivative(n)).toArray(ComplexFunction[]::new));
+        return Sum.of(Arrays.stream(terms)
+                .map(f -> f.derivative(n))
+                .toArray(ComplexFunction[]::new));
     }
 
     public ComplexFunction[] getTerms() {
@@ -103,11 +114,13 @@ public final class Sum extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (!(f instanceof Sum)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Sum)) {
             return false;
         }
-        Sum s = (Sum) f;
+        Sum s = (Sum) o;
         if (terms.length != s.terms.length) {
             return false;
         }

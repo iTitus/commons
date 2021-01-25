@@ -10,16 +10,16 @@ public final class HexConverter extends BaseConverter {
         super(16);
     }
 
-    public String encode(byte[] bytes) {
+    public String encodeUnsigned(byte[] bytes) {
         if (Objects.requireNonNull(bytes).length == 0) {
             throw new IllegalArgumentException();
         } else if (bytes.length == 1 && bytes[0] == 0) {
-            return String.valueOf(CHARACTERS[0]);
+            return String.valueOf(character(0));
         }
 
         StringBuilder sb = new StringBuilder(2 * bytes.length);
         for (byte b : bytes) {
-            sb.append(CHARACTERS[(b & 0xf0) >>> 4]).append(CHARACTERS[b & 0x0f]);
+            sb.append(character((b & 0xf0) >>> 4)).append(character(b & 0x0f));
         }
         return sb.toString();
     }

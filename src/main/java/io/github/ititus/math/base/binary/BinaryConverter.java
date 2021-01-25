@@ -1,10 +1,12 @@
 package io.github.ititus.math.base.binary;
 
 import io.github.ititus.math.base.BaseConverter;
-import io.github.ititus.math.number.BigIntegerMath;
 
 import java.math.BigInteger;
 import java.util.BitSet;
+
+import static io.github.ititus.math.number.BigIntegerConstants.ONE;
+import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
 
 public final class BinaryConverter extends BaseConverter {
 
@@ -15,43 +17,39 @@ public final class BinaryConverter extends BaseConverter {
     }
 
     @SuppressWarnings("Duplicates")
-    public BinaryNumber encodeToBinaryNumber(int n) {
-        if (n < 0) {
-            throw new IllegalArgumentException();
-        } else if (n == 0) {
+    public BinaryNumber encodeToBinaryNumberUnsigned(int n) {
+        if (n == 0) {
             return BinaryNumber.ZERO;
         }
 
         BitSet bs = new BitSet();
         int i = 0;
         do {
-            bs.set(i++, (n & 1) == 1);
+            bs.set(i++, (n & 1) != 0);
             n >>>= 1;
-        } while (n > 0);
+        } while (n != 0);
 
         return BinaryNumber.of(bs);
     }
 
     @SuppressWarnings("Duplicates")
-    public BinaryNumber encodeToBinaryNumber(long n) {
-        if (n < 0) {
-            throw new IllegalArgumentException();
-        } else if (n == 0) {
+    public BinaryNumber encodeToBinaryNumberUnsigned(long n) {
+        if (n == 0) {
             return BinaryNumber.ZERO;
         }
 
         BitSet bs = new BitSet();
         int i = 0;
         do {
-            bs.set(i++, (n & 1) == 1);
+            bs.set(i++, (n & 1) != 0);
             n >>>= 1;
-        } while (n > 0);
+        } while (n != 0);
 
         return BinaryNumber.of(bs);
     }
 
-    public BinaryNumber encodeToBinaryNumber(BigInteger n) {
-        if (n == null || n.signum() < 0) {
+    public BinaryNumber encodeToBinaryNumberUnsigned(BigInteger n) {
+        if (n == null) {
             throw new IllegalArgumentException();
         } else if (n.signum() == 0) {
             return BinaryNumber.ZERO;
@@ -60,14 +58,14 @@ public final class BinaryConverter extends BaseConverter {
         BitSet bs = new BitSet();
         int i = 0;
         do {
-            bs.set(i++, BigIntegerMath.isOdd(n));
+            bs.set(i++, n.testBit(0));
             n = n.shiftRight(1);
         } while (n.signum() > 0);
 
         return BinaryNumber.of(bs);
     }
 
-    public int decodeToInt(BinaryNumber bn) {
+    public int decodeToIntUnsigned(BinaryNumber bn) {
         int n = 0;
         int b = 1;
 
@@ -86,7 +84,7 @@ public final class BinaryConverter extends BaseConverter {
         return n;
     }
 
-    public long decodeToLong(BinaryNumber bn) {
+    public long decodeToLongUnsigned(BinaryNumber bn) {
         long n = 0;
         long b = 1;
 
@@ -105,9 +103,9 @@ public final class BinaryConverter extends BaseConverter {
         return n;
     }
 
-    public BigInteger decodeToBigInteger(BinaryNumber bn) {
-        BigInteger n = BigInteger.ZERO;
-        BigInteger b = BigInteger.ONE;
+    public BigInteger decodeToBigIntegerUnsigned(BinaryNumber bn) {
+        BigInteger n = ZERO;
+        BigInteger b = ONE;
 
         for (int i = 0; i < bn.getLength(); i++) {
             if (bn.get(i)) {

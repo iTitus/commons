@@ -17,7 +17,7 @@ public final class Polynomial {
     }
 
     public static ComplexFunction of(BigComplex... constants) {
-        if (Arrays.stream(constants).allMatch(c -> c.equals(BigComplex.ZERO))) {
+        if (Arrays.stream(constants).allMatch(BigComplex::isZero)) {
             return Constant.zero();
         }
 
@@ -26,9 +26,9 @@ public final class Polynomial {
         for (int i = 0; i < constants.length; i++) {
             BigComplex z = constants[i];
             ComplexFunction m = Power.of(i);
-            if (z.equals(BigComplex.ZERO)) {
+            if (z.isZero()) {
                 terms.add(Constant.zero());
-            } else if (z.equals(BigComplex.ONE)) {
+            } else if (z.isOne()) {
                 terms.add(m);
             }
             terms.add(Product.of(Constant.of(z), m));

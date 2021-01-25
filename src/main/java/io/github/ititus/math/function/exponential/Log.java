@@ -49,12 +49,14 @@ public final class Log extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Log.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Log)) {
             return false;
         }
-
-        return this.f.equals(((Log) f).f);
+        Log l = (Log) o;
+        return f.equals(l.f);
     }
 
     @Override

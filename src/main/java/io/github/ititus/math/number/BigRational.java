@@ -11,7 +11,7 @@ import static io.github.ititus.math.number.BigRationalConstants.*;
 
 public final class BigRational extends Number implements Comparable<BigRational> {
 
-    private static final Pattern RATIONAL_SEPARATOR_PATTERN = Pattern.compile("( )*[:/]( )*");
+    private static final Pattern RATIONAL_SEPARATOR_PATTERN = Pattern.compile("\\s*[:/]\\s*");
 
     private final BigInteger numerator, denominator;
 
@@ -70,7 +70,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     }
 
     public static BigRational of(BigInteger n) {
-        return of(n, BigInteger.ONE);
+        return of(n, BigIntegerConstants.ONE);
     }
 
     public static BigRational of(float f) {
@@ -84,17 +84,145 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public static BigRational of(BigDecimal d) {
         BigInteger unscaled = d.unscaledValue();
         int scale = d.scale();
-        BigInteger scalar = BigInteger.TEN.pow(Math.abs(scale));
+        BigInteger scalar = BigIntegerConstants.TEN.pow(Math.abs(scale));
 
-        if (scale <= 0) {
-            of(unscaled.multiply(scalar));
+        if (scale < 0) {
+            return of(unscaled.multiply(scalar));
         }
         return of(unscaled, scalar);
     }
 
+    public static BigRational ofInv(int n) {
+        return of(n).inverse();
+    }
+
+    public static BigRational ofInv(long n) {
+        return of(n).inverse();
+    }
+
+    public static BigRational ofInv(BigInteger n) {
+        return of(n).inverse();
+    }
+
+    public static BigRational ofInv(float f) {
+        return of(f).inverse();
+    }
+
+    public static BigRational ofInv(double d) {
+        return of(d).inverse();
+    }
+
+    public static BigRational ofInv(BigDecimal d) {
+        return of(d).inverse();
+    }
+
+    public static BigRational ofExp(int scale, int exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(int scale, long exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(int scale, BigInteger exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(long scale, int exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(long scale, long exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(long scale, BigInteger exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(BigInteger scale, int exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(BigInteger scale, long exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(BigInteger scale, BigInteger exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(float scale, int exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(float scale, long exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(float scale, BigInteger exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(double scale, int exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(double scale, long exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(double scale, BigInteger exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(BigDecimal scale, int exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(BigDecimal scale, long exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational ofExp(BigDecimal scale, BigInteger exponent) {
+        return of(scale).multiply(BigRationalConstants.TEN.pow(exponent));
+    }
+
+    public static BigRational of(int numerator, int denominator) {
+        return of(BigIntegerMath.of(numerator), BigIntegerMath.of(denominator));
+    }
+
+    public static BigRational of(int numerator, long denominator) {
+        return of(BigIntegerMath.of(numerator), BigIntegerMath.of(denominator));
+    }
+
+    public static BigRational of(int numerator, BigInteger denominator) {
+        return of(BigIntegerMath.of(numerator), denominator);
+    }
+
+    public static BigRational of(long numerator, int denominator) {
+        return of(BigIntegerMath.of(numerator), BigIntegerMath.of(denominator));
+    }
+
+    public static BigRational of(long numerator, long denominator) {
+        return of(BigIntegerMath.of(numerator), BigIntegerMath.of(denominator));
+    }
+
+    public static BigRational of(long numerator, BigInteger denominator) {
+        return of(BigIntegerMath.of(numerator), denominator);
+    }
+
+    public static BigRational of(BigInteger numerator, int denominator) {
+        return of(numerator, BigIntegerMath.of(denominator));
+    }
+
+    public static BigRational of(BigInteger numerator, long denominator) {
+        return of(numerator, BigIntegerMath.of(denominator));
+    }
+
     @SuppressWarnings("Duplicates")
     public static BigRational of(BigInteger numerator, BigInteger denominator) {
-        if (denominator.equals(BigInteger.ZERO)) {
+        if (denominator.equals(BigIntegerConstants.ZERO)) {
             throw new ArithmeticException();
         } else if (numerator.signum() == 0) {
             return ZERO;
@@ -108,7 +236,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
         }
 
         BigInteger gcd = BigIntegerMath.gcd(numerator, denominator);
-        if (!gcd.equals(BigInteger.ONE)) {
+        if (!gcd.equals(BigIntegerConstants.ONE)) {
             numerator = numerator.divide(gcd);
             denominator = denominator.divide(gcd);
         }
@@ -117,22 +245,6 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
         if (r.equals(MINUS_ONE)) {
             return MINUS_ONE;
-        } else if (r.equals(TWO)) {
-            return TWO;
-        } else if (r.equals(THREE)) {
-            return THREE;
-        } else if (r.equals(FOUR)) {
-            return FOUR;
-        } else if (r.equals(TEN)) {
-            return TEN;
-        } else if (r.equals(ONE_OVER_TWO)) {
-            return ONE_OVER_TWO;
-        } else if (r.equals(ONE_OVER_THREE)) {
-            return ONE_OVER_THREE;
-        } else if (r.equals(THREE_OVER_FOUR)) {
-            return THREE_OVER_FOUR;
-        } else if (r.equals(FIVE_OVER_FOUR)) {
-            return FIVE_OVER_FOUR;
         }
 
         return r;
@@ -178,7 +290,8 @@ public final class BigRational extends Number implements Comparable<BigRational>
         }
 
         BigInteger lcm = BigIntegerMath.lcm(denominator, r.denominator);
-        return of(numerator.multiply(lcm.divide(denominator)).add(r.numerator.multiply(lcm.divide(r.denominator))), lcm);
+        return of(numerator.multiply(lcm.divide(denominator)).add(r.numerator.multiply(lcm.divide(r.denominator))),
+                lcm);
     }
 
     public BigRational subtract(BigRational r) {
@@ -191,12 +304,36 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return add(r.negate());
     }
 
+    public BigRational multiply(int n) {
+        if (isZero() || n == 0) {
+            return ZERO;
+        } else if (isOne()) {
+            return of(n);
+        } else if (n == 1) {
+            return this;
+        }
+
+        return of(numerator.multiply(BigIntegerMath.of(n)), denominator);
+    }
+
+    public BigRational multiply(long n) {
+        if (isZero() || n == 0) {
+            return ZERO;
+        } else if (isOne()) {
+            return of(n);
+        } else if (n == 1) {
+            return this;
+        }
+
+        return of(numerator.multiply(BigIntegerMath.of(n)), denominator);
+    }
+
     public BigRational multiply(BigInteger n) {
         if (isZero() || n.signum() == 0) {
             return ZERO;
         } else if (isOne()) {
             return of(n);
-        } else if (n.equals(BigInteger.ONE)) {
+        } else if (n.equals(BigIntegerConstants.ONE)) {
             return this;
         } else if (isBigInteger() && numerator.equals(n)) {
             return squared();
@@ -219,17 +356,19 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return of(numerator.multiply(r.numerator), denominator.multiply(r.denominator));
     }
 
-    public BigRational divide(BigRational r) {
-        if (r.isZero()) {
-            throw new ArithmeticException();
-        } else if (isZero()) {
-            return ZERO;
-        } else if (isOne()) {
-            return r.inverse();
-        } else if (r.isOne()) {
-            return this;
-        }
+    public BigRational divide(int n) {
+        return multiply(ofInv(n));
+    }
 
+    public BigRational divide(long n) {
+        return multiply(ofInv(n));
+    }
+
+    public BigRational divide(BigInteger n) {
+        return multiply(ofInv(n));
+    }
+
+    public BigRational divide(BigRational r) {
         return multiply(r.inverse());
     }
 
@@ -245,74 +384,33 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public BigRational sqrt() {
         if (sqrtCache == null) {
             sqrtCache = of(toBigDecimal().sqrt(BigDecimalMath.MC));
+            sqrtCache.sqCache = this;
         }
 
         return sqrtCache;
     }
 
-    @SuppressWarnings("Duplicates")
     public BigRational pow(int exponent) {
-        if (exponent == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent == 1) {
-            return this;
-        } else if (exponent == 2) {
-            return squared();
-        }
-
-        return BigRationalMath.pow(this, BigIntegerMath.of(exponent));
+        return BigRationalMath.pow(this, exponent);
     }
 
-    @SuppressWarnings("Duplicates")
     public BigRational pow(long exponent) {
-        if (exponent == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent == 1) {
-            return this;
-        } else if (exponent == 2) {
-            return squared();
-        }
-
-        return BigRationalMath.pow(this, BigIntegerMath.of(exponent));
+        return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational pow(BigInteger exponent) {
-        if (exponent.signum() == 0) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent.equals(BigInteger.ONE)) {
-            return this;
-        } else if (exponent.equals(BigInteger.TWO)) {
-            return squared();
-        }
+        return BigRationalMath.pow(this, exponent);
+    }
 
+    public BigRational pow(BigDecimal exponent) {
         return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational pow(BigRational exponent) {
-        if (exponent.isZero()) {
-            return ONE;
-        } else if (isZero()) {
-            return ZERO;
-        } else if (exponent.isBigInteger()) {
-            return pow(exponent.toBigInteger());
-        }
-
         return BigRationalMath.pow(this, exponent);
     }
 
     public BigRational exp() {
-        if (isZero()) {
-            return ONE;
-        } else if (isNegative()) {
-            return negate().exp().inverse();
-        }
-
         return BigRationalMath.exp(this);
     }
 
@@ -449,7 +547,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     }
 
     public boolean isBigInteger() {
-        return denominator.equals(BigInteger.ONE);
+        return denominator.equals(BigIntegerConstants.ONE);
     }
 
     public boolean isInt() {
@@ -469,6 +567,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
         if (!isInt()) {
             throw new ArithmeticException();
         }
+
         return numerator.intValueExact();
     }
 
@@ -481,17 +580,28 @@ public final class BigRational extends Number implements Comparable<BigRational>
         if (!isLong()) {
             throw new ArithmeticException();
         }
+
         return numerator.longValueExact();
     }
 
     public BigInteger toBigInteger() {
-        if (isBigInteger()) {
-            return numerator;
-        } else if (intCache == null) {
-            intCache = toBigDecimal().toBigInteger();
+        if (intCache == null) {
+            if (isBigInteger()) {
+                intCache = numerator;
+            } else {
+                intCache = toBigDecimal().toBigInteger();
+            }
         }
 
         return intCache;
+    }
+
+    public BigInteger toBigIntegerExact() {
+        if (!isBigInteger()) {
+            throw new ArithmeticException();
+        }
+
+        return toBigInteger();
     }
 
     @Override
@@ -541,6 +651,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     @Override
     public String toString() {
-        return denominator.equals(BigInteger.ONE) ? String.valueOf(numerator) : numerator + "/" + denominator + " (" + toBigDecimal() + ")";
+        return isBigInteger() ? toBigInteger().toString() :
+                numerator + "/" + denominator + " (" + toBigDecimal() + ")";
     }
 }

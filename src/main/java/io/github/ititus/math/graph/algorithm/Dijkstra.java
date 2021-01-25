@@ -88,7 +88,8 @@ public class Dijkstra<T> {
     }
 
     private String resultToString(Result r) {
-        List<Vertex<T>> vertices = graph.getVertices().stream().filter(Predicate.not(start::equals)).sorted().collect(Collectors.toList());
+        List<Vertex<T>> vertices =
+                graph.getVertices().stream().filter(Predicate.not(start::equals)).sorted().collect(Collectors.toList());
         StringBuilder b = new StringBuilder();
 
         for (Vertex<T> v : vertices) {

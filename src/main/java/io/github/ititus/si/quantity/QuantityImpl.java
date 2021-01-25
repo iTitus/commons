@@ -1,22 +1,23 @@
 package io.github.ititus.si.quantity;
 
 import io.github.ititus.si.quantity.type.QuantityType;
+import io.github.ititus.si.quantity.value.QuantityValue;
 import io.github.ititus.si.unit.Unit;
 
 import java.util.Objects;
 
-final class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q> {
+final class QuantityImpl<Q extends QuantityType<Q>> implements Quantity<Q> {
 
-    private final double value;
+    private final QuantityValue value;
     private final Unit<Q> unit;
 
-    QuantityImpl(double value, Unit<Q> unit) {
+    QuantityImpl(QuantityValue value, Unit<Q> unit) {
         this.value = value;
         this.unit = unit;
     }
 
     @Override
-    public double getValue() {
+    public QuantityValue getValue() {
         return value;
     }
 
@@ -40,26 +41,6 @@ final class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q> 
     }
 
     @Override
-    public Quantity<?> multiply(Quantity<?> qty) {
-        return new QuantityImpl<>(value * qty.getValue(), unit.multiply(qty.getUnit()));
-    }
-
-    @Override
-    public Quantity<?> inverse() {
-        return new QuantityImpl<>(1 / value, unit.inverse());
-    }
-
-    @Override
-    public Quantity<?> pow(int n) {
-        return new QuantityImpl<>(Math.pow(value, n), unit.pow(n));
-    }
-
-    @Override
-    public Quantity<?> root(int n) {
-        return new QuantityImpl<>(Math.pow(value, 1.0 / n), unit.root(n));
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -68,11 +49,19 @@ final class QuantityImpl<Q extends QuantityType<Q>> extends AbstractQuantity<Q> 
             return false;
         }
         QuantityImpl<?> quantity = (QuantityImpl<?>) o;
-        return Double.compare(quantity.value, value) == 0 && unit.equals(quantity.unit);
+        return value.equals(quantity.value) && unit.equals(quantity.unit);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(value, unit);
+    }
+
+    @Override
+    public String toString() {
+        return "Quantity{" +
+                "value=" + value +
+                ", unit=" + unit +
+                '}';
     }
 }

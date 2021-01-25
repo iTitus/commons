@@ -3,8 +3,9 @@ package io.github.ititus.math.number;
 
 import org.junit.jupiter.api.Test;
 
-import static io.github.ititus.math.number.BigIntegerMath.*;
-import static java.math.BigInteger.*;
+import static io.github.ititus.math.number.BigIntegerConstants.*;
+import static io.github.ititus.math.number.BigIntegerMath.of;
+import static io.github.ititus.math.number.BigIntegerMath.pow;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BigIntegerPowTests {
@@ -56,17 +57,17 @@ public class BigIntegerPowTests {
 
     @Test
     public void pow2_2() {
-        assertThat(pow(TWO, TWO)).isEqualTo(of(4));
+        assertThat(pow(TWO, TWO)).isEqualTo(FOUR);
     }
 
     @Test
     public void pow2_3() {
-        assertThat(pow(TWO, THREE)).isEqualTo(of(8));
+        assertThat(pow(TWO, THREE)).isEqualTo(EIGHT);
     }
 
     @Test
     public void pow2_4() {
-        assertThat(pow(TWO, of(4))).isEqualTo(of(16));
+        assertThat(pow(TWO, FOUR)).isEqualTo(of(16));
     }
 
     @Test
@@ -81,7 +82,8 @@ public class BigIntegerPowTests {
 
     @Test
     public void pow_42_42() {
-        assertThat(pow(of(42), of(42))).isEqualTo(of("150130937545296572356771972164254457814047970568738777235893533016064"));
+        assertThat(pow(of(42), of(42))).isEqualTo(of(
+                "150130937545296572356771972164254457814047970568738777235893533016064"));
     }
 
     @Test
@@ -126,7 +128,7 @@ public class BigIntegerPowTests {
 
     @Test
     public void pow_neg2_2() {
-        assertThat(pow(TWO.negate(), TWO)).isEqualTo(of(4));
+        assertThat(pow(TWO.negate(), TWO)).isEqualTo(FOUR);
     }
 
     @Test
@@ -151,6 +153,7 @@ public class BigIntegerPowTests {
 
     @Test
     public void pow_neg42_42() {
-        assertThat(pow(of(-42), of(42))).isEqualTo(of("150130937545296572356771972164254457814047970568738777235893533016064"));
+        assertThat(pow(of(-42), of(42))).isEqualTo(of(
+                "150130937545296572356771972164254457814047970568738777235893533016064"));
     }
 }

@@ -1,9 +1,8 @@
-package io.github.ititus.data;
+package io.github.ititus.data.pair;
 
-import java.util.Map;
 import java.util.Objects;
 
-public final class Pair<A, B> implements Printable {
+public final class Pair<A, B> {
 
     private final A a;
     private final B b;
@@ -17,11 +16,19 @@ public final class Pair<A, B> implements Printable {
         return new Pair<>(a, b);
     }
 
-    public A getA() {
+    public static IntIntPair of(int a, int b) {
+        return IntIntPair.of(a, b);
+    }
+
+    public static LongLongPair of(long a, long b) {
+        return LongLongPair.of(a, b);
+    }
+
+    public A a() {
         return a;
     }
 
-    public B getB() {
+    public B b() {
         return b;
     }
 
@@ -43,18 +50,7 @@ public final class Pair<A, B> implements Printable {
     }
 
     @Override
-    public String getPrefix() {
-        return "Pair";
-    }
-
-    @Override
-    public void getPrintableFields(Map<String, String> fields) {
-        fields.put("a", Objects.toString(a));
-        fields.put("b", Objects.toString(b));
-    }
-
-    @Override
     public String toString() {
-        return Printable.toPrintableString(this);
+        return "<" + a + "," + b + ">";
     }
 }

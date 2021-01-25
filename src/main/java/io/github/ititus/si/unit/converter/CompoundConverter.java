@@ -1,17 +1,23 @@
 package io.github.ititus.si.unit.converter;
 
-import java.util.Collection;
+import io.github.ititus.si.quantity.value.QuantityValue;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CompoundConverter implements UnitConverter {
+final class CompoundConverter implements UnitConverter {
 
     private final List<UnitConverter> converters;
 
-    public static UnitConverter of(List<? extends UnitConverter> converters) {
+    private CompoundConverter(List<UnitConverter> converters) {
+        this.converters = converters;
+    }
+
+    static UnitConverter of(List<UnitConverter> converters) {
         converters = converters.stream()
                 .filter(c -> !c.isIdentity())
                 .flatMap(c -> {
@@ -31,20 +37,39 @@ public class CompoundConverter implements UnitConverter {
 
         converters = simplify(converters);
 
-        return new CompoundConverter(converters);
+        return new CompoundConverter(List.copyOf(converters));
     }
 
-    private static List<? extends UnitConverter> simplify(List<? extends UnitConverter> converters) {
-        // TODO: combine adjacent MultiplicationConverters
-        return converters;
-    }
+    private static List<UnitConverter> simplify(List<UnitConverter> converters) {
+        List<UnitConverter> simplified = new ArrayList<>();
 
-    private CompoundConverter(Collection<? extends UnitConverter> converters) {
-        this.converters = List.copyOf(converters);
+        outer:
+        for (int i = 0; i < converters.size(); i++) {
+            UnitConverter c = converters.get(i);
+            if (!(c instanceof MultiplicationConverter)) {
+                simplified.add(c);
+            }
+
+            for (int j = i + 1; j < converters.size(); j++) {
+                UnitConverter c_ = converters.get(j);
+                if (!(c_ instanceof MultiplicationConverter)) {
+                    simplified.add(c);
+                    i = j;
+                    continue outer;
+                }
+
+                c = c.concat(c_); // this will merge
+            }
+
+            simplified.add(c);
+            break;
+        }
+
+        return simplified;
     }
 
     @Override
-    public double convert(double value) {
+    public QuantityValue convert(QuantityValue value) {
         for (UnitConverter converter : converters) {
             value = converter.convert(value);
         }
@@ -57,12 +82,14 @@ public class CompoundConverter implements UnitConverter {
                 .map(UnitConverter::inverse)
                 .collect(Collectors.toList());
         Collections.reverse(list);
-        return of(list);
+        return UnitConverter.compound(list);
     }
 
     @Override
     public UnitConverter concat(UnitConverter converter) {
-        return of(Stream.concat(converters.stream(), Stream.of(converter)).collect(Collectors.toList()));
+        List<UnitConverter> converters = new ArrayList<>(this.converters);
+        converters.add(converter);
+        return UnitConverter.compound(converters);
     }
 
     @Override

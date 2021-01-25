@@ -42,7 +42,8 @@ public final class Rational extends ComplexFunction {
 
     @Override
     protected ComplexFunction derivative0(int n) {
-        ComplexFunction num = Sum.of(Product.of(numerator.derivative(), denominator), Product.of(Constant.minusOne(), numerator, denominator.derivative()));
+        ComplexFunction num = Sum.of(Product.of(numerator.derivative(), denominator), Product.of(Constant.minusOne(),
+                numerator, denominator.derivative()));
         ComplexFunction denom = Power.of(denominator, 2);
         return Rational.of(num, denom);
     }
@@ -55,11 +56,13 @@ public final class Rational extends ComplexFunction {
     }
 
     @Override
-    protected boolean equals0(ComplexFunction f) {
-        if (f.getClass() != Rational.class) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Rational)) {
             return false;
         }
-        Rational r = (Rational) f;
+        Rational r = (Rational) o;
         return numerator.equals(r.numerator) && denominator.equals(r.denominator);
     }
 

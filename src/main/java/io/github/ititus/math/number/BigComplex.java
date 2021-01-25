@@ -3,24 +3,19 @@ package io.github.ititus.math.number;
 import java.math.BigInteger;
 import java.util.Objects;
 
-public final class BigComplex {
+import static io.github.ititus.math.number.BigComplexConstants.*;
 
-    public static final BigComplex ZERO = new BigComplex(BigRationalConstants.ZERO, BigRationalConstants.ZERO);
-    public static final BigComplex ONE = new BigComplex(BigRationalConstants.ONE, BigRationalConstants.ZERO);
-    public static final BigComplex MINUS_ONE = new BigComplex(BigRationalConstants.MINUS_ONE, BigRationalConstants.ZERO);
-    public static final BigComplex I = new BigComplex(BigRationalConstants.ZERO, BigRationalConstants.ONE);
-    public static final BigComplex MINUS_I = new BigComplex(BigRationalConstants.ZERO, BigRationalConstants.MINUS_ONE);
+public final class BigComplex {
 
     private final BigRational real, imag;
 
-    private BigComplex(BigRational real, BigRational imag) {
+    BigComplex(BigRational real, BigRational imag) {
         this.real = Objects.requireNonNull(real);
         this.imag = Objects.requireNonNull(imag);
     }
 
     public static BigComplex of(BigRational real, BigRational imag) {
         BigComplex z = new BigComplex(real, imag);
-
         if (z.equals(ZERO)) {
             return ZERO;
         } else if (z.equals(ONE)) {
@@ -107,7 +102,7 @@ public final class BigComplex {
         }
 
         BigRational z = absSquared();
-        return of(real.divide(z), imag.divide(z));
+        return of(real.divide(z), imag.divide(z).negate());
     }
 
     public BigComplex add(BigComplex z) {
@@ -119,7 +114,8 @@ public final class BigComplex {
     }
 
     public BigComplex multiply(BigComplex z) {
-        return of(real.multiply(z.real).subtract(imag.multiply(z.imag)), real.multiply(z.imag).add(imag.multiply(z.real)));
+        return of(real.multiply(z.real).subtract(imag.multiply(z.imag)),
+                real.multiply(z.imag).add(imag.multiply(z.real)));
     }
 
     public BigComplex sqrt() {

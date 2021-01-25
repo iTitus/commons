@@ -68,7 +68,8 @@ public class IO {
     public static FileChannel openOverwriteFileChannel(Path path) {
         Objects.requireNonNull(path);
         try {
-            return FileChannel.open(path, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            return FileChannel.open(path, StandardOpenOption.WRITE, StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -77,7 +78,8 @@ public class IO {
     public static FileChannel openAppendFileChannel(Path path) {
         Objects.requireNonNull(path);
         try {
-            return FileChannel.open(path, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            return FileChannel.open(path, StandardOpenOption.WRITE, StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

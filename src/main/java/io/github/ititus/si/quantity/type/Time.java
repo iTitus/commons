@@ -1,18 +1,33 @@
 package io.github.ititus.si.quantity.type;
 
 import io.github.ititus.si.dimension.BaseDimension;
-import io.github.ititus.si.unit.BaseUnit;
-import io.github.ititus.si.unit.Unit;
+import io.github.ititus.si.quantity.Quantity;
+
+import java.time.Duration;
+
+import static io.github.ititus.si.unit.Units.NANOSECOND;
+import static io.github.ititus.si.unit.Units.SECOND;
 
 public final class Time extends AbstractQuantityType<Time> {
 
     public static final Time TIME = new Time();
 
-    public static final Unit<Time> SECOND = new BaseUnit<>(TIME, "s");
-    public static final Unit<Time> MINUTE = SECOND.multiply(60).alternate("min");
-    public static final Unit<Time> HOUR = MINUTE.multiply(60).alternate("h");
-
     private Time() {
         super(BaseDimension.TIME, () -> SECOND);
+    }
+
+    public static Quantity<Time> asFrequency(Quantity<Frequency> qty) {
+        return qty.inverse().as(TIME);
+    }
+
+    public static Duration asDuration(Quantity<Time> qty) {
+        long seconds = qty.convertTo(SECOND).getValue().longValue();
+        long nanoAdjustment = qty.subtract(SECOND.get(seconds)).convertTo(NANOSECOND).getValue().longValue();
+
+        return Duration.ofSeconds(seconds, nanoAdjustment);
+    }
+
+    public static Quantity<Time> of(Duration d) {
+        return SECOND.get(d.getSeconds()).add(NANOSECOND.get(d.getNano())).convertToStandard();
     }
 }

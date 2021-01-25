@@ -3,8 +3,11 @@ package io.github.ititus.math.statistics;
 import io.github.ititus.math.number.BigComplex;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+
+import static io.github.ititus.math.number.BigComplexConstants.ZERO;
 
 public class ComplexAverage {
 
@@ -31,15 +34,19 @@ public class ComplexAverage {
 
     public enum AveragingMode {
 
-        ARITHMETIC(numbers -> numbers.stream().reduce(BigComplex.ZERO, BigComplex::add).divide(BigComplex.real(numbers.size())));
+        ARITHMETIC(
+                numbers -> numbers.stream()
+                        .reduce(ZERO, BigComplex::add)
+                        .divide(BigComplex.real(numbers.size()))
+        );
 
-        private final Function<List<BigComplex>, BigComplex> averagingFunction;
+        private final Function<Collection<BigComplex>, BigComplex> averagingFunction;
 
-        AveragingMode(Function<List<BigComplex>, BigComplex> averagingFunction) {
+        AveragingMode(Function<Collection<BigComplex>, BigComplex> averagingFunction) {
             this.averagingFunction = averagingFunction;
         }
 
-        public BigComplex average(List<BigComplex> numbers) {
+        public BigComplex average(Collection<BigComplex> numbers) {
             return averagingFunction.apply(numbers);
         }
     }
