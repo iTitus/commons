@@ -77,4 +77,10 @@ public class BigComplexTests {
     public void test_multiply() {
         assertThat(TWO_I_TWO.multiply(ONE_I_TWO)).isCloseTO(BigComplex.of(MINUS_TWO, SIX));
     }
+
+    @Test
+    public void test_sqrt() {
+        assertThat(TWO_I_TWO.sqrt()).isCloseTo(BigComplex.of(BigRational.of(1.55377), BigRational.of(0.64359)),
+                offset(of("0.000001")));
+    }
 }
