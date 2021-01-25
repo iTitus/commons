@@ -98,6 +98,8 @@ public class BigComplexTests {
 
     @Test
     public void test_exp() {
-        assertThat(TWO_I_TWO.exp()).isCloseTo()
+        assertThat(TWO_I_TWO.exp()).isCloseTo(BigComplex.of(E.squared().multiply(TWO.cos()),
+                E.squared().multiply(TWO.sin())),
+                STRICT_EPS);
     }
 }
