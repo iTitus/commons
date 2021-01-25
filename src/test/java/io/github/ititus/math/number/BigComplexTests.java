@@ -93,7 +93,7 @@ public class BigComplexTests {
 
     @Test
     public void test_squared() {
-        assertThat(TWO_I_TWO.squared()).isCloseTo(BigComplex.of(EIGHT, BigRationalConstants.ONE), EPSILON);
+        assertThat(TWO_I_TWO.squared()).isCloseTo(BigComplex.of(BigRationalConstants.ZERO, EIGHT), EPSILON);
     }
 
     @Test
