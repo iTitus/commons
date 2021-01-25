@@ -43,4 +43,9 @@ public class BigComplexTests {
     public void test_negate() {
         assertThat(TWO_I_TWO.negate()).isCloseTo(BigComplex.of(BigRational.of(-2), BigRational.of(-2)), EPSILON);
     }
+
+    @Test
+    public void test_conjugate() {
+        assertThat(TWO_I_TWO.conjugate()).isCloseTo(BigComplex.of(BigRational.of(2), BigRational.of(-2)), EPSILON);
+    }
 }
