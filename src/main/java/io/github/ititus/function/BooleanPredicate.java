@@ -6,6 +6,7 @@ import java.util.Objects;
 public interface BooleanPredicate {
 
     BooleanPredicate IDENTITY = b -> b;
+    BooleanPredicate INVERSE = b -> !b;
     BooleanPredicate ALWAYS_TRUE = b -> true;
     BooleanPredicate ALWAYS_FALSE = b -> false;
 
