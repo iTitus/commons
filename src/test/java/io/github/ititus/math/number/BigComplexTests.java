@@ -89,4 +89,9 @@ public class BigComplexTests {
         assertThat(TWO_I_TWO.divide(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRational.of(6 / 5), BigRational.of(-2 / 5)),
                 EPSILON);
     }
+
+    @Test
+    public void test_squared() {
+        assertThat(TWO_I_TWO.squared()).isCloseTo(BigComplex.of(EIGHT, BigRationalConstants.ONE), EPSILON);
+    }
 }
