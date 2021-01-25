@@ -8,6 +8,8 @@ import static org.assertj.core.data.Offset.offset;
 
 public class BigComplexTests {
     public static final BigComplex TWO_I_TWO = BigComplex.of(BigRational.of(2), BigRational.of(2));
+    public static final BigRational TWICE_TWO_SQRT = BigRational.of(2).sqrt().multiply(BigRational.of(2));
+
     @Test
     public void test_one_real() {
         assertThat(BigComplex.ONE.getReal()).isOne();
@@ -21,5 +23,11 @@ public class BigComplexTests {
     @Test
     public void test_abs_squared() {
         assertThat(TWO_I_TWO.absSquared()).isCloseTo(BigRational.of(8), offset(of("0.001")));
+    }
+
+    @Test
+    public void test_abs() {
+        assertThat(TWO_I_TWO.absSquared()).isCloseTo(TWICE_TWO_SQRT,
+                offset(of("0.001")));
     }
 }
