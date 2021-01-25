@@ -27,7 +27,7 @@ public class BigComplexTests {
 
     @Test
     public void test_abs() {
-        assertThat(TWO_I_TWO.absSquared()).isCloseTo(TWICE_TWO_SQRT,
+        assertThat(TWO_I_TWO.abs()).isCloseTo(TWICE_TWO_SQRT,
                 offset(of("0.001")));
     }
 }
