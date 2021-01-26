@@ -25,7 +25,7 @@ public class BigComplexTests {
 
     @Test
     public void test_one_imag() {
-        assertThat(ONE.getImag()).isZero();
+        assertThat(ONE).imag().isZero();
     }
 
     @Test
