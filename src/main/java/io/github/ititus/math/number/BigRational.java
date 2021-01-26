@@ -13,7 +13,7 @@ import static io.github.ititus.math.number.BigRationalConstants.*;
 public final class BigRational extends Number implements Comparable<BigRational> {
 
     private static final Pattern RATIONAL_PATTERN = Pattern.compile(
-            "^(?<sign>[+\\-]?)(?<num>[^:/+\\-]+)(?:[:/](?<denom>[^:/+\\-]+))?$"
+            "^(?<sign>[+\\-]?)(?<num>[^:/]+?)(?:[:/](?<denom>[^:/]+?))?$"
     );
 
     private final BigInteger numerator, denominator;

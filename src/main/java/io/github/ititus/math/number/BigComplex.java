@@ -109,7 +109,7 @@ public final class BigComplex {
             imag = BigRational.of(imagString);
         }
         if (m.group("imagsign").equals("-")) {
-            real = real.negate();
+            imag = imag.negate();
         }
 
         return of(real, imag);
