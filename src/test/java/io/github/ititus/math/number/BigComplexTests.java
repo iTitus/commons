@@ -4,19 +4,21 @@ import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.assertions.Assertions.assertThat;
+import static io.github.ititus.math.number.BigComplex.imag;
+import static io.github.ititus.math.number.BigComplex.of;
 import static io.github.ititus.math.number.BigComplexConstants.ONE;
 import static io.github.ititus.math.number.BigComplexConstants.ZERO;
-import static io.github.ititus.math.number.BigRational.of;
+import static io.github.ititus.math.number.BigRational.ofExp;
 import static io.github.ititus.math.number.BigRationalConstants.*;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.data.Offset.strictOffset;
 
 public class BigComplexTests {
-    public static final BigComplex ONE_I_TWO = BigComplex.of(BigRationalConstants.ONE, TWO);
-    public static final BigComplex TWO_I_TWO = BigComplex.of(TWO, TWO);
-    public static final BigRational TWICE_TWO_SQRT = TWO.sqrt().multiply(TWO);
-    public static final Offset<BigRational> EPSILON = strictOffset(of("0.001"));
-    public static final Offset<BigRational> STRICT_EPS = strictOffset(of("0.000001"));
+    private static final BigRational TWICE_TWO_SQRT = TWO.multiply(TWO.sqrt());
+    private static final BigComplex ONE_I_TWO = of(BigRationalConstants.ONE, TWO);
+    private static final BigComplex TWO_I_TWO = of(TWO, TWO);
+
+    private static final Offset<BigRational> EPSILON = strictOffset(ofExp(1,-32));
 
     @Test
     public void test_one_real() {
@@ -45,17 +47,17 @@ public class BigComplexTests {
 
     @Test
     public void test_negate() {
-        assertThat(TWO_I_TWO.negate()).isCloseTo(BigComplex.of(MINUS_TWO, MINUS_TWO), EPSILON);
+        assertThat(TWO_I_TWO.negate()).isCloseTo(of(MINUS_TWO, MINUS_TWO), EPSILON);
     }
 
     @Test
     public void test_conjugate() {
-        assertThat(TWO_I_TWO.conjugate()).isCloseTo(BigComplex.of(TWO, MINUS_TWO), EPSILON);
+        assertThat(TWO_I_TWO.conjugate()).isCloseTo(of(TWO, MINUS_TWO), EPSILON);
     }
 
     @Test
     public void test_inverse() {
-        assertThat(TWO_I_TWO.inverse()).isCloseTo(BigComplex.of(ONE_OVER_FOUR, MINUS_ONE_OVER_FOUR), EPSILON);
+        assertThat(TWO_I_TWO.inverse()).isCloseTo(of(ONE_OVER_FOUR, MINUS_ONE_OVER_FOUR), EPSILON);
     }
 
     @Test
@@ -65,23 +67,23 @@ public class BigComplexTests {
 
     @Test
     public void test_add() {
-        assertThat(TWO_I_TWO.add(ONE_I_TWO)).isCloseTo(BigComplex.of(THREE, FOUR), EPSILON);
+        assertThat(TWO_I_TWO.add(ONE_I_TWO)).isCloseTo(of(THREE, FOUR), EPSILON);
     }
 
     @Test
     public void test_subtract() {
-        assertThat(TWO_I_TWO.subtract(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRationalConstants.ONE,
+        assertThat(TWO_I_TWO.subtract(ONE_I_TWO)).isCloseTo(of(BigRationalConstants.ONE,
                 BigRationalConstants.ZERO), EPSILON);
     }
 
     @Test
     public void test_multiply() {
-        assertThat(TWO_I_TWO.multiply(ONE_I_TWO)).isCloseTo(BigComplex.of(MINUS_TWO, SIX), EPSILON);
+        assertThat(TWO_I_TWO.multiply(ONE_I_TWO)).isCloseTo(of(MINUS_TWO, SIX), EPSILON);
     }
 
     @Test
     public void test_divide() {
-        assertThat(TWO_I_TWO.divide(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRational.of(6.0 / 5.0), BigRational.of(-2.0 / 5.0)),
+        assertThat(TWO_I_TWO.divide(ONE_I_TWO)).isCloseTo(of(BigRational.of(6.0 / 5.0), BigRational.of(-2.0 / 5.0)),
                 EPSILON);
     }
 
