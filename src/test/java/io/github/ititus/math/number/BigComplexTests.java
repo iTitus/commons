@@ -80,12 +80,6 @@ public class BigComplexTests {
     }
 
     @Test
-    public void test_sqrt() {
-        assertThat(TWO_I_TWO.sqrt()).isCloseTo(BigComplex.of(BigRational.of(1.55377), BigRational.of(0.64359)),
-                EPSILON);
-    }
-
-    @Test
     public void test_divide() {
         assertThat(TWO_I_TWO.divide(ONE_I_TWO)).isCloseTo(BigComplex.of(BigRational.of(6.0 / 5.0), BigRational.of(-2.0 / 5.0)),
                 EPSILON);
@@ -94,12 +88,5 @@ public class BigComplexTests {
     @Test
     public void test_squared() {
         assertThat(TWO_I_TWO.squared()).isCloseTo(imag(BigRationalConstants.EIGHT), EPSILON);
-    }
-
-    @Test
-    public void test_exp() {
-        // expected = e^2*(cos(2)+i*sin(2))
-        BigComplex expected = BigComplex.of(E.squared().multiply(TWO.cos()), E.squared().multiply(TWO.sin()));
-        assertThat(TWO_I_TWO.exp()).isCloseTo(expected, STRICT_EPS);
     }
 }
