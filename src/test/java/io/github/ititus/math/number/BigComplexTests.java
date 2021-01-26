@@ -20,7 +20,7 @@ public class BigComplexTests {
 
     @Test
     public void test_one_real() {
-        assertThat(ONE.getReal()).isOne();
+        assertThat(ONE).real().isOne();
     }
 
     @Test
