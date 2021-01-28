@@ -532,6 +532,24 @@ public final class BigComplex {
         return imag;
     }
 
+    public BigComplex withReal(byte real) {
+        BigRational r = BigRational.of(real);
+        if (this.real.equals(r)) {
+            return this;
+        }
+
+        return of(r, imag);
+    }
+
+    public BigComplex withReal(short real) {
+        BigRational r = BigRational.of(real);
+        if (this.real.equals(r)) {
+            return this;
+        }
+
+        return of(r, imag);
+    }
+
     public BigComplex withReal(int real) {
         BigRational r = BigRational.of(real);
         if (this.real.equals(r)) {
@@ -592,6 +610,24 @@ public final class BigComplex {
         }
 
         return of(real, imag);
+    }
+
+    public BigComplex withImag(byte imag) {
+        BigRational r = BigRational.of(imag);
+        if (this.imag.equals(r)) {
+            return this;
+        }
+
+        return of(real, r);
+    }
+
+    public BigComplex withImag(short imag) {
+        BigRational r = BigRational.of(imag);
+        if (this.imag.equals(r)) {
+            return this;
+        }
+
+        return of(real, r);
     }
 
     public BigComplex withImag(int imag) {

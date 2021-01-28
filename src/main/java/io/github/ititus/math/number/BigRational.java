@@ -338,6 +338,24 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return denominator;
     }
 
+    public BigRational withNumerator(byte numerator) {
+        BigInteger n = BigIntegerMath.of(numerator);
+        if (this.numerator.equals(n)) {
+            return this;
+        }
+
+        return of(n, denominator);
+    }
+
+    public BigRational withNumerator(short numerator) {
+        BigInteger n = BigIntegerMath.of(numerator);
+        if (this.numerator.equals(n)) {
+            return this;
+        }
+
+        return of(n, denominator);
+    }
+
     public BigRational withNumerator(int numerator) {
         BigInteger n = BigIntegerMath.of(numerator);
         if (this.numerator.equals(n)) {
@@ -362,6 +380,24 @@ public final class BigRational extends Number implements Comparable<BigRational>
         }
 
         return of(numerator, denominator);
+    }
+
+    public BigRational withDenominator(byte denominator) {
+        BigInteger n = BigIntegerMath.of(denominator);
+        if (this.denominator.equals(n)) {
+            return this;
+        }
+
+        return of(numerator, n);
+    }
+
+    public BigRational withDenominator(short denominator) {
+        BigInteger n = BigIntegerMath.of(denominator);
+        if (this.denominator.equals(n)) {
+            return this;
+        }
+
+        return of(numerator, n);
     }
 
     public BigRational withDenominator(int denominator) {
