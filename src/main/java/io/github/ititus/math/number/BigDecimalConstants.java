@@ -2,7 +2,7 @@ package io.github.ititus.math.number;
 
 import java.math.BigDecimal;
 
-import static io.github.ititus.math.number.BigDecimalMath.inverseExact;
+import static io.github.ititus.math.number.BigDecimalMath.inverse;
 import static io.github.ititus.math.number.BigDecimalMath.of;
 
 public final class BigDecimalConstants {
@@ -31,11 +31,11 @@ public final class BigDecimalConstants {
     public static final BigDecimal MINUS_NINE = NINE.negate();
     public static final BigDecimal MINUS_TEN = TEN.negate();
 
-    public static final BigDecimal ONE_OVER_TWO = inverseExact(TWO);
-    public static final BigDecimal ONE_OVER_FOUR = inverseExact(FOUR);
-    public static final BigDecimal ONE_OVER_FIVE = inverseExact(FIVE);
-    public static final BigDecimal ONE_OVER_EIGHT = inverseExact(EIGHT);
-    public static final BigDecimal ONE_OVER_TEN = inverseExact(TEN);
+    public static final BigDecimal ONE_OVER_TWO = inverse(TWO);
+    public static final BigDecimal ONE_OVER_FOUR = inverse(FOUR);
+    public static final BigDecimal ONE_OVER_FIVE = inverse(FIVE);
+    public static final BigDecimal ONE_OVER_EIGHT = inverse(EIGHT);
+    public static final BigDecimal ONE_OVER_TEN = inverse(TEN);
 
     public static final BigDecimal MINUS_ONE_OVER_TWO = ONE_OVER_TWO.negate();
     public static final BigDecimal MINUS_ONE_OVER_FOUR = ONE_OVER_FOUR.negate();

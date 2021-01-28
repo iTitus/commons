@@ -5,7 +5,6 @@ import io.github.ititus.data.ArrayUtil;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
@@ -25,6 +24,14 @@ public final class BigComplex {
     BigComplex(BigRational real, BigRational imag) {
         this.real = Objects.requireNonNull(real);
         this.imag = Objects.requireNonNull(imag);
+    }
+
+    public static BigComplex real(byte real) {
+        return real(BigRational.of(real));
+    }
+
+    public static BigComplex real(short real) {
+        return real(BigRational.of(real));
     }
 
     public static BigComplex real(int real) {
@@ -53,6 +60,14 @@ public final class BigComplex {
 
     public static BigComplex real(BigRational real) {
         return of(real, BigRationalConstants.ZERO);
+    }
+
+    public static BigComplex imag(byte imag) {
+        return imag(BigRational.of(imag));
+    }
+
+    public static BigComplex imag(short imag) {
+        return imag(BigRational.of(imag));
     }
 
     public static BigComplex imag(int imag) {
@@ -180,6 +195,78 @@ public final class BigComplex {
         return of(real, imag);
     }
 
+    public static BigComplex of(byte real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(int real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(long real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(BigInteger real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(float real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(double real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(BigDecimal real, byte imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(BigRational real, byte imag) {
+        return of(real, BigRational.of(imag));
+    }
+
+    public static BigComplex of(int real, short imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(long real, short imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(BigInteger real, short imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(float real, short imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(double real, short imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(BigDecimal real, short imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(BigRational real, short imag) {
+        return of(real, BigRational.of(imag));
+    }
+
+    public static BigComplex of(byte real, int imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, int imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
     public static BigComplex of(int real, int imag) {
         return of(BigRational.of(real), BigRational.of(imag));
     }
@@ -206,6 +293,14 @@ public final class BigComplex {
 
     public static BigComplex of(BigRational real, int imag) {
         return of(real, BigRational.of(imag));
+    }
+
+    public static BigComplex of(byte real, long imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, long imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
     }
 
     public static BigComplex of(int real, long imag) {
@@ -236,6 +331,14 @@ public final class BigComplex {
         return of(real, BigRational.of(imag));
     }
 
+    public static BigComplex of(byte real, BigInteger imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, BigInteger imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
     public static BigComplex of(int real, BigInteger imag) {
         return of(BigRational.of(real), BigRational.of(imag));
     }
@@ -262,6 +365,14 @@ public final class BigComplex {
 
     public static BigComplex of(BigRational real, BigInteger imag) {
         return of(real, BigRational.of(imag));
+    }
+
+    public static BigComplex of(byte real, float imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, float imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
     }
 
     public static BigComplex of(int real, float imag) {
@@ -292,6 +403,14 @@ public final class BigComplex {
         return of(real, BigRational.of(imag));
     }
 
+    public static BigComplex of(byte real, double imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, double imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
     public static BigComplex of(int real, double imag) {
         return of(BigRational.of(real), BigRational.of(imag));
     }
@@ -320,6 +439,14 @@ public final class BigComplex {
         return of(real, BigRational.of(imag));
     }
 
+    public static BigComplex of(byte real, BigDecimal imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
+    public static BigComplex of(short real, BigDecimal imag) {
+        return of(BigRational.of(real), BigRational.of(imag));
+    }
+
     public static BigComplex of(int real, BigDecimal imag) {
         return of(BigRational.of(real), BigRational.of(imag));
     }
@@ -346,6 +473,14 @@ public final class BigComplex {
 
     public static BigComplex of(BigRational real, BigDecimal imag) {
         return of(real, BigRational.of(imag));
+    }
+
+    public static BigComplex of(byte real, BigRational imag) {
+        return of(BigRational.of(real), imag);
+    }
+
+    public static BigComplex of(short real, BigRational imag) {
+        return of(BigRational.of(real), imag);
     }
 
     public static BigComplex of(int real, BigRational imag) {
@@ -548,22 +683,62 @@ public final class BigComplex {
 
     public BigComplex inverse() {
         if (isZero()) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("zero is not invertible");
+        } else if (isOne()) {
+            return ONE;
         }
 
         BigRational z = absSquared();
         return of(real.divide(z), imag.divide(z).negate());
     }
 
+    public BigComplex add(byte n) {
+        if (isZero()) {
+            return of(n);
+        } else if (n == 0) {
+            return this;
+        }
+
+        return add(real(n));
+    }
+
+    public BigComplex add(short n) {
+        if (isZero()) {
+            return of(n);
+        } else if (n == 0) {
+            return this;
+        }
+
+        return add(real(n));
+    }
+
     public BigComplex add(int n) {
+        if (isZero()) {
+            return of(n);
+        } else if (n == 0) {
+            return this;
+        }
+
         return add(real(n));
     }
 
     public BigComplex add(long n) {
+        if (isZero()) {
+            return of(n);
+        } else if (n == 0) {
+            return this;
+        }
+
         return add(real(n));
     }
 
     public BigComplex add(BigInteger n) {
+        if (isZero()) {
+            return of(n);
+        } else if (n.signum() == 0) {
+            return this;
+        }
+
         return add(real(n));
     }
 

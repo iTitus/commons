@@ -52,6 +52,14 @@ public final class BigIntegerMath {
         throw new IllegalArgumentException(o + " cannot be converted to BigInteger");
     }
 
+    public static BigInteger of(byte n) {
+        return BigInteger.valueOf(n);
+    }
+
+    public static BigInteger of(short n) {
+        return BigInteger.valueOf(n);
+    }
+
     public static BigInteger of(int n) {
         return BigInteger.valueOf(n);
     }
@@ -91,7 +99,6 @@ public final class BigIntegerMath {
         }
 
         BigInteger n = ONE;
-
         while (exponent.signum() > 0) {
             if (BigIntegerMath.isOdd(exponent)) {
                 n = n.multiply(base);
@@ -116,6 +123,10 @@ public final class BigIntegerMath {
     public static BigInteger lcm(BigInteger a, BigInteger b) {
         if (a.equals(ZERO) || b.equals(ZERO)) {
             throw new ArithmeticException();
+        } else if (a.equals(ONE)) {
+            return b;
+        } else if (b.equals(ONE)) {
+            return a;
         }
 
         return a.divide(gcd(a, b)).multiply(b).abs();

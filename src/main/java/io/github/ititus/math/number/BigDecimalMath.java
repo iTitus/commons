@@ -37,6 +37,8 @@ public final class BigDecimalMath {
             return of((double) o);
         } else if (o instanceof BigRational) {
             return of((BigRational) o);
+        } else if (o instanceof Number) {
+            return of(((Number) o).doubleValue());
         } else if (o instanceof BigComplex) {
             return of((BigComplex) o);
         } else if (o instanceof Collection) {
@@ -63,6 +65,14 @@ public final class BigDecimalMath {
 
     public static BigDecimal of(BigDecimal d) {
         return Objects.requireNonNull(d);
+    }
+
+    public static BigDecimal of(byte n) {
+        return BigDecimal.valueOf(n);
+    }
+
+    public static BigDecimal of(short n) {
+        return BigDecimal.valueOf(n);
     }
 
     public static BigDecimal of(int n) {
@@ -113,12 +123,8 @@ public final class BigDecimalMath {
         }
     }
 
-    public static BigDecimal inverseExact(BigDecimal d) {
-        return ONE.divide(d, RoundingMode.UNNECESSARY);
-    }
-
     public static BigDecimal inverse(BigDecimal d) {
-        return inverse(d, MC);
+        return inverse(d, MathContext.UNLIMITED);
     }
 
     public static BigDecimal inverse(BigDecimal d, RoundingMode rm) {

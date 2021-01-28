@@ -15,6 +15,66 @@ public final class BigRationalMath {
     }
 
     @SuppressWarnings("Duplicates")
+    public static BigRational pow(BigRational base, byte exponent) {
+        if (base.isOne() || exponent == 0) {
+            return ONE;
+        } else if (base.isZero()) {
+            return ZERO;
+        } else if (exponent == 1) {
+            return base;
+        } else if (exponent == 2) {
+            return base.squared();
+        } else if (exponent == Byte.MIN_VALUE) {
+            return pow(base, (short) 128).inverse();
+        } else if (exponent < 0) {
+            return pow(base, -exponent).inverse();
+        }
+
+        BigRational r = ONE;
+        while (exponent > 0) {
+            if (exponent % 2 != 0) {
+                r = r.multiply(base);
+                exponent -= 1;
+            } else {
+                base = base.squared();
+                exponent /= 2;
+            }
+        }
+
+        return r;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static BigRational pow(BigRational base, short exponent) {
+        if (base.isOne() || exponent == 0) {
+            return ONE;
+        } else if (base.isZero()) {
+            return ZERO;
+        } else if (exponent == 1) {
+            return base;
+        } else if (exponent == 2) {
+            return base.squared();
+        } else if (exponent == Short.MIN_VALUE) {
+            return pow(base, 32_768).inverse();
+        } else if (exponent < 0) {
+            return pow(base, -exponent).inverse();
+        }
+
+        BigRational r = ONE;
+        while (exponent > 0) {
+            if (exponent % 2 != 0) {
+                r = r.multiply(base);
+                exponent -= 1;
+            } else {
+                base = base.squared();
+                exponent /= 2;
+            }
+        }
+
+        return r;
+    }
+
+    @SuppressWarnings("Duplicates")
     public static BigRational pow(BigRational base, int exponent) {
         if (base.isOne() || exponent == 0) {
             return ONE;
@@ -24,6 +84,8 @@ public final class BigRationalMath {
             return base;
         } else if (exponent == 2) {
             return base.squared();
+        } else if (exponent == Integer.MIN_VALUE) {
+            return pow(base, 2_147_483_648L).inverse();
         } else if (exponent < 0) {
             return pow(base, -exponent).inverse();
         }
@@ -52,6 +114,8 @@ public final class BigRationalMath {
             return base;
         } else if (exponent == 2) {
             return base.squared();
+        } else if (exponent == Long.MIN_VALUE) {
+            return pow(base, BigIntegerConstants.MINUS_LONG_MIN_VALUE).inverse();
         } else if (exponent < 0) {
             return pow(base, -exponent).inverse();
         }

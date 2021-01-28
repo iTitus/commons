@@ -29,6 +29,8 @@ public final class BigIntegerConstants {
     public static final BigInteger MINUS_NINE = NINE.negate();
     public static final BigInteger MINUS_TEN = TEN.negate();
 
+    public static final BigInteger MINUS_LONG_MIN_VALUE = ONE.shiftLeft(63);
+
     private BigIntegerConstants() {
     }
 }
