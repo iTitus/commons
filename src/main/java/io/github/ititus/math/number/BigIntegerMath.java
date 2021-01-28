@@ -1,9 +1,10 @@
 package io.github.ititus.math.number;
 
+import io.github.ititus.data.ArrayUtil;
+
+import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import static io.github.ititus.math.number.BigIntegerConstants.ONE;
 import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
@@ -15,12 +16,60 @@ public final class BigIntegerMath {
     private BigIntegerMath() {
     }
 
+    public static BigInteger of(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof BigInteger) {
+            return (BigInteger) o;
+        } else if (o instanceof String) {
+            return of((String) o);
+        } else if (o instanceof Integer) {
+            return of((int) o);
+        } else if (o instanceof Long) {
+            return of((long) o);
+        } else if (o instanceof BigRational) {
+            return of((BigRational) o);
+        } else if (o instanceof BigComplex) {
+            return of((BigComplex) o);
+        } else if (o instanceof Collection) {
+            Collection<?> c = (Collection<?>) o;
+            if (c.size() == 1) {
+                try {
+                    return of(c.iterator().next());
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(o + " cannot be converted to BigInteger", e);
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return of(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(ArrayUtil.toString(o) + " cannot be converted to BigInteger", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(o + " cannot be converted to BigInteger");
+    }
+
     public static BigInteger of(int n) {
         return BigInteger.valueOf(n);
     }
 
     public static BigInteger of(long n) {
         return BigInteger.valueOf(n);
+    }
+
+    public static BigInteger of(BigInteger n) {
+        return Objects.requireNonNull(n);
+    }
+
+    public static BigInteger of(BigRational r) {
+        return r.toBigIntegerExact();
+    }
+
+    public static BigInteger of(BigComplex z) {
+        return BigRational.of(z).toBigIntegerExact();
     }
 
     public static BigInteger of(String s) {

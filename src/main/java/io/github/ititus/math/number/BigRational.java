@@ -1,9 +1,13 @@
 package io.github.ititus.math.number;
 
+import io.github.ititus.data.ArrayUtil;
+
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +38,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     }
 
     public static BigRational of(Object o) {
+        Objects.requireNonNull(o);
         if (o instanceof BigRational) {
             return (BigRational) o;
         } else if (o instanceof String) {
@@ -50,13 +55,41 @@ public final class BigRational extends Number implements Comparable<BigRational>
             return of((double) o);
         } else if (o instanceof BigDecimal) {
             return of((BigDecimal) o);
+        } else if (o instanceof BigComplex) {
+            return of((BigComplex) o);
+        } else if (o instanceof Collection) {
+            Collection<?> c = (Collection<?>) o;
+            if (c.size() == 1) {
+                try {
+                    return of(c.iterator().next());
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(o + " cannot be converted to BigRational", e);
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return of(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(ArrayUtil.toString(o) + " cannot be converted to BigRational",
+                            e);
+                }
+            }
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(o + " cannot be converted to BigRational");
     }
 
     public static BigRational of(BigRational r) {
-        return r;
+        return Objects.requireNonNull(r);
+    }
+
+    public static BigRational of(BigComplex z) {
+        if (!z.isReal()) {
+            throw new ArithmeticException(z + " cannot be converted to BigRational because it has an imaginary part");
+        }
+
+        return z.getReal();
     }
 
     public static BigRational of(String s) {
@@ -456,7 +489,10 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public BigRational squared() {
         if (sqCache == null) {
             sqCache = of(numerator.multiply(numerator), denominator.multiply(denominator));
-            sqCache.sqrtCache = this;
+            sqCache.sqrtCache = abs();
+
+            BigRational neg = negate();
+            neg.sqCache = sqCache;
         }
 
         return sqCache;
@@ -466,6 +502,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
         if (sqrtCache == null) {
             sqrtCache = of(toBigDecimal().sqrt(BigDecimalMath.MC));
             sqrtCache.sqCache = this;
+            sqrtCache.negate().sqCache = this;
         }
 
         return sqrtCache;
@@ -697,7 +734,11 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     public BigDecimal toBigDecimal() {
         if (decimalCache == null) {
-            decimalCache = BigDecimalMath.of(this);
+            if (isBigInteger()) {
+                decimalCache = BigDecimalMath.of(toBigInteger());
+            } else {
+                decimalCache = BigDecimalMath.of(numerator).divide(BigDecimalMath.of(denominator), BigDecimalMath.MC);
+            }
         }
 
         return decimalCache;

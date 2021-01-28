@@ -1,7 +1,13 @@
 package io.github.ititus.math.number;
 
+import io.github.ititus.data.ArrayUtil;
+
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,12 +39,20 @@ public final class BigComplex {
         return real(BigRational.of(real));
     }
 
-    public static BigComplex real(BigRational real) {
-        return of(real, BigRationalConstants.ZERO);
+    public static BigComplex real(float real) {
+        return real(BigRational.of(real));
+    }
+
+    public static BigComplex real(double real) {
+        return real(BigRational.of(real));
     }
 
     public static BigComplex real(BigDecimal real) {
-        return of(BigRational.of(real), BigRationalConstants.ZERO);
+        return real(BigRational.of(real));
+    }
+
+    public static BigComplex real(BigRational real) {
+        return of(real, BigRationalConstants.ZERO);
     }
 
     public static BigComplex imag(int imag) {
@@ -53,26 +67,77 @@ public final class BigComplex {
         return imag(BigRational.of(imag));
     }
 
+    public static BigComplex imag(float imag) {
+        return imag(BigRational.of(imag));
+    }
+
+    public static BigComplex imag(double imag) {
+        return imag(BigRational.of(imag));
+    }
+
+    public static BigComplex imag(BigDecimal imag) {
+        return imag(BigRational.of(imag));
+    }
+
     public static BigComplex imag(BigRational imag) {
         return of(BigRationalConstants.ZERO, imag);
     }
 
-    public static BigComplex imag(BigDecimal imag) {
-        return of(BigRationalConstants.ZERO, BigRational.of(imag));
-    }
-
     public static BigComplex of(Object o) {
+        Objects.requireNonNull(o);
         if (o instanceof BigComplex) {
             return (BigComplex) o;
         } else if (o instanceof String) {
             return of((String) o);
+        } else if (o instanceof Collection) {
+            Collection<?> c = (Collection<?>) o;
+            if (c.size() == 1 || c.size() == 2) {
+                Iterator<?> it = c.iterator();
+                try {
+                    BigRational real = BigRational.of(it.next());
+
+                    BigRational imag;
+                    if (it.hasNext()) {
+                        imag = BigRational.of(it.next());
+                    } else {
+                        imag = BigRationalConstants.ZERO;
+                    }
+
+                    return of(real, imag);
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(o + " cannot be converted to BigComplex", e);
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            int length = Array.getLength(o);
+            if (length == 1 || length == 2) {
+                try {
+                    BigRational real = BigRational.of(Array.get(o, 0));
+
+                    BigRational imag;
+                    if (length == 2) {
+                        imag = BigRational.of(Array.get(o, 1));
+                    } else {
+                        imag = BigRationalConstants.ZERO;
+                    }
+
+                    return of(real, imag);
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(ArrayUtil.toString(o) + " cannot be converted to BigComplex", e);
+                }
+            }
         }
 
-        throw new IllegalArgumentException();
+        try {
+            BigRational real = BigRational.of(o);
+            return real(real);
+        } catch (RuntimeException e) {
+            throw new IllegalArgumentException(o + " cannot be converted to BigComplex", e);
+        }
     }
 
     public static BigComplex of(BigComplex z) {
-        return z;
+        return Objects.requireNonNull(z);
     }
 
     public static BigComplex of(String s) {
@@ -490,12 +555,96 @@ public final class BigComplex {
         return of(real.divide(z), imag.divide(z).negate());
     }
 
+    public BigComplex add(int n) {
+        return add(real(n));
+    }
+
+    public BigComplex add(long n) {
+        return add(real(n));
+    }
+
+    public BigComplex add(BigInteger n) {
+        return add(real(n));
+    }
+
+    public BigComplex add(float f) {
+        return add(real(f));
+    }
+
+    public BigComplex add(double d) {
+        return add(real(d));
+    }
+
+    public BigComplex add(BigDecimal d) {
+        return add(real(d));
+    }
+
+    public BigComplex add(BigRational r) {
+        return add(real(r));
+    }
+
     public BigComplex add(BigComplex z) {
         return of(real.add(z.real), imag.add(z.imag));
     }
 
+    public BigComplex subtract(int n) {
+        return subtract(real(n));
+    }
+
+    public BigComplex subtract(long n) {
+        return subtract(real(n));
+    }
+
+    public BigComplex subtract(BigInteger n) {
+        return subtract(real(n));
+    }
+
+    public BigComplex subtract(float f) {
+        return subtract(real(f));
+    }
+
+    public BigComplex subtract(double d) {
+        return subtract(real(d));
+    }
+
+    public BigComplex subtract(BigDecimal d) {
+        return subtract(real(d));
+    }
+
+    public BigComplex subtract(BigRational r) {
+        return subtract(real(r));
+    }
+
     public BigComplex subtract(BigComplex z) {
         return add(z.negate());
+    }
+
+    public BigComplex multiply(int n) {
+        return multiply(real(n));
+    }
+
+    public BigComplex multiply(long n) {
+        return multiply(real(n));
+    }
+
+    public BigComplex multiply(BigInteger n) {
+        return multiply(real(n));
+    }
+
+    public BigComplex multiply(float f) {
+        return multiply(real(f));
+    }
+
+    public BigComplex multiply(double d) {
+        return multiply(real(d));
+    }
+
+    public BigComplex multiply(BigDecimal d) {
+        return multiply(real(d));
+    }
+
+    public BigComplex multiply(BigRational r) {
+        return multiply(real(r));
     }
 
     public BigComplex multiply(BigComplex z) {
@@ -503,8 +652,32 @@ public final class BigComplex {
                 real.multiply(z.imag).add(imag.multiply(z.real)));
     }
 
-    public BigComplex sqrt() {
-        return BigComplexMath.sqrt(this);
+    public BigComplex divide(int n) {
+        return divide(real(n));
+    }
+
+    public BigComplex divide(long n) {
+        return divide(real(n));
+    }
+
+    public BigComplex divide(BigInteger n) {
+        return divide(real(n));
+    }
+
+    public BigComplex divide(float f) {
+        return divide(real(f));
+    }
+
+    public BigComplex divide(double d) {
+        return divide(real(d));
+    }
+
+    public BigComplex divide(BigDecimal d) {
+        return divide(real(d));
+    }
+
+    public BigComplex divide(BigRational r) {
+        return divide(real(r));
     }
 
     public BigComplex divide(BigComplex z) {
@@ -515,20 +688,48 @@ public final class BigComplex {
         return multiply(this);
     }
 
+    public BigComplex sqrt() {
+        return BigComplexMath.sqrt(this);
+    }
+
+    public BigComplex pow(int exponent) {
+        return pow(BigIntegerMath.of(exponent));
+    }
+
+    public BigComplex pow(long exponent) {
+        return pow(BigIntegerMath.of(exponent));
+    }
+
+    public BigComplex pow(BigInteger exponent) {
+        return BigComplexMath.pow(this, exponent);
+    }
+
+    public BigComplex pow(float exponent) {
+        return pow(BigRational.of(exponent));
+    }
+
+    public BigComplex pow(double exponent) {
+        return pow(BigRational.of(exponent));
+    }
+
+    public BigComplex pow(BigDecimal exponent) {
+        return pow(BigRational.of(exponent));
+    }
+
+    public BigComplex pow(BigRational exponent) {
+        return BigComplexMath.pow(this, exponent);
+    }
+
+    public BigComplex pow(BigComplex exponent) {
+        return BigComplexMath.pow(this, exponent);
+    }
+
     public BigComplex exp() {
         return BigComplexMath.exp(this);
     }
 
     public BigComplex ln() {
         return BigComplexMath.ln(this);
-    }
-
-    public BigComplex pow(int exponent) {
-        return pow(BigComplex.real(exponent));
-    }
-
-    public BigComplex pow(BigComplex exponent) {
-        return BigComplexMath.pow(this, exponent);
     }
 
     public BigComplex log(BigComplex base) {

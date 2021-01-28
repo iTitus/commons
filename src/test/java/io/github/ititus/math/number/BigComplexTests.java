@@ -1,14 +1,22 @@
 package io.github.ititus.math.number;
 
+import io.github.ititus.converters.BigComplexArgumentConverter;
+import io.github.ititus.converters.BigRationalArgumentConverter;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static io.github.ititus.assertions.Assertions.assertThat;
 import static io.github.ititus.math.number.BigComplex.of;
-import static io.github.ititus.math.number.BigComplexConstants.MINUS_ONE;
-import static io.github.ititus.math.number.BigComplexConstants.ZERO;
+import static io.github.ititus.math.number.BigComplexConstants.*;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.data.Offset.strictOffset;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class BigComplexTests {
 
@@ -16,6 +24,36 @@ class BigComplexTests {
     private static final BigComplex TWO_I_TWO = of("2 + 2i");
 
     private static final Offset<BigRational> EPS = strictOffset(BigRational.of("1e-33"));
+
+    static Stream<Arguments> test_abs() {
+        return Stream.of(
+                arguments(ONE, 1),
+                arguments(MINUS_ONE, 1),
+                arguments(I, 1),
+                arguments(MINUS_I, 1),
+                arguments(ONE_I_TWO, BigRationalConstants.FIVE.sqrt())
+        );
+    }
+
+    static Stream<Arguments> test_angle() {
+        return Stream.of(
+                arguments(ONE, ZERO),
+                arguments(MINUS_ONE, PI),
+                arguments(I, PI.divide(2)),
+                arguments(MINUS_I, PI.divide(-2)),
+                arguments(ONE_I_TWO, "1.1071487177940905030170654601785370400700476454014326466765392074")
+        );
+    }
+
+    static Stream<Arguments> test_inverse() {
+        return Stream.of(
+                arguments(ONE, ONE),
+                arguments(MINUS_ONE, MINUS_ONE),
+                arguments(I, MINUS_I),
+                arguments(MINUS_I, I),
+                arguments(ONE_I_TWO, "1/5 - 2/5 i")
+        );
+    }
 
     @Test
     void test_real() {
@@ -38,18 +76,25 @@ class BigComplexTests {
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
-    @Test
-    void test_abs() {
-        BigRational actual = ONE_I_TWO.abs();
-        BigRational expected = BigRationalConstants.FIVE.sqrt();
+    @ParameterizedTest
+    @MethodSource
+    void test_abs(@ConvertWith(BigComplexArgumentConverter.class) BigComplex z,
+                  @ConvertWith(BigRationalArgumentConverter.class) BigRational expected) {
+        BigRational actual = z.abs();
+        assertThat(actual).isCloseTo(expected, EPS);
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void test_angle(@ConvertWith(BigComplexArgumentConverter.class) BigComplex z,
+                    @ConvertWith(BigRationalArgumentConverter.class) BigRational expected) {
+        BigRational actual = z.angle();
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
     @Test
-    void test_angle() {
-        BigRational actual = ONE_I_TWO.angle();
-        BigRational expected = BigRational.of("1.1071487177940905030170654601785370400700476454014326466765392074");
-        assertThat(actual).isCloseTo(expected, EPS);
+    void test_angle_zero() {
+        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(ZERO::angle);
     }
 
     @Test
@@ -66,10 +111,11 @@ class BigComplexTests {
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
-    @Test
-    void test_inverse() {
-        BigComplex actual = ONE_I_TWO.inverse();
-        BigComplex expected = of("1/5 - 2/5 i");
+    @ParameterizedTest
+    @MethodSource
+    void test_inverse(@ConvertWith(BigComplexArgumentConverter.class) BigComplex z,
+                      @ConvertWith(BigComplexArgumentConverter.class) BigComplex expected) {
+        BigComplex actual = z.inverse();
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
@@ -104,6 +150,11 @@ class BigComplexTests {
         BigComplex actual = ONE_I_TWO.divide(TWO_I_TWO);
         BigComplex expected = of("3/4 + 1/4 i");
         assertThat(actual).isCloseTo(expected, EPS);
+    }
+
+    @Test
+    void test_divide_zero() {
+        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(() -> ONE_I_TWO.divide(ZERO));
     }
 
     @Test

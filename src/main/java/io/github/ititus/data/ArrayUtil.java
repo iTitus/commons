@@ -70,4 +70,66 @@ public final class ArrayUtil {
     public static int hash(double... arr) {
         return Arrays.hashCode(arr);
     }
+
+    public static String toString(Object arr) {
+        if (arr == null) {
+            return "null";
+        }
+
+        Class<?> clazz = arr.getClass();
+        if (!clazz.isArray()) {
+            throw new IllegalArgumentException("given object " + arr + " is not an array");
+        }
+
+        if (clazz == byte[].class) {
+            return Arrays.toString((byte[]) arr);
+        } else if (clazz == short[].class) {
+            return Arrays.toString((short[]) arr);
+        } else if (clazz == int[].class) {
+            return Arrays.toString((int[]) arr);
+        } else if (clazz == long[].class) {
+            return Arrays.toString((long[]) arr);
+        } else if (clazz == char[].class) {
+            return Arrays.toString((char[]) arr);
+        } else if (clazz == float[].class) {
+            return Arrays.toString((float[]) arr);
+        } else if (clazz == double[].class) {
+            return Arrays.toString((double[]) arr);
+        } else if (clazz == boolean[].class) {
+            return Arrays.toString((boolean[]) arr);
+        }
+
+        return Arrays.toString((Object[]) arr);
+    }
+
+    public static String deepToString(Object arr) {
+        if (arr == null) {
+            return "null";
+        }
+
+        Class<?> clazz = arr.getClass();
+        if (!clazz.isArray()) {
+            throw new IllegalArgumentException("given object " + arr + " is not an array");
+        }
+
+        if (clazz == byte[].class) {
+            return Arrays.toString((byte[]) arr);
+        } else if (clazz == short[].class) {
+            return Arrays.toString((short[]) arr);
+        } else if (clazz == int[].class) {
+            return Arrays.toString((int[]) arr);
+        } else if (clazz == long[].class) {
+            return Arrays.toString((long[]) arr);
+        } else if (clazz == char[].class) {
+            return Arrays.toString((char[]) arr);
+        } else if (clazz == float[].class) {
+            return Arrays.toString((float[]) arr);
+        } else if (clazz == double[].class) {
+            return Arrays.toString((double[]) arr);
+        } else if (clazz == boolean[].class) {
+            return Arrays.toString((boolean[]) arr);
+        }
+
+        return Arrays.deepToString((Object[]) arr);
+    }
 }
