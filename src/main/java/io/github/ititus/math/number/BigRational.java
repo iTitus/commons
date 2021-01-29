@@ -1,14 +1,17 @@
 package io.github.ititus.math.number;
 
 import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.data.ObjectUtil;
+import io.github.ititus.si.quantity.value.QuantityValue;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.concurrent.atomic.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +43,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public static BigRational of(Object o) {
         Objects.requireNonNull(o);
         if (o instanceof BigRational) {
-            return (BigRational) o;
+            return of((BigRational) o);
         } else if (o instanceof String) {
             return of((String) o);
         } else if (o instanceof Byte) {
@@ -49,27 +52,45 @@ public final class BigRational extends Number implements Comparable<BigRational>
             return of((short) o);
         } else if (o instanceof Integer) {
             return of((int) o);
+        } else if (o instanceof AtomicInteger) {
+            return of(((AtomicInteger) o).get());
         } else if (o instanceof Long) {
             return of((long) o);
+        } else if (o instanceof AtomicLong) {
+            return of(((AtomicLong) o).get());
+        } else if (o instanceof LongAdder) {
+            return of(((LongAdder) o).sum());
+        } else if (o instanceof LongAccumulator) {
+            return of(((LongAccumulator) o).get());
         } else if (o instanceof BigInteger) {
             return of((BigInteger) o);
         } else if (o instanceof Float) {
             return of((float) o);
         } else if (o instanceof Double) {
             return of((double) o);
+        } else if (o instanceof DoubleAdder) {
+            return of(((DoubleAdder) o).sum());
+        } else if (o instanceof DoubleAccumulator) {
+            return of(((DoubleAccumulator) o).get());
         } else if (o instanceof BigDecimal) {
             return of((BigDecimal) o);
+        } else if (o instanceof QuantityValue) {
+            return of(((QuantityValue) o).bigRationalValue());
         } else if (o instanceof Number) {
             return of(((Number) o).doubleValue());
         } else if (o instanceof BigComplex) {
             return of((BigComplex) o);
-        } else if (o instanceof Collection) {
-            Collection<?> c = (Collection<?>) o;
-            if (c.size() == 1) {
-                try {
-                    return of(c.iterator().next());
-                } catch (RuntimeException e) {
-                    throw new IllegalArgumentException(o + " cannot be converted to BigRational", e);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object real = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return of(real);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to BigRational", e);
+                    }
                 }
             }
         } else if (o.getClass().isArray()) {
@@ -77,13 +98,13 @@ public final class BigRational extends Number implements Comparable<BigRational>
                 try {
                     return of(Array.get(o, 0));
                 } catch (RuntimeException e) {
-                    throw new IllegalArgumentException(ArrayUtil.toString(o) + " cannot be converted to BigRational",
-                            e);
+                    throw new IllegalArgumentException(
+                            ArrayUtil.toString(o) + " cannot be converted to BigRational", e);
                 }
             }
         }
 
-        throw new IllegalArgumentException(o + " cannot be converted to BigRational");
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to BigRational");
     }
 
     public static BigRational of(BigRational r) {

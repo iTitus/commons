@@ -1,6 +1,6 @@
 package io.github.ititus.data;
 
-public final class Bag<T> {
+public final class Bag<T> implements DeepToString {
 
     private T content;
 
@@ -22,6 +22,11 @@ public final class Bag<T> {
 
     @Override
     public String toString() {
-        return "Bag{" + content + "}";
+        return "<" + content + ">";
+    }
+
+    @Override
+    public String deepToString() {
+        return "<" + ObjectUtil.deepToString(content) + ">";
     }
 }

@@ -1,56 +1,23 @@
 package io.github.ititus.data.pair;
 
-import java.util.Objects;
+import io.github.ititus.data.DeepToString;
 
-public final class Pair<A, B> {
+public interface Pair<A, B> extends DeepToString {
 
-    private final A a;
-    private final B b;
-
-    private Pair(A a, B b) {
-        this.a = a;
-        this.b = b;
+    static <A, B> Pair<A, B> of(A a, B b) {
+        return new PairImpl<>(a, b);
     }
 
-    public static <A, B> Pair<A, B> of(A a, B b) {
-        return new Pair<>(a, b);
-    }
-
-    public static IntIntPair of(int a, int b) {
+    static IntIntPair of(int a, int b) {
         return IntIntPair.of(a, b);
     }
 
-    public static LongLongPair of(long a, long b) {
+    static LongLongPair of(long a, long b) {
         return LongLongPair.of(a, b);
     }
 
-    public A a() {
-        return a;
-    }
+    A a();
 
-    public B b() {
-        return b;
-    }
+    B b();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Pair)) {
-            return false;
-        }
-        Pair<?, ?> pair = (Pair<?, ?>) o;
-        return Objects.equals(a, pair.a) && Objects.equals(b, pair.b);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(a, b);
-    }
-
-    @Override
-    public String toString() {
-        return "<" + a + "," + b + ">";
-    }
 }

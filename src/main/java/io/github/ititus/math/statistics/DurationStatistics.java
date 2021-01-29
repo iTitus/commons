@@ -7,7 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public class DurationStatistics {
+import static java.time.Duration.ZERO;
+
+
+public final class DurationStatistics {
 
     private final AveragingMode averagingMode;
     private final List<Duration> durations;
@@ -19,6 +22,11 @@ public class DurationStatistics {
 
     public static DurationStatistics arithmetic() {
         return new DurationStatistics(AveragingMode.ARITHMETIC);
+    }
+
+    public Duration sum() {
+        return durations.stream()
+                .reduce(ZERO, Duration::plus);
     }
 
     public Duration average() {
@@ -38,9 +46,17 @@ public class DurationStatistics {
         return this;
     }
 
+    public DurationStatistics addAll(Collection<Duration> ds) {
+        durations.addAll(ds);
+        return this;
+    }
+
     public enum AveragingMode {
 
-        ARITHMETIC(durations -> durations.stream().reduce(Duration.ZERO, Duration::plus).dividedBy(durations.size()));
+        ARITHMETIC(durations -> durations.stream()
+                .reduce(ZERO, Duration::plus)
+                .dividedBy(durations.size())
+        );
 
         private final Function<Collection<Duration>, Duration> averagingFunction;
 

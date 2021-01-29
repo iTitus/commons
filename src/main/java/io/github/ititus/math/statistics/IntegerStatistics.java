@@ -8,10 +8,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collector;
 
-import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
+import static io.github.ititus.math.number.BigRationalConstants.ONE;
+import static io.github.ititus.math.number.BigRationalConstants.ZERO;
 
-public class IntegerStatistics {
+public final class IntegerStatistics {
 
     private final AveragingMode averagingMode;
     private final List<BigInteger> numbers;
@@ -23,6 +25,48 @@ public class IntegerStatistics {
 
     public static IntegerStatistics arithmetic() {
         return new IntegerStatistics(AveragingMode.ARITHMETIC);
+    }
+
+    public static IntegerStatistics geometric() {
+        return new IntegerStatistics(AveragingMode.GEOMETRIC);
+    }
+
+    public static IntegerStatistics harmonic() {
+        return new IntegerStatistics(AveragingMode.HARMONIC);
+    }
+
+    public static Collector<BigInteger, IntegerStatistics, IntegerStatistics> arithmeticCollector() {
+        return Collector.of(
+                IntegerStatistics::arithmetic,
+                IntegerStatistics::add,
+                (a, b) -> a.addAll(b.numbers)
+        );
+    }
+
+    public static Collector<BigInteger, IntegerStatistics, IntegerStatistics> geometricCollector() {
+        return Collector.of(
+                IntegerStatistics::geometric,
+                IntegerStatistics::add,
+                (a, b) -> a.addAll(b.numbers)
+        );
+    }
+
+    public static Collector<BigInteger, IntegerStatistics, IntegerStatistics> harmonicCollector() {
+        return Collector.of(
+                IntegerStatistics::harmonic,
+                IntegerStatistics::add,
+                (a, b) -> a.addAll(b.numbers)
+        );
+    }
+
+    public BigInteger sum() {
+        return numbers.stream()
+                .reduce(BigInteger.ZERO, BigInteger::add);
+    }
+
+    public BigInteger product() {
+        return numbers.stream()
+                .reduce(BigInteger.ONE, BigInteger::multiply);
     }
 
     public BigRational average() {
@@ -42,9 +86,32 @@ public class IntegerStatistics {
         return this;
     }
 
+    public IntegerStatistics addAll(Collection<BigInteger> ns) {
+        numbers.addAll(ns);
+        return this;
+    }
+
     public enum AveragingMode {
 
-        ARITHMETIC(numbers -> BigRational.of(numbers.stream().reduce(ZERO, BigInteger::add)).divide(BigRational.of(numbers.size())));
+        ARITHMETIC(
+                numbers -> numbers.stream()
+                        .map(BigRational::of)
+                        .reduce(ZERO, BigRational::add)
+                        .divide(numbers.size())
+        ),
+        GEOMETRIC(
+                numbers -> numbers.stream()
+                        .map(BigRational::of)
+                        .reduce(ONE, BigRational::multiply)
+                        .pow(BigRational.ofInv(numbers.size()))
+        ),
+        HARMONIC(
+                numbers -> numbers.stream()
+                        .map(BigRational::ofInv)
+                        .reduce(ZERO, BigRational::add)
+                        .inverse()
+                        .multiply(numbers.size())
+        );
 
         private final Function<Collection<BigInteger>, BigRational> averagingFunction;
 

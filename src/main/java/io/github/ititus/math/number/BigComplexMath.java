@@ -45,9 +45,7 @@ public final class BigComplexMath {
             return pow(base, exponent.toBigInteger());
         } else if (exponent.isNegative()) {
             return pow(base, exponent.negate()).inverse();
-        }
-
-        if (exponent.equals(BigRationalConstants.ONE_OVER_TWO)) {
+        } else if (exponent.equals(BigRationalConstants.ONE_OVER_TWO)) {
             return base.sqrt();
         }
 

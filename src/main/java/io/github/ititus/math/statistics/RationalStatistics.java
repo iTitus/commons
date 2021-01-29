@@ -1,15 +1,18 @@
 package io.github.ititus.math.statistics;
 
 import io.github.ititus.math.number.BigRational;
-import io.github.ititus.math.number.BigRationalConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collector;
 
-public class RationalStatistics {
+import static io.github.ititus.math.number.BigRationalConstants.ONE;
+import static io.github.ititus.math.number.BigRationalConstants.ZERO;
+
+public final class RationalStatistics {
 
     private final AveragingMode averagingMode;
     private final List<BigRational> numbers;
@@ -21,6 +24,48 @@ public class RationalStatistics {
 
     public static RationalStatistics arithmetic() {
         return new RationalStatistics(AveragingMode.ARITHMETIC);
+    }
+
+    public static RationalStatistics geometric() {
+        return new RationalStatistics(AveragingMode.GEOMETRIC);
+    }
+
+    public static RationalStatistics harmonic() {
+        return new RationalStatistics(AveragingMode.HARMONIC);
+    }
+
+    public static Collector<BigRational, RationalStatistics, RationalStatistics> arithmeticCollector() {
+        return Collector.of(
+                RationalStatistics::arithmetic,
+                RationalStatistics::add,
+                (a, b) -> a.addAll(b.numbers)
+        );
+    }
+
+    public static Collector<BigRational, RationalStatistics, RationalStatistics> geometricCollector() {
+        return Collector.of(
+                RationalStatistics::geometric,
+                RationalStatistics::add,
+                (a, b) -> a.addAll(b.numbers)
+        );
+    }
+
+    public static Collector<BigRational, RationalStatistics, RationalStatistics> harmonicCollector() {
+        return Collector.of(
+                RationalStatistics::harmonic,
+                RationalStatistics::add,
+                (a, b) -> a.addAll(b.numbers)
+        );
+    }
+
+    public BigRational sum() {
+        return numbers.stream()
+                .reduce(ZERO, BigRational::add);
+    }
+
+    public BigRational product() {
+        return numbers.stream()
+                .reduce(ONE, BigRational::multiply);
     }
 
     public BigRational average() {
@@ -40,9 +85,30 @@ public class RationalStatistics {
         return this;
     }
 
+    public RationalStatistics addAll(Collection<BigRational> rs) {
+        numbers.addAll(rs);
+        return this;
+    }
+
     public enum AveragingMode {
 
-        ARITHMETIC(numbers -> numbers.stream().reduce(BigRationalConstants.ZERO, BigRational::add).divide(BigRational.of(numbers.size())));
+        ARITHMETIC(
+                numbers -> numbers.stream()
+                        .reduce(ZERO, BigRational::add)
+                        .divide(numbers.size())
+        ),
+        GEOMETRIC(
+                numbers -> numbers.stream()
+                        .reduce(ONE, BigRational::multiply)
+                        .pow(BigRational.ofInv(numbers.size()))
+        ),
+        HARMONIC(
+                numbers -> numbers.stream()
+                        .map(BigRational::inverse)
+                        .reduce(ZERO, BigRational::add)
+                        .inverse()
+                        .multiply(numbers.size())
+        );
 
         private final Function<Collection<BigRational>, BigRational> averagingFunction;
 

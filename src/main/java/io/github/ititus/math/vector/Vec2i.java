@@ -1,8 +1,7 @@
 package io.github.ititus.math.vector;
 
+import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.number.JavaMath;
-
-import java.util.Arrays;
 
 public final class Vec2i implements Comparable<Vec2i> {
 
@@ -181,8 +180,7 @@ public final class Vec2i implements Comparable<Vec2i> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof Vec2i)) {
+        } else if (!(o instanceof Vec2i)) {
             return false;
         }
         Vec2i v = (Vec2i) o;
@@ -191,7 +189,7 @@ public final class Vec2i implements Comparable<Vec2i> {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(new int[] { x, y });
+        return ArrayUtil.hash(x, y);
     }
 
     @Override

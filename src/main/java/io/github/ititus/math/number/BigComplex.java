@@ -1,11 +1,12 @@
 package io.github.ititus.math.number;
 
-import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.data.ObjectUtil;
+import io.github.ititus.data.pair.Pair;
+import io.github.ititus.math.vector.Vec2i;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -101,44 +102,44 @@ public final class BigComplex {
     public static BigComplex of(Object o) {
         Objects.requireNonNull(o);
         if (o instanceof BigComplex) {
-            return (BigComplex) o;
+            return of((BigComplex) o);
         } else if (o instanceof String) {
             return of((String) o);
-        } else if (o instanceof Collection) {
-            Collection<?> c = (Collection<?>) o;
-            if (c.size() == 1 || c.size() == 2) {
-                Iterator<?> it = c.iterator();
-                try {
-                    BigRational real = BigRational.of(it.next());
-
-                    BigRational imag;
-                    if (it.hasNext()) {
-                        imag = BigRational.of(it.next());
-                    } else {
-                        imag = BigRationalConstants.ZERO;
+        } else if (o instanceof Vec2i) {
+            return of((Vec2i) o);
+        } else if (o instanceof Pair) {
+            Pair<?, ?> p = (Pair<?, ?>) o;
+            try {
+                return of(BigRational.of(p.a()), BigRational.of(p.b()));
+            } catch (RuntimeException e) {
+                throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to BigComplex", e);
+            }
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object real = it.next();
+                if (it.hasNext()) {
+                    Object imag = it.next();
+                    if (!it.hasNext()) {
+                        try {
+                            return of(BigRational.of(real), BigRational.of(imag));
+                        } catch (RuntimeException e) {
+                            throw new IllegalArgumentException(
+                                    ObjectUtil.toString(o) + " cannot be converted to BigComplex", e);
+                        }
                     }
-
-                    return of(real, imag);
-                } catch (RuntimeException e) {
-                    throw new IllegalArgumentException(o + " cannot be converted to BigComplex", e);
                 }
             }
         } else if (o.getClass().isArray()) {
             int length = Array.getLength(o);
-            if (length == 1 || length == 2) {
+            if (length == 2) {
                 try {
                     BigRational real = BigRational.of(Array.get(o, 0));
-
-                    BigRational imag;
-                    if (length == 2) {
-                        imag = BigRational.of(Array.get(o, 1));
-                    } else {
-                        imag = BigRationalConstants.ZERO;
-                    }
-
+                    BigRational imag = BigRational.of(Array.get(o, 1));
                     return of(real, imag);
                 } catch (RuntimeException e) {
-                    throw new IllegalArgumentException(ArrayUtil.toString(o) + " cannot be converted to BigComplex", e);
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to BigComplex", e);
                 }
             }
         }
@@ -147,7 +148,7 @@ public final class BigComplex {
             BigRational real = BigRational.of(o);
             return real(real);
         } catch (RuntimeException e) {
-            throw new IllegalArgumentException(o + " cannot be converted to BigComplex", e);
+            throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to BigComplex", e);
         }
     }
 
@@ -193,6 +194,10 @@ public final class BigComplex {
         }
 
         return of(real, imag);
+    }
+
+    public static BigComplex of(Vec2i v) {
+        return of(v.getX(), v.getY());
     }
 
     public static BigComplex of(byte real, byte imag) {

@@ -71,6 +71,7 @@ public final class ArrayUtil {
         return Arrays.hashCode(arr);
     }
 
+    @SuppressWarnings("Duplicates")
     public static String toString(Object arr) {
         if (arr == null) {
             return "null";
@@ -79,9 +80,7 @@ public final class ArrayUtil {
         Class<?> clazz = arr.getClass();
         if (!clazz.isArray()) {
             throw new IllegalArgumentException("given object " + arr + " is not an array");
-        }
-
-        if (clazz == byte[].class) {
+        } else if (clazz == byte[].class) {
             return Arrays.toString((byte[]) arr);
         } else if (clazz == short[].class) {
             return Arrays.toString((short[]) arr);
@@ -102,6 +101,7 @@ public final class ArrayUtil {
         return Arrays.toString((Object[]) arr);
     }
 
+    @SuppressWarnings("Duplicates")
     public static String deepToString(Object arr) {
         if (arr == null) {
             return "null";
@@ -110,9 +110,7 @@ public final class ArrayUtil {
         Class<?> clazz = arr.getClass();
         if (!clazz.isArray()) {
             throw new IllegalArgumentException("given object " + arr + " is not an array");
-        }
-
-        if (clazz == byte[].class) {
+        } else if (clazz == byte[].class) {
             return Arrays.toString((byte[]) arr);
         } else if (clazz == short[].class) {
             return Arrays.toString((short[]) arr);

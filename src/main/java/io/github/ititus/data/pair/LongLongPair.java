@@ -1,48 +1,27 @@
 package io.github.ititus.data.pair;
 
-import io.github.ititus.data.ArrayUtil;
+public interface LongLongPair extends Pair<Long, Long> {
 
-public final class LongLongPair {
-
-    private final long a;
-    private final long b;
-
-    private LongLongPair(long a, long b) {
-        this.a = a;
-        this.b = b;
+    static LongLongPair of(long a, long b) {
+        return new LongLongPairImpl(a, b);
     }
 
-    public static LongLongPair of(long a, long b) {
-        return new LongLongPair(a, b);
+    long aLong();
+
+    @Override
+    default Long a() {
+        return aLong();
     }
 
-    public long a() {
-        return a;
-    }
+    long bLong();
 
-    public long b() {
-        return b;
+    @Override
+    default Long b() {
+        return bLong();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof LongLongPair)) {
-            return false;
-        }
-        LongLongPair that = (LongLongPair) o;
-        return a == that.a && b == that.b;
-    }
-
-    @Override
-    public int hashCode() {
-        return ArrayUtil.hash(a, b);
-    }
-
-    @Override
-    public String toString() {
-        return "<" + a + "," + b + ">";
+    default String deepToString() {
+        return toString();
     }
 }
