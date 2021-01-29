@@ -324,7 +324,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
     @SuppressWarnings("Duplicates")
     public static BigRational of(BigInteger numerator, BigInteger denominator) {
         if (denominator.equals(BigIntegerConstants.ZERO)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("zero denominator");
         } else if (numerator.signum() == 0) {
             return ZERO;
         } else if (numerator.equals(denominator)) {
@@ -1070,10 +1070,6 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return BigRationalMath.acsch(this);
     }
 
-    public boolean isPositive() {
-        return numerator.signum() > 0;
-    }
-
     public boolean isZero() {
         return numerator.signum() == 0;
     }
@@ -1082,8 +1078,16 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return equals(ONE);
     }
 
+    public boolean isPositive() {
+        return numerator.signum() > 0;
+    }
+
     public boolean isNegative() {
         return numerator.signum() < 0;
+    }
+
+    public int sgn() {
+        return numerator.signum();
     }
 
     public boolean isBigInteger() {

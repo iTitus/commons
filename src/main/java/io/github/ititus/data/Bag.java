@@ -4,12 +4,16 @@ public final class Bag<T> implements DeepToString {
 
     private T content;
 
-    public Bag() {
-        this(null);
+    private Bag(T content) {
+        this.content = content;
     }
 
-    public Bag(T content) {
-        this.content = content;
+    public static <T> Bag<T> of(T content) {
+        return new Bag<>(content);
+    }
+
+    public static <T> Bag<T> empty() {
+        return new Bag<>(null);
     }
 
     public T get() {

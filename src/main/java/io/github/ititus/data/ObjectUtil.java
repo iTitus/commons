@@ -59,6 +59,8 @@ public final class ObjectUtil {
     public static String toString(Object o) {
         if (o == null) {
             return "null";
+        } else if (o instanceof Printable) {
+            return ((Printable) o).toPrintableString();
         } else if (o.getClass().isArray()) {
             return ArrayUtil.toString(o);
         }

@@ -29,7 +29,10 @@ public final class BigIntegerConstants {
     public static final BigInteger MINUS_NINE = NINE.negate();
     public static final BigInteger MINUS_TEN = TEN.negate();
 
-    public static final BigInteger MINUS_LONG_MIN_VALUE = ONE.shiftLeft(63);
+    public static final BigInteger LONG_MAX_VALUE = of(Long.MAX_VALUE);
+    public static final BigInteger MINUS_LONG_MIN_VALUE = ONE.shiftLeft(Long.SIZE - 1);
+    public static final BigInteger UNSIGNED_LONG_MAX_VALUE = ONE.shiftLeft(Long.SIZE).subtract(ONE);
+    public static final BigInteger MINUS_UNSIGNED_LONG_MIN_VALUE = ONE.shiftLeft(Long.SIZE);
 
     private BigIntegerConstants() {
     }

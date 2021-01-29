@@ -2,14 +2,12 @@ package io.github.ititus.math.number;
 
 import java.math.BigInteger;
 
-import static io.github.ititus.math.number.BigIntegerConstants.ONE;
-
 public final class JavaMath {
 
     public static final short UNSIGNED_BYTE_MAX_VALUE = (1 << Byte.SIZE) - 1;
     public static final int UNSIGNED_SHORT_MAX_VALUE = (1 << Short.SIZE) - 1;
     public static final long UNSIGNED_INT_MAX_VALUE = (1L << Integer.SIZE) - 1;
-    public static final BigInteger UNSIGNED_LONG_MAX_VALUE = ONE.shiftLeft(Long.SIZE).subtract(ONE);
+    public static final BigInteger UNSIGNED_LONG_MAX_VALUE = BigIntegerConstants.UNSIGNED_LONG_MAX_VALUE;
 
     private JavaMath() {
     }
@@ -31,14 +29,14 @@ public final class JavaMath {
     }
 
     public static int gcd(int a, int b) {
-        a = Math.abs(a);
-        b = Math.abs(b);
-
         if (a == 0) {
             return Math.abs(b);
         } else if (b == 0) {
             return Math.abs(a);
         }
+
+        a = Math.abs(a);
+        b = Math.abs(b);
 
         int i = Integer.numberOfTrailingZeros(a);
         a >>>= i;
@@ -66,14 +64,14 @@ public final class JavaMath {
     }
 
     public static long gcd(long a, long b) {
+        if (a == 0) {
+            return Math.abs(b);
+        } else if (b == 0) {
+            return Math.abs(a);
+        }
+
         a = Math.abs(a);
         b = Math.abs(b);
-
-        if (a == 0) {
-            return b;
-        } else if (b == 0) {
-            return a;
-        }
 
         int i = Long.numberOfTrailingZeros(a);
         a >>>= i;
