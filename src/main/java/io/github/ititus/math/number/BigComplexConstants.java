@@ -1,5 +1,6 @@
 package io.github.ititus.math.number;
 
+import static io.github.ititus.math.number.BigComplex.imag;
 import static io.github.ititus.math.number.BigComplex.real;
 
 public final class BigComplexConstants {
@@ -30,6 +31,26 @@ public final class BigComplexConstants {
     public static final BigComplex MINUS_EIGHT = EIGHT.negate();
     public static final BigComplex MINUS_NINE = NINE.negate();
     public static final BigComplex MINUS_TEN = TEN.negate();
+
+    public static final BigComplex TWO_I = imag(2);
+    public static final BigComplex THREE_I = imag(3);
+    public static final BigComplex FOUR_I = imag(4);
+    public static final BigComplex FIVE_I = imag(5);
+    public static final BigComplex SIX_I = imag(6);
+    public static final BigComplex SEVEN_I = imag(7);
+    public static final BigComplex EIGHT_I = imag(8);
+    public static final BigComplex NINE_I = imag(9);
+    public static final BigComplex TEN_I = imag(10);
+
+    public static final BigComplex MINUS_TWO_I = TWO_I.negate();
+    public static final BigComplex MINUS_THREE_I = THREE_I.negate();
+    public static final BigComplex MINUS_FOUR_I = FOUR_I.negate();
+    public static final BigComplex MINUS_FIVE_I = FIVE_I.negate();
+    public static final BigComplex MINUS_SIX_I = SIX_I.negate();
+    public static final BigComplex MINUS_SEVEN_I = SEVEN_I.negate();
+    public static final BigComplex MINUS_EIGHT_I = EIGHT_I.negate();
+    public static final BigComplex MINUS_NINE_I = NINE_I.negate();
+    public static final BigComplex MINUS_TEN_I = TEN_I.negate();
 
     public static final BigComplex ONE_OVER_TWO = real(BigRationalConstants.ONE_OVER_TWO);
     public static final BigComplex ONE_OVER_THREE = real(BigRationalConstants.ONE_OVER_THREE);

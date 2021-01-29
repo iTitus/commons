@@ -1,6 +1,11 @@
 package io.github.ititus.math.number;
 
+import io.github.ititus.data.ObjectUtil;
+
+import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.Objects;
 
 public final class JavaMath {
 
@@ -10,6 +15,204 @@ public final class JavaMath {
     public static final BigInteger UNSIGNED_LONG_MAX_VALUE = BigIntegerConstants.UNSIGNED_LONG_MAX_VALUE;
 
     private JavaMath() {
+    }
+
+    public static byte toByte(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof Number) {
+            return ((Number) o).byteValue();
+        } else if (o instanceof String) {
+            return Byte.parseByte((String) o);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object n = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return toByte(n);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to byte", e);
+                    }
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return toByte(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to byte", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to byte");
+    }
+
+    public static short toShort(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof Number) {
+            return ((Number) o).shortValue();
+        } else if (o instanceof String) {
+            return Short.parseShort((String) o);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object n = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return toShort(n);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to short", e);
+                    }
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return toShort(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to short", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to short");
+    }
+
+    public static int toInt(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof Number) {
+            return ((Number) o).intValue();
+        } else if (o instanceof String) {
+            return Integer.parseInt((String) o);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object n = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return toInt(n);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to int", e);
+                    }
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return toInt(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to int", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to int");
+    }
+
+    public static long toLong(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof Number) {
+            return ((Number) o).longValue();
+        } else if (o instanceof String) {
+            return Long.parseLong((String) o);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object n = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return toLong(n);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to long", e);
+                    }
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return toLong(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to long", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to long");
+    }
+
+    public static float toFloat(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof Number) {
+            return ((Number) o).floatValue();
+        } else if (o instanceof String) {
+            return Float.parseFloat((String) o);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object n = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return toFloat(n);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to float", e);
+                    }
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return toFloat(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to float", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to float");
+    }
+
+    public static double toDouble(Object o) {
+        Objects.requireNonNull(o);
+        if (o instanceof Number) {
+            return ((Number) o).doubleValue();
+        } else if (o instanceof String) {
+            return Double.parseDouble((String) o);
+        } else if (o instanceof Iterable) {
+            Iterator<?> it = ((Iterable<?>) o).iterator();
+            if (it.hasNext()) {
+                Object n = it.next();
+                if (!it.hasNext()) {
+                    try {
+                        return toDouble(n);
+                    } catch (RuntimeException e) {
+                        throw new IllegalArgumentException(
+                                ObjectUtil.toString(o) + " cannot be converted to double", e);
+                    }
+                }
+            }
+        } else if (o.getClass().isArray()) {
+            if (Array.getLength(o) == 1) {
+                try {
+                    return toDouble(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to double", e);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to double");
     }
 
     public static boolean isInt(double d) {

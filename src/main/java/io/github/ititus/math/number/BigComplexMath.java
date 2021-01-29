@@ -2,7 +2,8 @@ package io.github.ititus.math.number;
 
 import java.math.BigInteger;
 
-import static io.github.ititus.math.number.BigComplex.*;
+import static io.github.ititus.math.number.BigComplex.imag;
+import static io.github.ititus.math.number.BigComplex.of;
 import static io.github.ititus.math.number.BigComplexConstants.*;
 
 public final class BigComplexMath {
@@ -16,8 +17,14 @@ public final class BigComplexMath {
 
     public static BigComplex sqrt(BigComplex z) {
         BigRational abs = z.abs();
-        return of(abs.add(z.getReal()).divide(BigRationalConstants.TWO).sqrt(),
-                abs.subtract(z.getReal()).divide(BigRationalConstants.TWO).sqrt());
+
+        BigRational real = abs.add(z.getReal()).divide(BigRationalConstants.TWO).sqrt();
+        BigRational imag = abs.subtract(z.getReal()).divide(BigRationalConstants.TWO).sqrt();
+        if (z.getImag().isNegative()) {
+            imag = imag.negate();
+        }
+
+        return of(real, imag);
     }
 
     @SuppressWarnings("Duplicates")
@@ -80,11 +87,9 @@ public final class BigComplexMath {
 
     public static BigComplex ln(BigComplex z) {
         if (z.isZero()) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("natural logarithm of zero");
         } else if (z.isOne()) {
             return ZERO;
-        } else if (z.isReal()) {
-            return real(BigRationalMath.ln(z.getReal()));
         }
 
         return of(BigRationalMath.ln(z.abs()), angle(z));

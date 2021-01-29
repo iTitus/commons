@@ -17,7 +17,7 @@ import static io.github.ititus.math.number.BigComplexConstants.*;
 public final class BigComplex {
 
     private static final Pattern FULL_COMPLEX_PATTERN = Pattern.compile(
-            "^(?<realsign>[+\\-]?)(?<real>[^+\\-]+)(?<imagsign>[+\\-])(?<imag>[^+\\-]*)[ij]$"
+            "^(?<realsign>[+\\-]?)(?<real>[^+\\-]+)(?<imagsign>[+\\-])(?<imag>[^+\\-]*)[iIjJ]$"
     );
 
     private final BigRational real, imag;
@@ -174,7 +174,14 @@ public final class BigComplex {
 
         Matcher m = FULL_COMPLEX_PATTERN.matcher(s);
         if (!m.matches()) {
-            return imag(BigRational.of(s.substring(0, length - 1)));
+            String withoutI = s.substring(0, length - 1);
+            if (withoutI.equals("+")) {
+                return I;
+            } else if (withoutI.equals("-")) {
+                return MINUS_I;
+            }
+
+            return imag(BigRational.of(withoutI));
         }
 
         BigRational real = BigRational.of(m.group("real"));
@@ -702,16 +709,26 @@ public final class BigComplex {
     }
 
     public BigRational abs() {
-        return absSquared().sqrt();
-    }
+        if (imag.isZero()) {
+            return real.abs();
+        } else if (real.isZero()) {
+            return imag.abs();
+        }
 
-    public BigComplex unit() {
-        BigRational z = abs();
-        return of(real.divide(z), imag.divide(z));
+        return absSquared().sqrt();
     }
 
     public BigRational angle() {
         return BigComplexMath.angle(this);
+    }
+
+    public BigComplex unit() {
+        if (isZero()) {
+            throw new ArithmeticException("zero has no complex number with unit length");
+        }
+
+        BigRational z = abs();
+        return of(real.divide(z), imag.divide(z));
     }
 
     public BigComplex negate() {
@@ -832,6 +849,10 @@ public final class BigComplex {
     }
 
     public BigComplex subtract(BigComplex z) {
+        if (equals(z)) {
+            return ZERO;
+        }
+
         return add(z.negate());
     }
 

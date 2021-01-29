@@ -300,6 +300,7 @@ public final class BigRationalMath {
             if (x.isZero()) {
                 throw new ArithmeticException();
             }
+
             return x.isPositive() ? ZERO : PI;
         } else if (x.isZero()) {
             return y.isPositive() ? PI.divide(TWO) : PI.divide(TWO).negate();

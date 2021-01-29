@@ -1,6 +1,5 @@
 package io.github.ititus.math.number;
 
-import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.data.ObjectUtil;
 import io.github.ititus.si.quantity.value.QuantityValue;
 
@@ -83,10 +82,10 @@ public final class BigRational extends Number implements Comparable<BigRational>
         } else if (o instanceof Iterable) {
             Iterator<?> it = ((Iterable<?>) o).iterator();
             if (it.hasNext()) {
-                Object real = it.next();
+                Object n = it.next();
                 if (!it.hasNext()) {
                     try {
-                        return of(real);
+                        return of(n);
                     } catch (RuntimeException e) {
                         throw new IllegalArgumentException(
                                 ObjectUtil.toString(o) + " cannot be converted to BigRational", e);
@@ -99,7 +98,7 @@ public final class BigRational extends Number implements Comparable<BigRational>
                     return of(Array.get(o, 0));
                 } catch (RuntimeException e) {
                     throw new IllegalArgumentException(
-                            ArrayUtil.toString(o) + " cannot be converted to BigRational", e);
+                            ObjectUtil.toString(o) + " cannot be converted to BigRational", e);
                 }
             }
         }
