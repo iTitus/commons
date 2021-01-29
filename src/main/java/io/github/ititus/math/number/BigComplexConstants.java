@@ -72,11 +72,49 @@ public final class BigComplexConstants {
     public static final BigComplex MINUS_ONE_OVER_NINE = ONE_OVER_NINE.negate();
     public static final BigComplex MINUS_ONE_OVER_TEN = ONE_OVER_TEN.negate();
 
+    public static final BigComplex ONE_OVER_TWO_I = imag(BigRationalConstants.ONE_OVER_TWO);
+    public static final BigComplex ONE_OVER_THREE_I = imag(BigRationalConstants.ONE_OVER_THREE);
+    public static final BigComplex ONE_OVER_FOUR_I = imag(BigRationalConstants.ONE_OVER_FOUR);
+    public static final BigComplex ONE_OVER_FIVE_I = imag(BigRationalConstants.ONE_OVER_FIVE);
+    public static final BigComplex ONE_OVER_SIX_I = imag(BigRationalConstants.ONE_OVER_SIX);
+    public static final BigComplex ONE_OVER_SEVEN_I = imag(BigRationalConstants.ONE_OVER_SEVEN);
+    public static final BigComplex ONE_OVER_EIGHT_I = imag(BigRationalConstants.ONE_OVER_EIGHT);
+    public static final BigComplex ONE_OVER_NINE_I = imag(BigRationalConstants.ONE_OVER_NINE);
+    public static final BigComplex ONE_OVER_TEN_I = imag(BigRationalConstants.ONE_OVER_TEN);
+
+    public static final BigComplex MINUS_ONE_OVER_TWO_I = ONE_OVER_TWO_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_THREE_I = ONE_OVER_THREE_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_FOUR_I = ONE_OVER_FOUR_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_FIVE_I = ONE_OVER_FIVE_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_SIX_I = ONE_OVER_SIX_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_SEVEN_I = ONE_OVER_SEVEN_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_EIGHT_I = ONE_OVER_EIGHT_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_NINE_I = ONE_OVER_NINE_I.negate();
+    public static final BigComplex MINUS_ONE_OVER_TEN_I = ONE_OVER_TEN_I.negate();
+
     public static final BigComplex PI = real(BigRationalConstants.PI);
-    public static final BigComplex TWO_PI = PI.multiply(TWO);
-    public static final BigComplex PI_OVER_TWO = PI.divide(TWO);
+    public static final BigComplex TWO_PI = real(BigRationalConstants.TWO_PI);
+    public static final BigComplex PI_OVER_TWO = real(BigRationalConstants.PI_OVER_TWO);
+
+    public static final BigComplex MINUS_PI = PI.negate();
+    public static final BigComplex MINUS_TWO_PI = TWO_PI.negate();
+    public static final BigComplex MINUS_PI_OVER_TWO = PI_OVER_TWO.negate();
+
+    public static final BigComplex PI_I = imag(BigRationalConstants.PI);
+    public static final BigComplex TWO_PI_I = imag(BigRationalConstants.TWO_PI);
+    public static final BigComplex PI_OVER_TWO_I = imag(BigRationalConstants.PI_OVER_TWO);
+
+    public static final BigComplex MINUS_PI_I = PI_I.negate();
+    public static final BigComplex MINUS_TWO_PI_I = TWO_PI_I.negate();
+    public static final BigComplex MINUS_PI_OVER_TWO_I = PI_OVER_TWO_I.negate();
 
     public static final BigComplex E = real(BigRationalConstants.E);
+
+    public static final BigComplex MINUS_E = E.negate();
+
+    public static final BigComplex E_I = imag(BigRationalConstants.E);
+
+    public static final BigComplex MINUS_E_I = E_I.negate();
 
     private BigComplexConstants() {
     }

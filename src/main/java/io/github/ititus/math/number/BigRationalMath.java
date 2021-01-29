@@ -303,7 +303,7 @@ public final class BigRationalMath {
 
             return x.isPositive() ? ZERO : PI;
         } else if (x.isZero()) {
-            return y.isPositive() ? PI.divide(TWO) : PI.divide(TWO).negate();
+            return y.isPositive() ? PI_OVER_TWO : MINUS_PI_OVER_TWO;
         } else if (x.isPositive()) {
             return atan(y.divide(x));
         } else if (y.isPositive()) {
