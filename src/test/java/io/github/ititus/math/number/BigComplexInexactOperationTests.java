@@ -36,9 +36,9 @@ class BigComplexInexactOperationTests {
     static Stream<Arguments> test_angle() {
         return Stream.of(
                 arguments(ONE, ZERO),
-                arguments(MINUS_ONE, PI),
-                arguments(I, PI.divide(2)),
-                arguments(MINUS_I, PI.divide(-2)),
+                arguments(MINUS_ONE, "3.141592653589793238462643383279502884197169399375105820974944592"),
+                arguments(I, "1.570796326794896619231321691639751442098584699687552910487472296"),
+                arguments(MINUS_I, "-1.570796326794896619231321691639751442098584699687552910487472296"),
                 arguments(ONE_I_TWO, "1.107148717794090503017065460178537040070047645401432646676539207")
         );
     }
