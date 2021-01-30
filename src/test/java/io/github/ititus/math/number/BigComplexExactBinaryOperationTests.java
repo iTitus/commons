@@ -1,6 +1,6 @@
 package io.github.ititus.math.number;
 
-import io.github.ititus.converter.CommonsArgumentConverter;
+import io.github.ititus.converter.NumberConverter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.Arguments;
@@ -151,43 +151,43 @@ class BigComplexExactBinaryOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_add(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                  @ConvertWith(CommonsArgumentConverter.class) BigComplex w,
-                  @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_add(@ConvertWith(NumberConverter.class) BigComplex z,
+                  @ConvertWith(NumberConverter.class) BigComplex w,
+                  @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.add(w);
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_subtract(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                       @ConvertWith(CommonsArgumentConverter.class) BigComplex w,
-                       @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_subtract(@ConvertWith(NumberConverter.class) BigComplex z,
+                       @ConvertWith(NumberConverter.class) BigComplex w,
+                       @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.subtract(w);
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_multiply(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                       @ConvertWith(CommonsArgumentConverter.class) BigComplex w,
-                       @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_multiply(@ConvertWith(NumberConverter.class) BigComplex z,
+                       @ConvertWith(NumberConverter.class) BigComplex w,
+                       @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.multiply(w);
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_divide(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                     @ConvertWith(CommonsArgumentConverter.class) BigComplex w,
-                     @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_divide(@ConvertWith(NumberConverter.class) BigComplex z,
+                     @ConvertWith(NumberConverter.class) BigComplex w,
+                     @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.divide(w);
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_divide_zero(@ConvertWith(CommonsArgumentConverter.class) BigComplex z) {
+    void test_divide_zero(@ConvertWith(NumberConverter.class) BigComplex z) {
         assertThatExceptionOfType(ArithmeticException.class).isThrownBy(() -> z.divide(ZERO));
     }
 }

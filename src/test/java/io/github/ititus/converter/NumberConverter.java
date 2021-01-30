@@ -8,7 +8,7 @@ import org.junit.jupiter.params.converter.ArgumentConverter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class CommonsArgumentConverter implements ArgumentConverter {
+public class NumberConverter implements ArgumentConverter {
 
     @Override
     public Object convert(Object source, ParameterContext context) {

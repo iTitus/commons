@@ -1,6 +1,6 @@
 package io.github.ititus.math.number;
 
-import io.github.ititus.converter.CommonsArgumentConverter;
+import io.github.ititus.converter.NumberConverter;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -94,16 +94,16 @@ class BigComplexInexactOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_abs(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                  @ConvertWith(CommonsArgumentConverter.class) BigRational expected) {
+    void test_abs(@ConvertWith(NumberConverter.class) BigComplex z,
+                  @ConvertWith(NumberConverter.class) BigRational expected) {
         BigRational actual = z.abs();
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_angle(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                    @ConvertWith(CommonsArgumentConverter.class) BigRational expected) {
+    void test_angle(@ConvertWith(NumberConverter.class) BigComplex z,
+                    @ConvertWith(NumberConverter.class) BigRational expected) {
         BigRational actual = z.angle();
         assertThat(actual).isCloseTo(expected, EPS);
     }
@@ -115,8 +115,8 @@ class BigComplexInexactOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_unit(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                   @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_unit(@ConvertWith(NumberConverter.class) BigComplex z,
+                   @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.unit();
         assertThat(actual).isCloseTo(expected, EPS);
     }
@@ -128,24 +128,24 @@ class BigComplexInexactOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_sqrt(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                   @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_sqrt(@ConvertWith(NumberConverter.class) BigComplex z,
+                   @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.sqrt();
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_exp(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                  @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_exp(@ConvertWith(NumberConverter.class) BigComplex z,
+                  @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.exp();
         assertThat(actual).isCloseTo(expected, EPS);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_ln(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                 @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_ln(@ConvertWith(NumberConverter.class) BigComplex z,
+                 @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.ln();
         assertThat(actual).isCloseTo(expected, EPS);
     }

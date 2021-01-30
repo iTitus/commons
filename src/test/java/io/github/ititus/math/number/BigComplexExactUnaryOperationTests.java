@@ -1,6 +1,6 @@
 package io.github.ititus.math.number;
 
-import io.github.ititus.converter.CommonsArgumentConverter;
+import io.github.ititus.converter.NumberConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
@@ -97,24 +97,24 @@ class BigComplexExactUnaryOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_imag(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                   @ConvertWith(CommonsArgumentConverter.class) BigRational expected) {
+    void test_imag(@ConvertWith(NumberConverter.class) BigComplex z,
+                   @ConvertWith(NumberConverter.class) BigRational expected) {
         BigRational actual = z.getImag();
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_real(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                   @ConvertWith(CommonsArgumentConverter.class) BigRational expected) {
+    void test_real(@ConvertWith(NumberConverter.class) BigComplex z,
+                   @ConvertWith(NumberConverter.class) BigRational expected) {
         BigRational actual = z.getReal();
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_abs_squared(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                          @ConvertWith(CommonsArgumentConverter.class) BigRational expected) {
+    void test_abs_squared(@ConvertWith(NumberConverter.class) BigComplex z,
+                          @ConvertWith(NumberConverter.class) BigRational expected) {
         BigRational actual = z.absSquared();
         assertThat(actual).isEqualTo(expected);
     }
@@ -126,24 +126,24 @@ class BigComplexExactUnaryOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_negate(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                     @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_negate(@ConvertWith(NumberConverter.class) BigComplex z,
+                     @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.negate();
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_conjugate(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                        @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_conjugate(@ConvertWith(NumberConverter.class) BigComplex z,
+                        @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.conjugate();
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource
-    void test_inverse(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                      @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_inverse(@ConvertWith(NumberConverter.class) BigComplex z,
+                      @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.inverse();
         assertThat(actual).isEqualTo(expected);
     }
@@ -155,8 +155,8 @@ class BigComplexExactUnaryOperationTests {
 
     @ParameterizedTest
     @MethodSource
-    void test_squared(@ConvertWith(CommonsArgumentConverter.class) BigComplex z,
-                      @ConvertWith(CommonsArgumentConverter.class) BigComplex expected) {
+    void test_squared(@ConvertWith(NumberConverter.class) BigComplex z,
+                      @ConvertWith(NumberConverter.class) BigComplex expected) {
         BigComplex actual = z.squared();
         assertThat(actual).isEqualTo(expected);
     }

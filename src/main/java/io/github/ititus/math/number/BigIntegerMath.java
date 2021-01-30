@@ -95,7 +95,7 @@ public final class BigIntegerMath {
         } else if (base.signum() == 0) {
             return ZERO;
         } else if (exponent.signum() < 0) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("negative exponent");
         }
 
         BigInteger n = ONE;
