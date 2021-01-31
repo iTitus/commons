@@ -49,28 +49,16 @@ public final class BigRational extends Number implements Comparable<BigRational>
             return of((byte) o);
         } else if (o instanceof Short) {
             return of((short) o);
-        } else if (o instanceof Integer) {
-            return of((int) o);
-        } else if (o instanceof AtomicInteger) {
-            return of(((AtomicInteger) o).get());
-        } else if (o instanceof Long) {
-            return of((long) o);
-        } else if (o instanceof AtomicLong) {
-            return of(((AtomicLong) o).get());
-        } else if (o instanceof LongAdder) {
-            return of(((LongAdder) o).sum());
-        } else if (o instanceof LongAccumulator) {
-            return of(((LongAccumulator) o).get());
+        } else if (o instanceof Integer || o instanceof AtomicInteger) {
+            return of(((Number) o).intValue());
+        } else if (o instanceof Long || o instanceof AtomicLong || o instanceof LongAdder || o instanceof LongAccumulator) {
+            return of(((Number) o).longValue());
         } else if (o instanceof BigInteger) {
             return of((BigInteger) o);
         } else if (o instanceof Float) {
             return of((float) o);
-        } else if (o instanceof Double) {
-            return of((double) o);
-        } else if (o instanceof DoubleAdder) {
-            return of(((DoubleAdder) o).sum());
-        } else if (o instanceof DoubleAccumulator) {
-            return of(((DoubleAccumulator) o).get());
+        } else if (o instanceof Double || o instanceof DoubleAdder || o instanceof DoubleAccumulator) {
+            return of(((Number) o).doubleValue());
         } else if (o instanceof BigDecimal) {
             return of((BigDecimal) o);
         } else if (o instanceof QuantityValue) {
@@ -96,6 +84,26 @@ public final class BigRational extends Number implements Comparable<BigRational>
             if (Array.getLength(o) == 1) {
                 try {
                     return of(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to BigRational", e);
+                }
+            }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return of(arr.get(0));
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return of(arr.get(0));
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return of(arr.get(0));
                 } catch (RuntimeException e) {
                     throw new IllegalArgumentException(
                             ObjectUtil.toString(o) + " cannot be converted to BigRational", e);

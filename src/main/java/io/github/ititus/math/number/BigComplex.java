@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicIntegerArray;
+import java.util.concurrent.atomic.AtomicLongArray;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -140,6 +143,28 @@ public final class BigComplex {
                 } catch (RuntimeException e) {
                     throw new IllegalArgumentException(
                             ObjectUtil.toString(o) + " cannot be converted to BigComplex", e);
+                }
+            }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 2) {
+                return of(arr.get(0), arr.get(1));
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 2) {
+                return of(arr.get(0), arr.get(1));
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 2) {
+                Object real = arr.get(0);
+                Object imag = arr.get(1);
+                try {
+                    return of(BigRational.of(real), BigRational.of(imag));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to BigRational", e);
                 }
             }
         }
@@ -801,56 +826,130 @@ public final class BigComplex {
     }
 
     public BigComplex add(float f) {
+        if (isZero()) {
+            return of(f);
+        } else if (f == 0) {
+            return this;
+        }
+
         return add(real(f));
     }
 
     public BigComplex add(double d) {
+        if (isZero()) {
+            return of(d);
+        } else if (d == 0) {
+            return this;
+        }
+
         return add(real(d));
     }
 
     public BigComplex add(BigDecimal d) {
+        if (isZero()) {
+            return of(d);
+        } else if (d.signum() == 0) {
+            return this;
+        }
+
         return add(real(d));
     }
 
     public BigComplex add(BigRational r) {
+        if (isZero()) {
+            return of(r);
+        } else if (r.isZero()) {
+            return this;
+        }
+
         return add(real(r));
     }
 
     public BigComplex add(BigComplex z) {
+        if (isZero()) {
+            return z;
+        } else if (z.isZero()) {
+            return this;
+        }
+
         return of(real.add(z.real), imag.add(z.imag));
     }
 
     public BigComplex subtract(int n) {
+        if (isZero()) {
+            return of(n).negate();
+        } else if (n == 0) {
+            return this;
+        }
+
         return subtract(real(n));
     }
 
     public BigComplex subtract(long n) {
+        if (isZero()) {
+            return of(n).negate();
+        } else if (n == 0) {
+            return this;
+        }
+
         return subtract(real(n));
     }
 
     public BigComplex subtract(BigInteger n) {
+        if (isZero()) {
+            return of(n).negate();
+        } else if (n .signum()== 0) {
+            return this;
+        }
+
         return subtract(real(n));
     }
 
     public BigComplex subtract(float f) {
+        if (isZero()) {
+            return of(f).negate();
+        } else if (f == 0) {
+            return this;
+        }
+
         return subtract(real(f));
     }
 
     public BigComplex subtract(double d) {
+        if (isZero()) {
+            return of(d).negate();
+        } else if (d == 0) {
+            return this;
+        }
+
         return subtract(real(d));
     }
 
     public BigComplex subtract(BigDecimal d) {
+        if (isZero()) {
+            return of(d).negate();
+        } else if (d.signum() == 0) {
+            return this;
+        }
+
         return subtract(real(d));
     }
 
     public BigComplex subtract(BigRational r) {
+        if (isZero()) {
+            return of(r).negate();
+        } else if (r.isZero()) {
+            return this;
+        }
+
         return subtract(real(r));
     }
 
     public BigComplex subtract(BigComplex z) {
-        if (equals(z)) {
-            return ZERO;
+        if (isZero()) {
+            return z.negate();
+        } else if (z.isZero()) {
+            return this;
         }
 
         return add(z.negate());
