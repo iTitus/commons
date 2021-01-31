@@ -1,22 +1,21 @@
 package io.github.ititus.math.permutation;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.data.ArrayUtil.array;
 import static io.github.ititus.math.permutation.Permutations.getAllArraysWithSum;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestGetAllArraysWithSum {
+class GetAllArraysWithSumTest {
 
     @Test
-    public void sum0() {
+    void sum0() {
         assertThat(getAllArraysWithSum(0, 0)).containsExactlyInAnyOrder(new int[0]);
         assertThat(getAllArraysWithSum(1, 0)).containsExactlyInAnyOrder(new int[1]);
     }
 
     @Test
-    public void sum1() {
+    void sum1() {
         assertThat(getAllArraysWithSum(0, 1)).containsExactlyInAnyOrder();
         assertThat(getAllArraysWithSum(1, 1)).containsExactlyInAnyOrder(array(1));
         assertThat(getAllArraysWithSum(2, 1)).containsExactlyInAnyOrder(array(0, 1), array(1, 0));
@@ -24,7 +23,7 @@ public class TestGetAllArraysWithSum {
     }
 
     @Test
-    public void sum2() {
+    void sum2() {
         assertThat(getAllArraysWithSum(0, 2)).containsExactlyInAnyOrder();
         assertThat(getAllArraysWithSum(1, 2)).containsExactlyInAnyOrder(array(2));
         assertThat(getAllArraysWithSum(2, 2)).containsExactlyInAnyOrder(array(0, 2), array(1, 1), array(2, 0));

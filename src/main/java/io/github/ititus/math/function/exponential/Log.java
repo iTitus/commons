@@ -5,7 +5,6 @@ import io.github.ititus.math.function.Identity;
 import io.github.ititus.math.function.Rational;
 import io.github.ititus.math.function.constant.Constant;
 import io.github.ititus.math.number.BigComplex;
-import io.github.ititus.math.number.BigComplexMath;
 
 import java.util.Objects;
 
@@ -25,7 +24,7 @@ public final class Log extends ComplexFunction {
 
     public static ComplexFunction of(ComplexFunction f) {
         if (f.isConstant()) {
-            return Constant.of(BigComplexMath.ln(f.getConstant()));
+            return Constant.of(f.getConstant().ln());
         } else if (f.isIdentity()) {
             return IDENTITY_LOG;
         }
@@ -35,7 +34,7 @@ public final class Log extends ComplexFunction {
 
     @Override
     public BigComplex evaluate(BigComplex z) {
-        return BigComplexMath.ln(f.evaluate(z));
+        return f.evaluate(z).ln();
     }
 
     @Override
