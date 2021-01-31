@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import static io.github.ititus.assertions.Assertions.assertThat;
 import static io.github.ititus.math.number.BigComplex.of;
 import static io.github.ititus.math.number.BigComplexConstants.*;
+import static io.github.ititus.math.number.BigRational.ofExp;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.data.Offset.strictOffset;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -21,7 +22,7 @@ class BigComplexInexactOperationTests {
 
     private static final BigComplex ONE_I_TWO = of("1 + 2i");
 
-    private static final Offset<BigRational> EPS = strictOffset(BigRational.of("1e-33"));
+    private static final Offset<BigRational> EPS = strictOffset(ofExp(1, -33));
 
     static Stream<Arguments> test_abs() {
         return Stream.of(

@@ -24,9 +24,9 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     private final BigInteger numerator, denominator;
 
-    private BigDecimal decimalCache;
-    private BigInteger intCache;
-    private BigRational negCache, invCache, sqCache, sqrtCache;
+    private transient BigDecimal decimalCache;
+    private transient BigInteger intCache;
+    private transient BigRational negCache, invCache, sqCache, sqrtCache;
 
     BigRational(BigInteger nominator, BigInteger denominator) {
         Objects.requireNonNull(nominator);
@@ -961,24 +961,12 @@ public final class BigRational extends Number implements Comparable<BigRational>
         return BigRationalMath.exp(this);
     }
 
-    public BigRational max(BigRational r) {
-        return compareTo(r) >= 0 ? this : r;
+    public BigRational ln() {
+        return BigRationalMath.ln(this);
     }
 
-    public BigRational min(BigRational r) {
-        return compareTo(r) <= 0 ? this : r;
-    }
-
-    public BigRational abs() {
-        return isNegative() ? negate() : this;
-    }
-
-    public BigRational round(MathContext mc) {
-        return isBigInteger() ? this : of(toBigDecimal().round(mc));
-    }
-
-    public BigInteger roundToBigInt(RoundingMode mode) {
-        return toBigDecimal().setScale(0, mode).toBigIntegerExact();
+    public BigRational log(BigRational base) {
+        return BigRationalMath.log(this, base);
     }
 
     public BigRational sin() {
@@ -1075,6 +1063,26 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     public BigRational acsch() {
         return BigRationalMath.acsch(this);
+    }
+
+    public BigRational max(BigRational r) {
+        return compareTo(r) >= 0 ? this : r;
+    }
+
+    public BigRational min(BigRational r) {
+        return compareTo(r) <= 0 ? this : r;
+    }
+
+    public BigRational abs() {
+        return isNegative() ? negate() : this;
+    }
+
+    public BigRational round(MathContext mc) {
+        return isBigInteger() ? this : of(toBigDecimal().round(mc));
+    }
+
+    public BigInteger roundToBigInt(RoundingMode mode) {
+        return toBigDecimal().setScale(0, mode).toBigIntegerExact();
     }
 
     public boolean isZero() {
@@ -1196,8 +1204,8 @@ public final class BigRational extends Number implements Comparable<BigRational>
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        BigRational r = (BigRational) o;
-        return numerator.equals(r.numerator) && denominator.equals(r.denominator);
+        BigRational that = (BigRational) o;
+        return numerator.equals(that.numerator) && denominator.equals(that.denominator);
     }
 
     @Override

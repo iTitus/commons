@@ -898,7 +898,7 @@ public final class BigComplex {
     public BigComplex subtract(BigInteger n) {
         if (isZero()) {
             return of(n).negate();
-        } else if (n .signum()== 0) {
+        } else if (n.signum() == 0) {
             return this;
         }
 

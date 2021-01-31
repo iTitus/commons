@@ -21,34 +21,34 @@ class BigComplexExactUnaryOperationTests {
 
     static Stream<Arguments> test_real() {
         return Stream.of(
-                arguments(ZERO, 0),
-                arguments(ONE, 1),
-                arguments(MINUS_ONE, -1),
-                arguments(I, 0),
-                arguments(MINUS_I, 0),
-                arguments(ONE_I_TWO, 1)
+                arguments(ZERO, ZERO),
+                arguments(ONE, ONE),
+                arguments(MINUS_ONE, MINUS_ONE),
+                arguments(I, ZERO),
+                arguments(MINUS_I, ZERO),
+                arguments(ONE_I_TWO, ONE)
         );
     }
 
     static Stream<Arguments> test_imag() {
         return Stream.of(
-                arguments(ZERO, 0),
-                arguments(ONE, 0),
-                arguments(MINUS_ONE, 0),
-                arguments(I, 1),
-                arguments(MINUS_I, -1),
-                arguments(ONE_I_TWO, 2)
+                arguments(ZERO, ZERO),
+                arguments(ONE, ZERO),
+                arguments(MINUS_ONE, ZERO),
+                arguments(I, ONE),
+                arguments(MINUS_I, MINUS_ONE),
+                arguments(ONE_I_TWO, TWO)
         );
     }
 
     static Stream<Arguments> test_abs_squared() {
         return Stream.of(
-                arguments(ZERO, 0),
-                arguments(ONE, 1),
-                arguments(MINUS_ONE, 1),
-                arguments(I, 1),
-                arguments(MINUS_I, 1),
-                arguments(ONE_I_TWO, 5)
+                arguments(ZERO, ZERO),
+                arguments(ONE, ONE),
+                arguments(MINUS_ONE, ONE),
+                arguments(I, ONE),
+                arguments(MINUS_I, ONE),
+                arguments(ONE_I_TWO, FIVE)
         );
     }
 

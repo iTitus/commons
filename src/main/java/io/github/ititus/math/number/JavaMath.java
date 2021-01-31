@@ -6,6 +6,9 @@ import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicIntegerArray;
+import java.util.concurrent.atomic.AtomicLongArray;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public final class JavaMath {
 
@@ -45,6 +48,26 @@ public final class JavaMath {
                             ObjectUtil.toString(o) + " cannot be converted to byte", e);
                 }
             }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return (byte) arr.get(0);
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return (byte) arr.get(0);
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return toByte(arr.get(0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to byte", e);
+                }
+            }
         }
 
         throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to byte");
@@ -73,6 +96,26 @@ public final class JavaMath {
             if (Array.getLength(o) == 1) {
                 try {
                     return toShort(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to short", e);
+                }
+            }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return (short) arr.get(0);
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return (short) arr.get(0);
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return toShort(arr.get(0));
                 } catch (RuntimeException e) {
                     throw new IllegalArgumentException(
                             ObjectUtil.toString(o) + " cannot be converted to short", e);
@@ -111,6 +154,26 @@ public final class JavaMath {
                             ObjectUtil.toString(o) + " cannot be converted to int", e);
                 }
             }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return (int) arr.get(0);
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return toInt(arr.get(0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to int", e);
+                }
+            }
         }
 
         throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to int");
@@ -139,6 +202,26 @@ public final class JavaMath {
             if (Array.getLength(o) == 1) {
                 try {
                     return toLong(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to long", e);
+                }
+            }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return toLong(arr.get(0));
                 } catch (RuntimeException e) {
                     throw new IllegalArgumentException(
                             ObjectUtil.toString(o) + " cannot be converted to long", e);
@@ -177,6 +260,26 @@ public final class JavaMath {
                             ObjectUtil.toString(o) + " cannot be converted to float", e);
                 }
             }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return toFloat(arr.get(0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to float", e);
+                }
+            }
         }
 
         throw new IllegalArgumentException(ObjectUtil.toString(o) + " cannot be converted to float");
@@ -205,6 +308,26 @@ public final class JavaMath {
             if (Array.getLength(o) == 1) {
                 try {
                     return toDouble(Array.get(o, 0));
+                } catch (RuntimeException e) {
+                    throw new IllegalArgumentException(
+                            ObjectUtil.toString(o) + " cannot be converted to double", e);
+                }
+            }
+        } else if (o instanceof AtomicIntegerArray) {
+            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicLongArray) {
+            AtomicLongArray arr = (AtomicLongArray) o;
+            if (arr.length() == 1) {
+                return arr.get(0);
+            }
+        } else if (o instanceof AtomicReferenceArray) {
+            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+            if (arr.length() == 1) {
+                try {
+                    return toDouble(arr.get(0));
                 } catch (RuntimeException e) {
                     throw new IllegalArgumentException(
                             ObjectUtil.toString(o) + " cannot be converted to double", e);

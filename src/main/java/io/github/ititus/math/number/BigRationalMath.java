@@ -234,6 +234,10 @@ public final class BigRationalMath {
         return lnFast.add(PowerSeriesCalculator.ln(x.divide(lnFast.exp())));
     }
 
+    public static BigRational log(BigRational base, BigRational z) {
+        return ln(z).divide(ln(base));
+    }
+
     public static BigRational sin(BigRational x) {
         if (x.isZero()) {
             return ZERO;
