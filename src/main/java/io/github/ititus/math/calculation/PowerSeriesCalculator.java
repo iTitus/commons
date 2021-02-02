@@ -1,4 +1,4 @@
-package io.github.ititus.math.function;
+package io.github.ititus.math.calculation;
 
 import io.github.ititus.math.number.BigIntegerConstants;
 import io.github.ititus.math.number.BigIntegerMath;

@@ -6,8 +6,7 @@ import java.util.function.Supplier;
 public final class Lazy<T> implements Supplier<T> {
 
     private final Supplier<? extends T> supplier;
-
-    private T cache;
+    private transient T cache;
 
     private Lazy(Supplier<? extends T> supplier) {
         this.supplier = supplier;

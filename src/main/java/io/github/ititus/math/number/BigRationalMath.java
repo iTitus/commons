@@ -1,7 +1,7 @@
 package io.github.ititus.math.number;
 
-import io.github.ititus.math.function.NewtonApproximator;
-import io.github.ititus.math.function.PowerSeriesCalculator;
+import io.github.ititus.math.calculation.NewtonApproximator;
+import io.github.ititus.math.calculation.PowerSeriesCalculator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

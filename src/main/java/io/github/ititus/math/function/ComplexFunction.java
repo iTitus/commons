@@ -24,9 +24,16 @@ public abstract class ComplexFunction {
         } else if (n == 0) {
             return this;
         }
+
         return derivative0(n);
     }
 
+    /**
+     * Calculate the n-th derivative with n>=1.
+     *
+     * @param n degree of derivative, >= 1
+     * @return n-th derivative
+     */
     protected abstract ComplexFunction derivative0(int n);
 
     public boolean isConstant() {
