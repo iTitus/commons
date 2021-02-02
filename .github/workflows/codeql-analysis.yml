@@ -23,15 +23,18 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
+        os: [ ubuntu-latest ]
+        java: [ 11 ]
         language: [ 'java' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
         # Learn more:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Repository
@@ -40,13 +43,23 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: ${{ matrix.java }}
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Load Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -60,8 +73,8 @@ jobs:
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
+      #- name: Autobuild
+      #  uses: github/codeql-action/autobuild@v1
 
       # ℹ️ Command-line programs to run using the OS shell.
       # 📚 https://git.io/JvXDl
@@ -73,6 +86,9 @@ jobs:
       #- run: |
       #   make bootstrap
       #   make release
+
+      - name: Build with Gradle
+        run: ./gradlew build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
