@@ -41,10 +41,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Upload to Bintray
-        run: ./gradlew bintrayUpload
+        run: ./gradlew publish closeAndReleaseRepository
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
+          ORG_GRADLE_PROJECT_ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signing_key: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signing_password: ${{ secrets.SIGNING_PASSWORD }}
 
       - name: Get Version
         id: get_version
@@ -59,6 +61,6 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ steps.get_version.outputs.version-without-v }}
           body: |
-            Download [here](https://bintray.com/ititus/ititus-commons/commons/${{ steps.get_version.outputs.version-without-v }}).
+            Download from [Maven Central](https://search.maven.org/artifact/io.github.ititus/ititus-commons/${{ steps.get_version.outputs.version-without-v }}/jar).
           draft: false
           prerelease: false

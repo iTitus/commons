@@ -31,7 +31,7 @@ public final class Identity extends ComplexFunction {
 
     @Override
     protected String toString(boolean inner) {
-        return VAR;
+        return VAR_NAME;
     }
 
     @Override
