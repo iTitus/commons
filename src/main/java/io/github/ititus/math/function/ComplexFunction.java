@@ -38,9 +38,9 @@ public abstract class ComplexFunction implements Expression {
     }
 
     /**
-     * Calculate the n-th derivative with n>=1.
+     * Calculate the n-th derivative with n&gt;=1.
      *
-     * @param n degree of derivative, >= 1
+     * @param n degree of derivative, &gt;= 1
      * @return n-th derivative
      */
     protected abstract ComplexFunction derivative0(int n);
