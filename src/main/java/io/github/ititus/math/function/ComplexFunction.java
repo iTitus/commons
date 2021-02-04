@@ -77,4 +77,5 @@ public abstract class ComplexFunction implements Expression {
 
     @Override
     public abstract int hashCode();
+
 }
