@@ -34,24 +34,25 @@ public final class PowerSeriesCalculator {
             throw new ArithmeticException();
         }
 
-        BigRational minDiff = BigRational.ofExp(1, -precision);
-        x = x.round(mc);
+        MathContext betterMc = new MathContext(precision + 4, mc.getRoundingMode());
+        BigRational minDiff = BigRational.ofExp(1, -(precision + 1));
+        x = x.round(betterMc);
 
         BigRational result = ZERO;
         BigRational power = ONE;
 
         for (BigInteger n = BigIntegerConstants.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigIntegerConstants.ONE)) {
-            BigRational coeff = powerSeries.getCoefficient(n)/*.round(mc)*/;
+            BigRational coeff = powerSeries.getCoefficient(n).round(betterMc);
             if (!coeff.isZero()) {
-                BigRational term = coeff.multiply(power)/*.round(mc)*/;
-
+                BigRational term = coeff.multiply(power).round(betterMc);
                 if (term.abs().compareTo(minDiff) < 0) {
                     break;
                 }
 
-                result = result.add(term)/*.round(mc)*/;
+                result = result.add(term);
             }
-            power = power.multiply(x)/*.round(mc)*/;
+
+            power = power.multiply(x).round(betterMc);
         }
 
         return result.round(mc);
@@ -63,19 +64,21 @@ public final class PowerSeriesCalculator {
         if (precision == 0) {
             throw new ArithmeticException();
         }
-        BigRational minDiff = BigRational.ofExp(1, -precision);
-        x = x.round(mc);
+
+        MathContext betterMc = new MathContext(precision + 4, mc.getRoundingMode());
+        BigRational minDiff = BigRational.ofExp(1, -(precision + 1));
+        x = x.round(betterMc);
 
         BigRational result = ZERO;
 
         for (BigInteger n = BigIntegerConstants.ZERO; n.compareTo(MAX_ITER) <= 0; n = n.add(BigIntegerConstants.ONE)) {
-            BigRational term = series.getTerm(n, x)/*.round(mc)*/;
+            BigRational term = series.getTerm(n, x).round(betterMc);
             if (!term.isZero()) {
                 if (term.abs().compareTo(minDiff) < 0) {
                     break;
                 }
 
-                result = result.add(term)/*.round(mc)*/;
+                result = result.add(term);
             }
         }
 
