@@ -7,9 +7,10 @@ plugins {
 }
 
 group = 'io.github.ititus'
-version = '1.4.1'
+version = '1.4.2'
 
 wrapper {
+    distributionType Wrapper.DistributionType.ALL
     gradleVersion '6.8.1'
 }
 
@@ -90,7 +91,7 @@ nexusStaging {
 }
 
 nexusPublishing {
-    connectTimeout = clientTimeout = java.time.Duration.ofMinutes(5)
+    connectTimeout = clientTimeout = java.time.Duration.ofHours(1)
     repositories {
         sonatype {
             username = ossrhUsername
