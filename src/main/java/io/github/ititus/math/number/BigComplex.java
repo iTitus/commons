@@ -193,14 +193,14 @@ public final class BigComplex {
 
         int length = s.length();
         char last = s.charAt(length - 1);
-        if (last != 'i' && last != 'j') {
+        if (last != 'i' && last != 'I' && last != 'j' && last != 'J') {
             return real(BigRational.of(s));
         }
 
         Matcher m = FULL_COMPLEX_PATTERN.matcher(s);
         if (!m.matches()) {
             String withoutI = s.substring(0, length - 1);
-            if (withoutI.equals("+")) {
+            if (withoutI.isEmpty() || withoutI.equals("+")) {
                 return I;
             } else if (withoutI.equals("-")) {
                 return MINUS_I;

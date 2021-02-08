@@ -40,14 +40,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Publish to Maven Central
-        run: ./gradlew publish closeAndReleaseRepository
-        env:
-          ORG_GRADLE_PROJECT_ossrh_username: ${{ secrets.OSSRH_USERNAME }}
-          ORG_GRADLE_PROJECT_ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
-          ORG_GRADLE_PROJECT_signing_key: ${{ secrets.SIGNING_KEY }}
-          ORG_GRADLE_PROJECT_signing_password: ${{ secrets.SIGNING_PASSWORD }}
-
       - name: Get Version
         id: get_version
         uses: battila7/get-version-action@v2
@@ -64,3 +56,11 @@ jobs:
             Download from [Maven Central](https://search.maven.org/artifact/io.github.ititus/ititus-commons/${{ steps.get_version.outputs.version-without-v }}/jar).
           draft: false
           prerelease: false
+
+      - name: Publish to Maven Central
+        run: ./gradlew publish closeAndReleaseRepository
+        env:
+          ORG_GRADLE_PROJECT_ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signing_key: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signing_password: ${{ secrets.SIGNING_PASSWORD }}

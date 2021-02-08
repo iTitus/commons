@@ -55,7 +55,7 @@ public class NewtonApproximator {
         }
 
         if (!convergence) {
-            System.out.println("atan did not converge after " + MAX_ITER + " iterations for input " + originalX);
+            System.out.println("atan did NOT converge after " + MAX_ITER + " iterations for input " + originalX);
         }
 
         return x_n.round(mc);
