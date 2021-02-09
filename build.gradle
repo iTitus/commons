@@ -70,6 +70,7 @@ publishing {
                     connection = 'scm:git:git://github.com/iTitus/commons.git'
                     developerConnection = 'scm:git:ssh://git@github.com:iTitus/commons.git'
                     url = 'https://github.com/iTitus/commons'
+                    tag = "v${version}"
                 }
             }
 
