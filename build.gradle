@@ -2,12 +2,11 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
-    id 'io.codearte.nexus-staging' version '0.22.0'
-    id 'de.marcphilipp.nexus-publish' version '0.4.0'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
 }
 
 group = 'io.github.ititus'
-version = '1.4.2'
+version = '1.4.3'
 
 wrapper {
     distributionType Wrapper.DistributionType.ALL
@@ -41,9 +40,6 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
-def ossrhUsername = findProperty("ossrh_username")
-def ossrhPassword = findProperty("ossrh_password")
 
 publishing {
     publications {
@@ -86,17 +82,9 @@ signing {
     sign publishing.publications.MyPublication
 }
 
-nexusStaging {
-    username = ossrhUsername
-    password = ossrhPassword
-}
-
 nexusPublishing {
-    connectTimeout = clientTimeout = java.time.Duration.ofHours(1)
+    connectTimeout = clientTimeout = Duration.ofHours(1)
     repositories {
-        sonatype {
-            username = ossrhUsername
-            password = ossrhPassword
-        }
+        sonatype {}
     }
 }
