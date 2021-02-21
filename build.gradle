@@ -85,6 +85,10 @@ signing {
 nexusPublishing {
     connectTimeout = clientTimeout = Duration.ofHours(1)
     repositories {
-        sonatype {}
+        sonatype {
+            stagingProfileId = project.findProperty('ossrh_staging_profile_id')
+            username = project.findProperty('ossrh_username')
+            password = project.findProperty('ossrh_password')
+        }
     }
 }
