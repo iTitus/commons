@@ -11,8 +11,7 @@ import java.math.BigInteger;
 import java.util.stream.Stream;
 
 import static io.github.ititus.math.number.BigIntegerConstants.*;
-import static io.github.ititus.math.number.BigIntegerMath.factorial;
-import static io.github.ititus.math.number.BigIntegerMath.pow;
+import static io.github.ititus.math.number.BigIntegerMath.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -92,6 +91,24 @@ public class BigIntegerMathTests {
         );
     }
 
+    static Stream<Arguments> test_fibonacci() {
+        return Stream.of(
+                arguments(0, 0),
+                arguments(1, 1),
+                arguments(2, 1),
+                arguments(3, 2),
+                arguments(4, 3),
+                arguments(5, 5),
+                arguments(6, 8),
+                arguments(7, 13),
+                arguments(8, 21),
+                arguments(9, 34),
+                arguments(10, 55),
+                arguments(11, 89),
+                arguments(12, 144)
+        );
+    }
+
     @ParameterizedTest
     @MethodSource
     public void test_pow(
@@ -108,6 +125,15 @@ public class BigIntegerMathTests {
             @ConvertWith(NumberConverter.class) BigInteger n,
             @ConvertWith(NumberConverter.class) BigInteger expected) {
         BigInteger actual = factorial(n);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    public void test_fibonacci(
+            @ConvertWith(NumberConverter.class) BigInteger n,
+            @ConvertWith(NumberConverter.class) BigInteger expected) {
+        BigInteger actual = fibonacci(n);
         assertThat(actual).isEqualTo(expected);
     }
 }

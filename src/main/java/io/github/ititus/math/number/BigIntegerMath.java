@@ -12,6 +12,7 @@ import static io.github.ititus.math.number.BigIntegerConstants.ZERO;
 public final class BigIntegerMath {
 
     private static final NavigableMap<BigInteger, BigInteger> FACTORIAL_CACHE = new TreeMap<>();
+    private static final NavigableMap<BigInteger, BigInteger> FIBONACCI_CACHE = new TreeMap<>();
 
     private BigIntegerMath() {
     }
@@ -235,21 +236,61 @@ public final class BigIntegerMath {
         }
 
         Map.Entry<BigInteger, BigInteger> maxEntry = FACTORIAL_CACHE.lastEntry();
-        BigInteger maxN = maxEntry != null ? maxEntry.getKey() : ONE;
+        BigInteger max = maxEntry != null ? maxEntry.getKey() : ONE;
         BigInteger result = maxEntry != null ? maxEntry.getValue() : ONE;
 
-        if (maxN.equals(n)) {
-            return result;
-        } else if (maxN.compareTo(n) > 0) {
-            return FACTORIAL_CACHE.get(n);
+        if (maxEntry != null) {
+            if (max.equals(n)) {
+                return result;
+            } else if (max.compareTo(n) > 0) {
+                return FACTORIAL_CACHE.get(n);
+            }
         }
 
-        while (maxN.compareTo(n) < 0) {
-            maxN = maxN.add(ONE);
-            result = result.multiply(maxN);
-            FACTORIAL_CACHE.put(maxN, result);
+        while (max.compareTo(n) < 0) {
+            max = max.add(ONE);
+
+            result = result.multiply(max);
+
+            FACTORIAL_CACHE.put(max, result);
         }
 
         return result;
+    }
+
+    public static BigInteger fibonacci(BigInteger n) {
+        if (n.signum() < 0) {
+            throw new ArithmeticException("cannot calculate fibonacci number with a negative index");
+        } else if (n.signum() == 0) {
+            return ZERO;
+        } else if (n.equals(ONE)) {
+            return ONE;
+        }
+
+        Map.Entry<BigInteger, BigInteger> maxEntry = FIBONACCI_CACHE.lastEntry();
+        BigInteger max = maxEntry != null ? maxEntry.getKey() : ONE;
+        BigInteger result = maxEntry != null ? maxEntry.getValue() : ONE;
+
+        if (maxEntry != null) {
+            if (max.equals(n)) {
+                return result;
+            } else if (max.compareTo(n) > 0) {
+                return FIBONACCI_CACHE.get(n);
+            }
+        }
+
+        BigInteger n0 = FIBONACCI_CACHE.getOrDefault(max.subtract(ONE), maxEntry == null ? ZERO : ONE);
+        BigInteger n1 = result;
+        while (max.compareTo(n) < 0) {
+            max = max.add(ONE);
+
+            BigInteger next = n0.add(n1);
+            n0 = n1;
+            n1 = next;
+
+            FIBONACCI_CACHE.put(max, n1);
+        }
+
+        return n1;
     }
 }
