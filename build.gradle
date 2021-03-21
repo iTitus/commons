@@ -9,7 +9,6 @@ group = 'io.github.ititus'
 version = '1.4.4'
 
 wrapper {
-    distributionType Wrapper.DistributionType.ALL
     gradleVersion '6.8.3'
 }
 
@@ -76,8 +75,8 @@ publishing {
 }
 
 signing {
-    def signingKey = findProperty("signing_key")
-    def signingPassword = findProperty("signing_password")
+    def signingKey = findProperty('signing_key')
+    def signingPassword = findProperty('signing_password')
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.MyPublication
 }
