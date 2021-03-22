@@ -12,7 +12,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
-public class IO {
+public final class IO {
+
+    private IO() {
+    }
 
     public static void copyUrlToPath(String url, Path outPath) {
         copyUrlToPath(toURL(url), outPath);
