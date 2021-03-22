@@ -1,6 +1,6 @@
 package io.github.ititus.si.prefix;
 
-import io.github.ititus.Config;
+import io.github.ititus.internal.Config;
 
 public enum MetricPrefix implements Prefix {
 

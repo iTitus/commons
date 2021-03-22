@@ -1,4 +1,4 @@
-package io.github.ititus;
+package io.github.ititus.internal;
 
 public final class Config {
 

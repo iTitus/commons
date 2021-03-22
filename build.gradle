@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.github.ititus'
-version = '1.4.4'
+version = '1.4.5'
 
 wrapper {
     gradleVersion '6.8.3'
@@ -14,6 +14,7 @@ wrapper {
 
 java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+    modularity.inferModulePath = true
 
     withSourcesJar()
     withJavadocJar()
