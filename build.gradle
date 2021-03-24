@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.github.ititus'
-version = '1.4.5'
+version = '1.4.6'
 
 wrapper {
     gradleVersion '6.8.3'
