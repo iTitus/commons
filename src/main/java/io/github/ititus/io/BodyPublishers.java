@@ -1,11 +1,11 @@
 package io.github.ititus.io;
 
 import java.net.URLEncoder;
-import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
 public final class BodyPublishers {
@@ -15,7 +15,7 @@ public final class BodyPublishers {
 
     public static BodyPublisher ofFormData(Map<String, String> data) {
         if (data == null || data.isEmpty()) {
-            return HttpRequest.BodyPublishers.noBody();
+            return noBody();
         }
 
         StringBuilder builder = new StringBuilder();
