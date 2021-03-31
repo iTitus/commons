@@ -1,5 +1,8 @@
 package io.github.ititus.io;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum HttpStatus {
 
     CONTINUE(100),
@@ -83,7 +86,18 @@ public enum HttpStatus {
     NETWORK_AUTHENTICATION_REQUIRED(511),
     UNKNOWN(999);
 
-    private static final HttpStatus[] VALUES = values();
+    private static final Map<Integer, HttpStatus> VALUES;
+
+    static {
+        Map<Integer, HttpStatus> values = new HashMap<>();
+        for (HttpStatus app : values()) {
+            if (app != UNKNOWN && values.put(app.code, app) != null) {
+                throw new IllegalStateException("duplicate status code");
+            }
+        }
+
+        VALUES = Map.copyOf(values);
+    }
 
     private final int code;
 
@@ -92,13 +106,7 @@ public enum HttpStatus {
     }
 
     public static HttpStatus of(int code) {
-        for (HttpStatus value : VALUES) {
-            if (value.code == code) {
-                return value;
-            }
-        }
-
-        return UNKNOWN;
+        return VALUES.getOrDefault(code, UNKNOWN);
     }
 
     public int code() {
