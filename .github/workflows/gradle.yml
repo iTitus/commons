@@ -50,5 +50,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: test-reports-${{ matrix.os }}-${{ matrix.java }}
+          name: test-reports-${{ matrix.os }}-${{ matrix.java-version }}-${{ matrix.distribution }}
           path: build/reports
