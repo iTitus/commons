@@ -9,12 +9,11 @@ group = 'io.github.ititus'
 version = '1.4.6'
 
 wrapper {
-    gradleVersion '6.8.3'
+    gradleVersion '7.0'
 }
 
 java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
-    modularity.inferModulePath = true
 
     withSourcesJar()
     withJavadocJar()
