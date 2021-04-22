@@ -7,14 +7,7 @@ on:
 
 jobs:
   release:
-
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-        java-version: [ 11 ]
-        distribution: [ adopt ]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -29,8 +22,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          java-version: ${{ matrix.java-version }}
-          distribution: ${{ matrix.distribution }}
+          java-version: 11
+          distribution: adopt
 
       - name: Load Cache
         uses: actions/cache@v2
