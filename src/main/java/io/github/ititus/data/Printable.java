@@ -8,7 +8,7 @@ public interface Printable extends DeepToString {
 
     String getPrefix();
 
-    void getPrintableFields(Map<String, ?> fields);
+    void getPrintableFields(Map<String, Object> fields);
 
     @SuppressWarnings("Duplicates")
     default String toPrintableString() {
