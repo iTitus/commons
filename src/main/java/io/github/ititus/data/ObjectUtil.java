@@ -1,8 +1,6 @@
 package io.github.ititus.data;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public final class ObjectUtil {
 
@@ -11,27 +9,30 @@ public final class ObjectUtil {
             return "null";
         } else if (o instanceof DeepToString) {
             return ((DeepToString) o).deepToString();
-        } else if (o instanceof Iterable) {
-            Iterator<?> it = ((Iterable<?>) o).iterator();
-            if (!it.hasNext()) {
-                return "[]";
+        } else if (o instanceof Collection) {
+            Collection<?> c = (Collection<?>) o;
+            boolean set = c instanceof Set;
+            if (c.isEmpty()) {
+                return set ? "{}" : "[]";
             }
 
-            StringBuilder b = new StringBuilder().append('[');
+            Iterator<?> it = c.iterator();
+            StringBuilder b = new StringBuilder().append(set ? '{' : '[');
             while (true) {
                 b.append(deepToString(it.next()));
                 if (!it.hasNext()) {
-                    return b.append(']').toString();
+                    return b.append(set ? '}' : ']').toString();
                 }
 
                 b.append(',').append(' ');
             }
         } else if (o instanceof Map) {
-            Iterator<? extends Map.Entry<?, ?>> it = ((Map<?, ?>) o).entrySet().iterator();
-            if (!it.hasNext()) {
+            Map<?, ?> m = (Map<?, ?>) o;
+            if (m.isEmpty()) {
                 return "{}";
             }
 
+            Iterator<? extends Map.Entry<?, ?>> it = m.entrySet().iterator();
             StringBuilder b = new StringBuilder().append('{');
             while (true) {
                 Map.Entry<?, ?> e = it.next();
