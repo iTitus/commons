@@ -1,6 +1,7 @@
 package io.github.ititus.data.pair;
 
 import io.github.ititus.data.DeepToString;
+import io.github.ititus.data.pair.impl.PairImpl;
 
 public interface Pair<A, B> extends DeepToString {
 

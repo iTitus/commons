@@ -1,15 +1,16 @@
-package io.github.ititus.data.pair;
+package io.github.ititus.data.pair.impl;
 
 import io.github.ititus.data.ObjectUtil;
+import io.github.ititus.data.pair.Pair;
 
 import java.util.Objects;
 
-final class PairImpl<A, B> implements Pair<A, B> {
+public final class PairImpl<A, B> implements Pair<A, B> {
 
     private final A a;
     private final B b;
 
-    PairImpl(A a, B b) {
+    public PairImpl(A a, B b) {
         this.a = a;
         this.b = b;
     }
@@ -28,10 +29,10 @@ final class PairImpl<A, B> implements Pair<A, B> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof PairImpl)) {
+        } else if (!(o instanceof Pair)) {
             return false;
         }
+
         Pair<?, ?> pair = (Pair<?, ?>) o;
         return Objects.equals(a, pair.a()) && Objects.equals(b, pair.b());
     }

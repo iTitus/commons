@@ -95,4 +95,15 @@ public final class IO {
             throw new UncheckedIOException(e);
         }
     }
+
+    public static void closeSilently(AutoCloseable c) {
+        if (c == null) {
+            return;
+        }
+
+        try {
+            c.close();
+        } catch (Exception ignored) {
+        }
+    }
 }

@@ -2,6 +2,7 @@ module io.github.ititus.commons {
     requires transitive java.net.http;
 
     exports io.github.ititus.data;
+    exports io.github.ititus.data.mutable;
     exports io.github.ititus.data.pair;
     exports io.github.ititus.function;
     exports io.github.ititus.io;

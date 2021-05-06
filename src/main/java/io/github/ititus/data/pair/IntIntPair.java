@@ -1,5 +1,7 @@
 package io.github.ititus.data.pair;
 
+import io.github.ititus.data.pair.impl.IntIntPairImpl;
+
 public interface IntIntPair extends Pair<Integer, Integer> {
 
     static IntIntPair of(int a, int b) {

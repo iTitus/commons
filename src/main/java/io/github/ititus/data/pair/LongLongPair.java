@@ -1,5 +1,7 @@
 package io.github.ititus.data.pair;
 
+import io.github.ititus.data.pair.impl.LongLongPairImpl;
+
 public interface LongLongPair extends Pair<Long, Long> {
 
     static LongLongPair of(long a, long b) {

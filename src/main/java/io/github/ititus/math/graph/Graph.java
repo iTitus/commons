@@ -27,7 +27,8 @@ public class Graph<T> {
         }
 
         UUID uuid;
-        do {
+        do
+        {
             uuid = UUID.randomUUID();
         } while (getVertexById(uuid).isPresent());
 
@@ -58,7 +59,8 @@ public class Graph<T> {
         }
 
         UUID uuid;
-        do {
+        do
+        {
             uuid = UUID.randomUUID();
         } while (getEdgeById(uuid).isPresent());
 

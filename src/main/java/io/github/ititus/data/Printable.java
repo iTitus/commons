@@ -8,11 +8,11 @@ public interface Printable extends DeepToString {
 
     String getPrefix();
 
-    void getPrintableFields(Map<String, String> fields);
+    void getPrintableFields(Map<String, ?> fields);
 
     @SuppressWarnings("Duplicates")
     default String toPrintableString() {
-        Map<String, String> fields = new LinkedHashMap<>();
+        Map<String, Object> fields = new LinkedHashMap<>();
         getPrintableFields(fields);
 
         String prefix = getPrefix();
@@ -20,14 +20,14 @@ public interface Printable extends DeepToString {
             prefix = "";
         }
 
-        Iterator<Map.Entry<String, String>> it = fields.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> it = fields.entrySet().iterator();
         if (!it.hasNext()) {
             return prefix + "{}";
         }
 
         StringBuilder b = new StringBuilder().append(prefix).append('{');
         while (true) {
-            Map.Entry<String, String> e = it.next();
+            Map.Entry<String, Object> e = it.next();
             b.append(e.getKey()).append('=').append(e.getValue());
             if (!it.hasNext()) {
                 return b.append('}').toString();
@@ -40,7 +40,7 @@ public interface Printable extends DeepToString {
     @Override
     @SuppressWarnings("Duplicates")
     default String deepToString() {
-        Map<String, String> fields = new LinkedHashMap<>();
+        Map<String, Object> fields = new LinkedHashMap<>();
         getPrintableFields(fields);
 
         String prefix = getPrefix();
@@ -48,15 +48,15 @@ public interface Printable extends DeepToString {
             prefix = "";
         }
 
-        Iterator<Map.Entry<String, String>> it = fields.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> it = fields.entrySet().iterator();
         if (!it.hasNext()) {
             return prefix + "{}";
         }
 
         StringBuilder b = new StringBuilder().append(prefix).append('{');
         while (true) {
-            Map.Entry<String, String> e = it.next();
-            b.append(ObjectUtil.deepToString(e.getKey())).append('=').append(ObjectUtil.deepToString(e.getValue()));
+            Map.Entry<String, Object> e = it.next();
+            b.append(e.getKey()).append('=').append(ObjectUtil.deepToString(e.getValue()));
             if (!it.hasNext()) {
                 return b.append('}').toString();
             }

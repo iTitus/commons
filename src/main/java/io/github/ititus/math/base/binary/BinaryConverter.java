@@ -24,7 +24,8 @@ public final class BinaryConverter extends BaseConverter {
 
         BitSet bs = new BitSet();
         int i = 0;
-        do {
+        do
+        {
             bs.set(i++, (n & 1) != 0);
             n >>>= 1;
         } while (n != 0);
@@ -40,7 +41,8 @@ public final class BinaryConverter extends BaseConverter {
 
         BitSet bs = new BitSet();
         int i = 0;
-        do {
+        do
+        {
             bs.set(i++, (n & 1) != 0);
             n >>>= 1;
         } while (n != 0);
@@ -57,7 +59,8 @@ public final class BinaryConverter extends BaseConverter {
 
         BitSet bs = new BitSet();
         int i = 0;
-        do {
+        do
+        {
             bs.set(i++, n.testBit(0));
             n = n.shiftRight(1);
         } while (n.signum() > 0);
