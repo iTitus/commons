@@ -35,6 +35,6 @@ public class NumberConverter implements ArgumentConverter {
             return BigComplex.of(source);
         }
 
-        throw new ArgumentConversionException("Unknown target type" + type);
+        throw new ArgumentConversionException("Invalid parameter type " + context.getParameter().getAnnotatedType());
     }
 }
