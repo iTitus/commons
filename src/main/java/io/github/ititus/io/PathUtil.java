@@ -21,28 +21,24 @@ public final class PathUtil {
         int c1 = p1.getNameCount();
         int c2 = p2.getNameCount();
 
-        boolean sameLength = c1 == c2;
-        int min = Math.min(c1, c2);
-
-        for (int i = 0; i < min; i++) {
-            String n1 = p1.getName(i).toString();
-            String n2 = p2.getName(i).toString();
-
-            if (sameLength && i == min - 1) {
-                boolean d1 = Files.isDirectory(p1);
-                boolean d2 = Files.isDirectory(p2);
-                if (d1 != d2) {
-                    return d1 ? -1 : 1;
-                }
-            }
-
-            int c = n1.compareTo(n2);
+        int last = Math.min(c1, c2) - 1;
+        for (int i = 0; i < last; i++) {
+            int c = p1.getName(i).toString().compareTo(p2.getName(i).toString());
             if (c != 0) {
                 return c;
             }
         }
 
-        return c1 - c2;
+        int c = c1 - c2;
+        if (c == 0 && !p1.getName(last).toString().equals(p2.getName(last).toString())) {
+            boolean d1 = Files.isDirectory(p1);
+            boolean d2 = Files.isDirectory(p2);
+            if (d1 != d2) {
+                return d1 ? 1 : -1;
+            }
+        }
+
+        return c;
     };
 
     private PathUtil() {
