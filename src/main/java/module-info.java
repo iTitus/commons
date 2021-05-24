@@ -21,6 +21,7 @@ module io.github.ititus.commons {
     exports io.github.ititus.math.modulus;
     exports io.github.ititus.math.number;
     exports io.github.ititus.math.permutation;
+    exports io.github.ititus.math.quaternion;
     exports io.github.ititus.math.random;
     exports io.github.ititus.math.statistics;
     exports io.github.ititus.math.time;
