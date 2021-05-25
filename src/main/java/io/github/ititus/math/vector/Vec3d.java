@@ -12,7 +12,7 @@ public final class Vec3d {
         this(0, 0, 0);
     }
 
-    public Vec3d(double... arr) {
+    public Vec3d(double[] arr) {
         if (arr.length != 3) {
             throw new IllegalArgumentException("illegal array size");
         }

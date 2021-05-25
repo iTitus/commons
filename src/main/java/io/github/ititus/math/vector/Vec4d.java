@@ -18,7 +18,7 @@ public final class Vec4d {
         this(quatD.x(), quatD.y(), quatD.z(), quatD.w());
     }
 
-    public Vec4d(double... arr) {
+    public Vec4d(double[] arr) {
         if (arr.length != 4) {
             throw new IllegalArgumentException("illegal array size");
         }

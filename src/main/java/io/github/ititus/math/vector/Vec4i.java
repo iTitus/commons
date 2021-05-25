@@ -14,7 +14,7 @@ public final class Vec4i implements Comparable<Vec4i> {
         this(0, 0, 0, 0);
     }
 
-    public Vec4i(int... arr) {
+    public Vec4i(int[] arr) {
         if (arr.length != 4) {
             throw new IllegalArgumentException("illegal array size");
         }

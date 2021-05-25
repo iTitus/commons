@@ -11,7 +11,7 @@ public final class Vec2i implements Comparable<Vec2i> {
         this(0, 0);
     }
 
-    public Vec2i(int... arr) {
+    public Vec2i(int[] arr) {
         if (arr.length != 2) {
             throw new IllegalArgumentException("illegal array size");
         }

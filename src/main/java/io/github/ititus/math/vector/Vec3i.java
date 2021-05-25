@@ -13,7 +13,7 @@ public final class Vec3i implements Comparable<Vec3i> {
         this(0, 0, 0);
     }
 
-    public Vec3i(int... arr) {
+    public Vec3i(int[] arr) {
         if (arr.length != 3) {
             throw new IllegalArgumentException("illegal array size");
         }

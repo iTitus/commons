@@ -11,7 +11,7 @@ public final class Vec2d {
         this(0, 0);
     }
 
-    public Vec2d(double... arr) {
+    public Vec2d(double[] arr) {
         if (arr.length != 2) {
             throw new IllegalArgumentException("illegal array size");
         }

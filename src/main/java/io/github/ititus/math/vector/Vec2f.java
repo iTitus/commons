@@ -11,7 +11,7 @@ public final class Vec2f {
         this(0, 0);
     }
 
-    public Vec2f(float... arr) {
+    public Vec2f(float[] arr) {
         if (arr.length != 2) {
             throw new IllegalArgumentException("illegal array size");
         }

@@ -18,7 +18,7 @@ public final class Vec4f {
         this(quatF.x(), quatF.y(), quatF.z(), quatF.w());
     }
 
-    public Vec4f(float... arr) {
+    public Vec4f(float[] arr) {
         if (arr.length != 4) {
             throw new IllegalArgumentException("illegal array size");
         }

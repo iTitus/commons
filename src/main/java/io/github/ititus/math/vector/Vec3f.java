@@ -12,7 +12,7 @@ public final class Vec3f {
         this(0, 0, 0);
     }
 
-    public Vec3f(float... arr) {
+    public Vec3f(float[] arr) {
         if (arr.length != 3) {
             throw new IllegalArgumentException("illegal array size");
         }
