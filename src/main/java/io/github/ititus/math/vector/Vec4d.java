@@ -1,24 +1,24 @@
 package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
-import io.github.ititus.math.quaternion.QuatF;
+import io.github.ititus.math.quaternion.QuatD;
 
-public final class Vec4f {
+public final class Vec4d {
 
-    private final float x;
-    private final float y;
-    private final float z;
-    private final float w;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final double w;
 
-    public Vec4f() {
+    public Vec4d() {
         this(0, 0, 0, 0);
     }
 
-    public Vec4f(QuatF quatF) {
-        this(quatF.x(), quatF.y(), quatF.z(), quatF.w());
+    public Vec4d(QuatD quatD) {
+        this(quatD.x(), quatD.y(), quatD.z(), quatD.w());
     }
 
-    public Vec4f(float... arr) {
+    public Vec4d(double... arr) {
         if (arr.length != 4) {
             throw new IllegalArgumentException("illegal array size");
         }
@@ -29,26 +29,26 @@ public final class Vec4f {
         this.w = arr[3];
     }
 
-    public Vec4f(float x, float y, float z, float w) {
+    public Vec4d(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public float x() {
+    public double x() {
         return x;
     }
 
-    public float y() {
+    public double y() {
         return y;
     }
 
-    public float z() {
+    public double z() {
         return z;
     }
 
-    public float w() {
+    public double w() {
         return w;
     }
 
@@ -56,12 +56,12 @@ public final class Vec4f {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof Vec4f)) {
+        } else if (!(o instanceof Vec4d)) {
             return false;
         }
 
-        Vec4f vec4f = (Vec4f) o;
-        return Float.compare(vec4f.x, x) == 0 && Float.compare(vec4f.y, y) == 0 && Float.compare(vec4f.z, z) == 0 && Float.compare(vec4f.w, w) == 0;
+        Vec4d vec4d = (Vec4d) o;
+        return Double.compare(vec4d.x, x) == 0 && Double.compare(vec4d.y, y) == 0 && Double.compare(vec4d.z, z) == 0 && Double.compare(vec4d.w, w) == 0;
     }
 
     @Override

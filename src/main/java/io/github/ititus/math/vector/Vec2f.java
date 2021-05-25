@@ -2,30 +2,27 @@ package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
 
-public final class Vec3f {
+public final class Vec2f {
 
     private final float x;
     private final float y;
-    private final float z;
 
-    public Vec3f() {
-        this(0, 0, 0);
+    public Vec2f() {
+        this(0, 0);
     }
 
-    public Vec3f(float... arr) {
-        if (arr.length != 3) {
+    public Vec2f(float... arr) {
+        if (arr.length != 2) {
             throw new IllegalArgumentException("illegal array size");
         }
 
         this.x = arr[0];
         this.y = arr[1];
-        this.z = arr[2];
     }
 
-    public Vec3f(float x, float y, float z) {
+    public Vec2f(float x, float y) {
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 
     public float x() {
@@ -36,29 +33,25 @@ public final class Vec3f {
         return y;
     }
 
-    public float z() {
-        return z;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof Vec3f)) {
+        } else if (!(o instanceof Vec2f)) {
             return false;
         }
 
-        Vec3f vec3f = (Vec3f) o;
-        return Float.compare(vec3f.x, x) == 0 && Float.compare(vec3f.y, y) == 0 && Float.compare(vec3f.z, z) == 0;
+        Vec2f vec2f = (Vec2f) o;
+        return Float.compare(vec2f.x, x) == 0 && Float.compare(vec2f.y, y) == 0;
     }
 
     @Override
     public int hashCode() {
-        return ArrayUtil.hash(x, y, z);
+        return ArrayUtil.hash(x, y);
     }
 
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ", " + z + ')';
+        return "(" + x + ", " + y + ')';
     }
 }

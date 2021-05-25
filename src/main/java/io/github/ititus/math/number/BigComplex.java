@@ -229,7 +229,7 @@ public final class BigComplex {
     }
 
     public static BigComplex of(Vec2i v) {
-        return of(v.getX(), v.getY());
+        return of(v.x(), v.y());
     }
 
     public static BigComplex of(byte real, byte imag) {

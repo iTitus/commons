@@ -14,6 +14,17 @@ public final class Vec4i implements Comparable<Vec4i> {
         this(0, 0, 0, 0);
     }
 
+    public Vec4i(int... arr) {
+        if (arr.length != 4) {
+            throw new IllegalArgumentException("illegal array size");
+        }
+
+        this.x = arr[0];
+        this.y = arr[1];
+        this.z = arr[2];
+        this.w = arr[3];
+    }
+
     public Vec4i(int x, int y, int z, int w) {
         this.x = x;
         this.y = y;
@@ -37,19 +48,39 @@ public final class Vec4i implements Comparable<Vec4i> {
         return Math.abs(x) + Math.abs(y) + Math.abs(z) + Math.abs(w);
     }
 
+    @Deprecated(forRemoval = true)
     public int getX() {
         return x;
     }
 
+    public int x() {
+        return x;
+    }
+
+    @Deprecated(forRemoval = true)
     public int getY() {
         return y;
     }
 
+    public int y() {
+        return y;
+    }
+
+    @Deprecated(forRemoval = true)
     public int getZ() {
         return z;
     }
 
+    public int z() {
+        return z;
+    }
+
+    @Deprecated(forRemoval = true)
     public int getW() {
+        return w;
+    }
+
+    public int w() {
         return w;
     }
 
