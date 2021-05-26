@@ -10,12 +10,46 @@ import java.util.Optional;
 
 public final class PathUtil {
 
-    public static final Comparator<Path> ASCIIBETICAL = (p1, p2) -> {
+    public static final Comparator<Path> ASCIIBETICAL = PathUtil::compareAsciibetical;
+    public static final Comparator<Path> ASCIIBETICAL_NORMALIZE = (p1, p2) -> compareAsciibetical(p1.normalize(), p2.normalize());
+    public static final Comparator<Path> ASCIIBETICAL_REAL = (p1, p2) -> compareAsciibetical(toRealPath(p1), toRealPath(p2));
+    public static final Comparator<Path> ASCIIBETICAL_FILES_FIRST = PathUtil::compareAsciibeticalFilesFirst;
+    public static final Comparator<Path> ASCIIBETICAL_NORMALIZE_FILES_FIRST = (p1, p2) -> compareAsciibeticalFilesFirst(p1.normalize(), p2.normalize());
+    public static final Comparator<Path> ASCIIBETICAL_REAL_FILES_FIRST = (p1, p2) -> compareAsciibeticalFilesFirst(toRealPath(p1), toRealPath(p2));
+
+    private PathUtil() {
+    }
+
+    public static Path toRealPath(Path p) {
         try {
-            p1 = p1.toRealPath();
-            p2 = p2.toRealPath();
+            return p.toRealPath();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    public static int compareAsciibetical(Path p1, Path p2) {
+        if (p1.isAbsolute() != p2.isAbsolute()) {
+            throw new IllegalArgumentException("both paths must either be absolute or relative");
+        }
+
+        int c1 = p1.getNameCount();
+        int c2 = p2.getNameCount();
+
+        int last = Math.min(c1, c2);
+        for (int i = 0; i < last; i++) {
+            int c = p1.getName(i).toString().compareTo(p2.getName(i).toString());
+            if (c != 0) {
+                return c;
+            }
+        }
+
+        return c1 - c2;
+    }
+
+    public static int compareAsciibeticalFilesFirst(Path p1, Path p2) {
+        if (p1.isAbsolute() != p2.isAbsolute()) {
+            throw new IllegalArgumentException("both paths must either be absolute or relative");
         }
 
         int c1 = p1.getNameCount();
@@ -39,9 +73,6 @@ public final class PathUtil {
         }
 
         return c;
-    };
-
-    private PathUtil() {
     }
 
     public static Optional<String> getExtension(Path p) {
