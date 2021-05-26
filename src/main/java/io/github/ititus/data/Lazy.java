@@ -24,4 +24,8 @@ public final class Lazy<T> implements Supplier<T> {
 
         return cache;
     }
+
+    public void clear() {
+        cache = null;
+    }
 }
