@@ -17,7 +17,7 @@ public final class ZipUtil {
     }
 
     public static FileSystem openZip(Path zip, boolean create) throws IOException {
-        URI uri = URI.create("jar:file:" + zip.toUri().getRawPath());
+        URI uri = URI.create("jar:" + zip.normalize().toUri());
         Map<String, ?> env = Map.of("create", create);
         return FileSystems.newFileSystem(uri, env);
     }
