@@ -2,7 +2,7 @@ package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.matrix.Mat4f;
-import io.github.ititus.math.quaternion.QuatF;
+import io.github.ititus.math.quaternion.Quatf;
 
 public final class Vec4f {
 
@@ -15,7 +15,7 @@ public final class Vec4f {
         this(0, 0, 0, 0);
     }
 
-    public Vec4f(QuatF quatF) {
+    public Vec4f(Quatf quatF) {
         this(quatF.x(), quatF.y(), quatF.z(), quatF.w());
     }
 

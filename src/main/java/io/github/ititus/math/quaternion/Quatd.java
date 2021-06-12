@@ -3,18 +3,18 @@ package io.github.ititus.math.quaternion;
 import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.vector.Vec4d;
 
-public final class QuatD {
+public final class Quatd {
 
     private final double x;
     private final double y;
     private final double z;
     private final double w;
 
-    public QuatD(Vec4d vec4d) {
+    public Quatd(Vec4d vec4d) {
         this(vec4d.x(), vec4d.y(), vec4d.z(), vec4d.w());
     }
 
-    public QuatD(double x, double y, double z, double w) {
+    public Quatd(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,11 +41,11 @@ public final class QuatD {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof QuatD)) {
+        } else if (!(o instanceof Quatd)) {
             return false;
         }
 
-        QuatD quatD = (QuatD) o;
+        Quatd quatD = (Quatd) o;
         return Double.compare(quatD.x, x) == 0 && Double.compare(quatD.y, y) == 0 && Double.compare(quatD.z, z) == 0 && Double.compare(quatD.w, w) == 0;
     }
 
