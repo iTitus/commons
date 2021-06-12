@@ -1,6 +1,7 @@
 package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.math.matrix.Mat3f;
 
 public final class Vec3f {
 
@@ -28,6 +29,62 @@ public final class Vec3f {
         this.z = z;
     }
 
+    public Vec3f add(Vec3f o) {
+        return new Vec3f(x + o.x, y + o.y, z + o.z);
+    }
+
+    public Vec3f subtract(Vec3f o) {
+        return new Vec3f(x - o.x, y - o.y, z - o.z);
+    }
+
+    public Vec3f multiply(int n) {
+        return multiply((float) n);
+    }
+
+    public Vec3f multiply(float f) {
+        return new Vec3f(x * f, y * f, z * f);
+    }
+
+    public Vec3f multiply(Mat3f o) {
+        return new Vec3f(
+                x * o.m11() + y * o.m21() + z * o.m31(),
+                x * o.m12() + y * o.m22() + z * o.m32(),
+                x * o.m13() + y * o.m23() + z * o.m33()
+        );
+    }
+
+    public Vec3f divide(int n) {
+        return divide((float) n);
+    }
+
+    public Vec3f divide(float f) {
+        return new Vec3f(x / f, y / f, z / f);
+    }
+
+    public float dot(Vec3f o) {
+        return x * o.x + y * o.y + z * o.z;
+    }
+
+    public double dotD(Vec3f o) {
+        return (double) x * o.x + (double) y * o.y + (double) z * o.z;
+    }
+
+    public Vec3f cross(Vec3f o) {
+        return new Vec3f(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
+    }
+
+    public double lengthD() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    public float length() {
+        return (float) lengthD();
+    }
+
+    public Vec3f normalize() {
+        return divide(length());
+    }
+
     public float x() {
         return x;
     }
@@ -38,6 +95,10 @@ public final class Vec3f {
 
     public float z() {
         return z;
+    }
+
+    public Vec2f xy() {
+        return new Vec2f(x, y);
     }
 
     @Override

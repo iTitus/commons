@@ -37,12 +37,24 @@ public final class Vec3i implements Comparable<Vec3i> {
         return new Vec3i(x - o.x, y - o.y, z - o.z);
     }
 
+    public int dot(Vec3i o) {
+        return x * o.x + y * o.y + z * o.z;
+    }
+
+    public Vec3i cross(Vec3i o) {
+        return new Vec3i(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
+    }
+
     public Vec3i sgn() {
         return new Vec3i(JavaMath.sgn(x), JavaMath.sgn(y), JavaMath.sgn(z));
     }
 
     public int manhattanDistance() {
         return Math.abs(x) + Math.abs(y) + Math.abs(z);
+    }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
     @Deprecated(forRemoval = true)
@@ -70,6 +82,10 @@ public final class Vec3i implements Comparable<Vec3i> {
 
     public int z() {
         return z;
+    }
+
+    public Vec2i xy() {
+        return new Vec2i(x, y);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.math.matrix.Mat3d;
 
 public final class Vec3d {
 
@@ -28,6 +29,62 @@ public final class Vec3d {
         this.z = z;
     }
 
+    public Vec3d add(Vec3d o) {
+        return new Vec3d(x + o.x, y + o.y, z + o.z);
+    }
+
+    public Vec3d subtract(Vec3d o) {
+        return new Vec3d(x - o.x, y - o.y, z - o.z);
+    }
+
+    public Vec3d multiply(int n) {
+        return multiply((double) n);
+    }
+
+    public Vec3d multiply(float f) {
+        return multiply((double) f);
+    }
+
+    public Vec3d multiply(double d) {
+        return new Vec3d(x * d, y * d, z * d);
+    }
+
+    public Vec3d multiply(Mat3d o) {
+        return new Vec3d(
+                x * o.m11() + y * o.m21() + z * o.m31(),
+                x * o.m12() + y * o.m22() + z * o.m32(),
+                x * o.m13() + y * o.m23() + z * o.m33()
+        );
+    }
+
+    public Vec3d divide(int n) {
+        return divide((double) n);
+    }
+
+    public Vec3d divide(float f) {
+        return divide((double) f);
+    }
+
+    public Vec3d divide(double d) {
+        return new Vec3d(x / d, y / d, z / d);
+    }
+
+    public double dot(Vec3d o) {
+        return x * o.x + y * o.y + z * o.z;
+    }
+
+    public Vec3d cross(Vec3d o) {
+        return new Vec3d(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
+    }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    public Vec3d normalize() {
+        return divide(length());
+    }
+
     public double x() {
         return x;
     }
@@ -38,6 +95,10 @@ public final class Vec3d {
 
     public double z() {
         return z;
+    }
+
+    public Vec2d xy() {
+        return new Vec2d(x, y);
     }
 
     @Override

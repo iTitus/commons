@@ -40,12 +40,20 @@ public final class Vec4i implements Comparable<Vec4i> {
         return new Vec4i(x - o.x, y - o.y, z - o.z, w - o.w);
     }
 
+    public int dot(Vec4i o) {
+        return x * o.x + y * o.y + z * o.z + w * o.w;
+    }
+
     public Vec4i sgn() {
         return new Vec4i(JavaMath.sgn(x), JavaMath.sgn(y), JavaMath.sgn(z), JavaMath.sgn(w));
     }
 
     public int manhattanDistance() {
         return Math.abs(x) + Math.abs(y) + Math.abs(z) + Math.abs(w);
+    }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y + z * z + w * w);
     }
 
     @Deprecated(forRemoval = true)
@@ -82,6 +90,14 @@ public final class Vec4i implements Comparable<Vec4i> {
 
     public int w() {
         return w;
+    }
+
+    public Vec2i xy() {
+        return new Vec2i(x, y);
+    }
+
+    public Vec3i xyz() {
+        return new Vec3i(x, y, z);
     }
 
     @Override

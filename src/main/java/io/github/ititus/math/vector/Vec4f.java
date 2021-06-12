@@ -1,6 +1,7 @@
 package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.math.matrix.Mat4f;
 import io.github.ititus.math.quaternion.QuatF;
 
 public final class Vec4f {
@@ -36,6 +37,59 @@ public final class Vec4f {
         this.w = w;
     }
 
+    public Vec4f add(Vec4f o) {
+        return new Vec4f(x + o.x, y + o.y, z + o.z, w + o.w);
+    }
+
+    public Vec4f subtract(Vec4f o) {
+        return new Vec4f(x - o.x, y - o.y, z - o.z, w - o.w);
+    }
+
+    public Vec4f multiply(int n) {
+        return multiply((float) n);
+    }
+
+    public Vec4f multiply(float f) {
+        return new Vec4f(x * f, y * f, z * f, w * f);
+    }
+
+    public Vec4f multiply(Mat4f o) {
+        return new Vec4f(
+                x * o.m11() + y * o.m21() + z * o.m31() + w * o.m41(),
+                x * o.m12() + y * o.m22() + z * o.m32() + w * o.m42(),
+                x * o.m13() + y * o.m23() + z * o.m33() + w * o.m43(),
+                x * o.m14() + y * o.m24() + z * o.m34() + w * o.m44()
+        );
+    }
+
+    public Vec4f divide(int n) {
+        return divide((float) n);
+    }
+
+    public Vec4f divide(float f) {
+        return new Vec4f(x / f, y / f, z / f, w / f);
+    }
+
+    public float dot(Vec4f o) {
+        return x * o.x + y * o.y + z * o.z + w * o.w;
+    }
+
+    public double dotD(Vec4f o) {
+        return (double) x * o.x + (double) y * o.y + (double) z * o.z + (double) w * o.w;
+    }
+
+    public double lengthD() {
+        return Math.sqrt(x * x + y * y + z * z + w * w);
+    }
+
+    public float length() {
+        return (float) lengthD();
+    }
+
+    public Vec4f normalize() {
+        return divide(length());
+    }
+
     public float x() {
         return x;
     }
@@ -50,6 +104,14 @@ public final class Vec4f {
 
     public float w() {
         return w;
+    }
+
+    public Vec2f xy() {
+        return new Vec2f(x, y);
+    }
+
+    public Vec3f xyz() {
+        return new Vec3f(x, y, z);
     }
 
     @Override

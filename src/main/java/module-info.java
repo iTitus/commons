@@ -18,6 +18,7 @@ module io.github.ititus.commons {
     exports io.github.ititus.math.graph;
     exports io.github.ititus.math.graph.algorithm;
     exports io.github.ititus.math.hash;
+    exports io.github.ititus.math.matrix;
     exports io.github.ititus.math.modulus;
     exports io.github.ititus.math.number;
     exports io.github.ititus.math.permutation;

@@ -1,6 +1,7 @@
 package io.github.ititus.math.vector;
 
 import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.math.matrix.Mat2d;
 
 public final class Vec2d {
 
@@ -23,6 +24,57 @@ public final class Vec2d {
     public Vec2d(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Vec2d add(Vec2d o) {
+        return new Vec2d(x + o.x, y + o.y);
+    }
+
+    public Vec2d subtract(Vec2d o) {
+        return new Vec2d(x - o.x, y - o.y);
+    }
+
+    public Vec2d multiply(int n) {
+        return multiply((double) n);
+    }
+
+    public Vec2d multiply(float f) {
+        return multiply((double) f);
+    }
+
+    public Vec2d multiply(double d) {
+        return new Vec2d(x * d, y * d);
+    }
+
+    public Vec2d multiply(Mat2d o) {
+        return new Vec2d(
+                x * o.m11() + y * o.m21(),
+                x * o.m12() + y * o.m22()
+        );
+    }
+
+    public Vec2d divide(int n) {
+        return divide((double) n);
+    }
+
+    public Vec2d divide(float f) {
+        return divide((double) f);
+    }
+
+    public Vec2d divide(double d) {
+        return new Vec2d(x / d, y / d);
+    }
+
+    public double dot(Vec2d o) {
+        return x * o.x + y * o.y;
+    }
+
+    public double length() {
+        return Math.hypot(x, y);
+    }
+
+    public Vec2d normalize() {
+        return divide(length());
     }
 
     public double x() {

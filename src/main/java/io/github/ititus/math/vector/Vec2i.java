@@ -41,6 +41,10 @@ public final class Vec2i implements Comparable<Vec2i> {
         return new Vec2i(x / n, y / n);
     }
 
+    public int dot(Vec2i o) {
+        return x * o.x + y * o.y;
+    }
+
     public Vec2i reduce() {
         return divide(JavaMath.gcd(x, y));
     }
@@ -61,6 +65,11 @@ public final class Vec2i implements Comparable<Vec2i> {
         return manhattanDistanceTo(o) == 1;
     }
 
+    public double length() {
+        return Math.hypot(x, y);
+    }
+
+    @Deprecated(forRemoval = true)
     public double distance() {
         return Math.hypot(x, y);
     }
