@@ -1,6 +1,7 @@
 package io.github.ititus.math.matrix;
 
 import io.github.ititus.data.ArrayUtil;
+import io.github.ititus.math.vector.Vec3f;
 import io.github.ititus.math.vector.Vec4f;
 
 public final class Mat4f {
@@ -62,6 +63,85 @@ public final class Mat4f {
                 c1.y(), c2.y(), c3.y(), c4.y(),
                 c1.z(), c2.z(), c3.z(), c4.z(),
                 c1.w(), c2.w(), c3.w(), c4.w()
+        );
+    }
+
+    public static Mat4f translate(Vec3f t) {
+        return new Mat4f(
+                1, 0, 0, t.x(),
+                0, 1, 0, t.y(),
+                0, 0, 1, t.z(),
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f scale(float s) {
+        return new Mat4f(
+                s, 0, 0, 0,
+                0, s, 0, 0,
+                0, 0, s, 0,
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f scale(Vec3f s) {
+        return new Mat4f(
+                s.x(), 0, 0, 0,
+                0, s.y(), 0, 0,
+                0, 0, s.z(), 0,
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f rotateX(double angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        return new Mat4f(
+                1, 0, 0, 0,
+                0, cos, -sin, 0,
+                0, sin, cos, 0,
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f rotateY(double angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        return new Mat4f(
+                cos, 0, sin, 0,
+                0, 1, 0, 0,
+                -sin, 0, cos, 0,
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f rotateZ(double angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        return new Mat4f(
+                cos, -sin, 0, 0,
+                sin, cos, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f rotate(double angleX, double angleY, double angleZ) {
+        float a = (float) Math.cos(angleX);
+        float b = (float) Math.sin(angleX);
+        float c = (float) Math.cos(angleY);
+        float d = (float) Math.sin(angleY);
+        float e = (float) Math.cos(angleZ);
+        float f = (float) Math.sin(angleZ);
+
+        float ad = a * d;
+        float bd = b * d;
+
+        return new Mat4f(
+                c * e, -c * f, d, 0,
+                bd * e + a * f, -bd * f + a * e, -b * c, 0,
+                -ad * e + b * f, ad * f + b * e, a * c, 0,
+                0, 0, 0, 1
         );
     }
 
