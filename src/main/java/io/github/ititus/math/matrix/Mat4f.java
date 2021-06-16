@@ -206,20 +206,17 @@ public final class Mat4f {
         );
     }
 
-    public static Mat4f lookAt(Vec3f eye, Vec3f center, Vec3f up) {
-        Vec3f f = center.subtract(eye).normalize();
-        up = up.normalize();
-        Vec3f s = f.cross(up);
-        Vec3f u = s.normalize().cross(f);
+    public static Mat4f lookAt(Vec3f pos, Vec3f target, Vec3f up) {
+        Vec3f backward = pos.subtract(target).normalize();
+        Vec3f left = up.cross(backward).normalize();
+        Vec3f upward = backward.cross(left);
 
-        Mat4f m = new Mat4f(
-                s.x(), s.y(), s.z(), 0,
-                u.x(), u.y(), u.z(), 0,
-                -f.x(), -f.y(), -f.z(), 0,
+        return new Mat4f(
+                left.x(), left.y(), left.z(), -left.dot(pos),
+                upward.x(), upward.y(), upward.z(), -upward.dot(pos),
+                backward.x(), backward.y(), backward.z(), -backward.dot(pos),
                 0, 0, 0, 1
         );
-
-        return translate(eye.negate()).multiply(m);
     }
 
     public Mat4f transpose() {
