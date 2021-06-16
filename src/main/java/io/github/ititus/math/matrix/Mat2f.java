@@ -3,6 +3,8 @@ package io.github.ititus.math.matrix;
 import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.vector.Vec2f;
 
+import java.nio.FloatBuffer;
+
 public final class Mat2f {
 
     private final float m11, m12;
@@ -113,6 +115,11 @@ public final class Mat2f {
 
     public float determinant() {
         return m11 * m22 - m12 * m21;
+    }
+
+    public void write(FloatBuffer buffer) {
+        buffer.put(m11).put(m21);
+        buffer.put(m12).put(m22);
     }
 
     public float m(int row, int col) {

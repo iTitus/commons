@@ -4,6 +4,8 @@ import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.matrix.Mat4f;
 import io.github.ititus.math.quaternion.Quatf;
 
+import java.nio.FloatBuffer;
+
 public final class Vec4f {
 
     private final float x;
@@ -93,6 +95,10 @@ public final class Vec4f {
         }
 
         return divide((float) Math.sqrt(lsq));
+    }
+
+    public void write(FloatBuffer buffer) {
+        buffer.put(x).put(y).put(z).put(w);
     }
 
     public float x() {

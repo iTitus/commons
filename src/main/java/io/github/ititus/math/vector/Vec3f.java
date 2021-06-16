@@ -3,6 +3,8 @@ package io.github.ititus.math.vector;
 import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.matrix.Mat3f;
 
+import java.nio.FloatBuffer;
+
 public final class Vec3f {
 
     private final float x;
@@ -89,6 +91,10 @@ public final class Vec3f {
         }
 
         return divide((float) Math.sqrt(lsq));
+    }
+
+    public void write(FloatBuffer buffer) {
+        buffer.put(x).put(y).put(z);
     }
 
     public float x() {
