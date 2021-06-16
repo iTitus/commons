@@ -74,6 +74,15 @@ public final class Mat4d {
         );
     }
 
+    public Mat4d negate() {
+        return new Mat4d(
+                -m11, -m12, -m13, -m14,
+                -m21, -m22, -m23, -m24,
+                -m31, -m32, -m33, -m34,
+                -m41, -m42, -m43, -m44
+        );
+    }
+
     public Mat4d add(Mat4d o) {
         return new Mat4d(
                 m11 + o.m11, m12 + o.m12, m13 + o.m13, m14 + o.m14,

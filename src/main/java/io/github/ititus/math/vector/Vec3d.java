@@ -29,6 +29,10 @@ public final class Vec3d {
         this.z = z;
     }
 
+    public Vec3d negate() {
+        return new Vec3d(-x, -y, -z);
+    }
+
     public Vec3d add(Vec3d o) {
         return new Vec3d(x + o.x, y + o.y, z + o.z);
     }
@@ -77,12 +81,21 @@ public final class Vec3d {
         return new Vec3d(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
     }
 
+    public double lengthSquared() {
+        return x * x + y * y + z * z;
+    }
+
     public double length() {
-        return Math.sqrt(x * x + y * y + z * z);
+        return Math.sqrt(lengthSquared());
     }
 
     public Vec3d normalize() {
-        return divide(length());
+        double lsq = lengthSquared();
+        if (lsq == 1) {
+            return this;
+        }
+
+        return divide(Math.sqrt(lsq));
     }
 
     public double x() {

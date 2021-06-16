@@ -26,6 +26,10 @@ public final class Vec2f {
         this.y = y;
     }
 
+    public Vec2f negate() {
+        return new Vec2f(-x, -y);
+    }
+
     public Vec2f add(Vec2f o) {
         return new Vec2f(x + o.x, y + o.y);
     }
@@ -61,20 +65,21 @@ public final class Vec2f {
         return x * o.x + y * o.y;
     }
 
-    public double dotD(Vec2f o) {
-        return (double) x * o.x + (double) y * o.y;
-    }
-
-    public double lengthD() {
-        return Math.hypot(x, y);
+    public float lengthSquared() {
+        return x * x + y * y;
     }
 
     public float length() {
-        return (float) lengthD();
+        return (float) Math.hypot(x, y);
     }
 
     public Vec2f normalize() {
-        return divide(length());
+        float lsq = lengthSquared();
+        if (lsq == 1) {
+            return this;
+        }
+
+        return divide((float) Math.sqrt(lsq));
     }
 
     public float x() {

@@ -29,6 +29,10 @@ public final class Vec3i implements Comparable<Vec3i> {
         this.z = z;
     }
 
+    public Vec3i negate() {
+        return new Vec3i(-x, -y, -z);
+    }
+
     public Vec3i add(Vec3i o) {
         return new Vec3i(x + o.x, y + o.y, z + o.z);
     }

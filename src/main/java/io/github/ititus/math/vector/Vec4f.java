@@ -37,6 +37,10 @@ public final class Vec4f {
         this.w = w;
     }
 
+    public Vec4f negate() {
+        return new Vec4f(-x, -y, -z, -w);
+    }
+
     public Vec4f add(Vec4f o) {
         return new Vec4f(x + o.x, y + o.y, z + o.z, w + o.w);
     }
@@ -74,20 +78,21 @@ public final class Vec4f {
         return x * o.x + y * o.y + z * o.z + w * o.w;
     }
 
-    public double dotD(Vec4f o) {
-        return (double) x * o.x + (double) y * o.y + (double) z * o.z + (double) w * o.w;
-    }
-
-    public double lengthD() {
-        return Math.sqrt(x * x + y * y + z * z + w * w);
+    public float lengthSquared() {
+        return x * x + y * y + z * z + w * w;
     }
 
     public float length() {
-        return (float) lengthD();
+        return (float) Math.sqrt(lengthSquared());
     }
 
     public Vec4f normalize() {
-        return divide(length());
+        float lsq = lengthSquared();
+        if (lsq == 1) {
+            return this;
+        }
+
+        return divide((float) Math.sqrt(lsq));
     }
 
     public float x() {

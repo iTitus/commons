@@ -32,6 +32,10 @@ public final class Vec4i implements Comparable<Vec4i> {
         this.w = w;
     }
 
+    public Vec4i negate() {
+        return new Vec4i(-x, -y, -z, -w);
+    }
+
     public Vec4i add(Vec4i o) {
         return new Vec4i(x + o.x, y + o.y, z + o.z, w + o.w);
     }

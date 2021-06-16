@@ -4,6 +4,8 @@ import io.github.ititus.data.ArrayUtil;
 import io.github.ititus.math.vector.Vec3f;
 import io.github.ititus.math.vector.Vec4f;
 
+import java.nio.FloatBuffer;
+
 public final class Mat4f {
 
     private final float m11, m12, m13, m14;
@@ -145,12 +147,96 @@ public final class Mat4f {
         );
     }
 
+    public static Mat4f rotate(float x, float y, float z, double angle) {
+        return rotate(new Vec3f(x, y, z), angle);
+    }
+
+    public static Mat4f rotate(Vec3f axis, double angle) {
+        float c = (float) Math.cos(angle);
+        float s = (float) Math.sin(angle);
+
+        axis = axis.normalize();
+        float x = axis.x();
+        float y = axis.y();
+        float z = axis.z();
+
+        return new Mat4f(
+                x * x * (1 - c) + c, x * y * (1 - c) - z * s, x * z * (1 - c) + y * s, 0,
+                y * x * (1 - c) + z * s, y * y * (1 - c) + c, y * z * (1 - c) - x * s, 0,
+                x * z * (1 - c) - y * s, y * z * (1 - c) + x * s, z * z * (1 - c) + c, 0,
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f orthographic2d(float left, float right, float bottom, float top) {
+        return orthographic(left, right, bottom, top, -1, 1);
+    }
+
+    public static Mat4f orthographic(float left, float right, float bottom, float top, float near, float far) {
+        return new Mat4f(
+                2 / (right - left), 0, 0, -(right + left) / (right - left),
+                0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
+                0, 0, -2 / (far - near), -(far + near) / (far - near),
+                0, 0, 0, 1
+        );
+    }
+
+    public static Mat4f frustum(float left, float right, float bottom, float top, float near, float far) {
+        float a = (right + left) / (right - left);
+        float b = (top + bottom) / (top - bottom);
+        float c = -(far + near) / (far - near);
+        float d = -(2 * far * near) / (far - near);
+
+        return new Mat4f(
+                (2 * near) / (right - left), 0, a, 0,
+                0, (2 * near) / (top - bottom), b, 0,
+                0, 0, c, d,
+                0, 0, -1, 0
+        );
+    }
+
+    public static Mat4f perspective(float fovy, float aspect, float near, float far) {
+        float f = (float) (1 / Math.tan(fovy / 2));
+
+        return new Mat4f(
+                f / aspect, 0, 0, 0,
+                0, f, 0, 0,
+                0, 0, (far + near) / (near - far), (2 * far * near) / (near - far),
+                0, 0, -1, 0
+        );
+    }
+
+    public static Mat4f lookAt(Vec3f eye, Vec3f center, Vec3f up) {
+        Vec3f f = center.subtract(eye).normalize();
+        up = up.normalize();
+        Vec3f s = f.cross(up);
+        Vec3f u = s.normalize().cross(f);
+
+        Mat4f m = new Mat4f(
+                s.x(), s.y(), s.z(), 0,
+                u.x(), u.y(), u.z(), 0,
+                -f.x(), -f.y(), -f.z(), 0,
+                0, 0, 0, 1
+        );
+
+        return translate(eye.negate()).multiply(m);
+    }
+
     public Mat4f transpose() {
         return new Mat4f(
                 m11, m21, m31, m41,
                 m12, m22, m32, m42,
                 m13, m23, m33, m43,
                 m14, m24, m34, m44
+        );
+    }
+
+    public Mat4f negate() {
+        return new Mat4f(
+                -m11, -m12, -m13, -m14,
+                -m21, -m22, -m23, -m24,
+                -m31, -m32, -m33, -m34,
+                -m41, -m42, -m43, -m44
         );
     }
 
@@ -229,6 +315,13 @@ public final class Mat4f {
                 - m14 * m23 * m31 * m42 - m13 * m22 * m31 * m44 - m12 * m24 * m31 * m43
                 - m12 * m23 * m34 * m41 - m13 * m24 * m32 * m41 - m14 * m22 * m33 * m41
                 + m14 * m23 * m32 * m41 + m13 * m22 * m34 * m41 + m12 * m24 * m33 * m41;
+    }
+
+    public void write(FloatBuffer buffer) {
+        buffer.put(m11).put(m21).put(m31).put(m41);
+        buffer.put(m12).put(m22).put(m32).put(m42);
+        buffer.put(m13).put(m32).put(m33).put(m43);
+        buffer.put(m14).put(m24).put(m34).put(m44);
     }
 
     public float m(int row, int col) {

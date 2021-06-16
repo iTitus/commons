@@ -26,6 +26,10 @@ public final class Vec2d {
         this.y = y;
     }
 
+    public Vec2d negate() {
+        return new Vec2d(-x, -y);
+    }
+
     public Vec2d add(Vec2d o) {
         return new Vec2d(x + o.x, y + o.y);
     }
@@ -69,12 +73,21 @@ public final class Vec2d {
         return x * o.x + y * o.y;
     }
 
+    public double lengthSquared() {
+        return x * x + y * y;
+    }
+
     public double length() {
-        return Math.hypot(x, y);
+        return Math.sqrt(lengthSquared());
     }
 
     public Vec2d normalize() {
-        return divide(length());
+        double lsq = lengthSquared();
+        if (lsq == 1) {
+            return this;
+        }
+
+        return divide(Math.sqrt(lsq));
     }
 
     public double x() {

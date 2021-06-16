@@ -25,6 +25,10 @@ public final class Vec2i implements Comparable<Vec2i> {
         this.y = y;
     }
 
+    public Vec2i negate() {
+        return new Vec2i(-x, -y);
+    }
+
     public Vec2i add(Vec2i o) {
         return new Vec2i(x + o.x, y + o.y);
     }

@@ -29,6 +29,10 @@ public final class Vec3f {
         this.z = z;
     }
 
+    public Vec3f negate() {
+        return new Vec3f(-x, -y, -z);
+    }
+
     public Vec3f add(Vec3f o) {
         return new Vec3f(x + o.x, y + o.y, z + o.z);
     }
@@ -65,24 +69,26 @@ public final class Vec3f {
         return x * o.x + y * o.y + z * o.z;
     }
 
-    public double dotD(Vec3f o) {
-        return (double) x * o.x + (double) y * o.y + (double) z * o.z;
-    }
 
     public Vec3f cross(Vec3f o) {
         return new Vec3f(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
     }
 
-    public double lengthD() {
-        return Math.sqrt(x * x + y * y + z * z);
+    public float lengthSquared() {
+        return x * x + y * y + z * z;
     }
 
     public float length() {
-        return (float) lengthD();
+        return (float) Math.sqrt(lengthSquared());
     }
 
     public Vec3f normalize() {
-        return divide(length());
+        float lsq = lengthSquared();
+        if (lsq == 1) {
+            return this;
+        }
+
+        return divide((float) Math.sqrt(lsq));
     }
 
     public float x() {

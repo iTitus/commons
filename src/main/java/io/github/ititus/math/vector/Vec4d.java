@@ -37,6 +37,10 @@ public final class Vec4d {
         this.w = w;
     }
 
+    public Vec4d negate() {
+        return new Vec4d(-x, -y, -z, -w);
+    }
+
     public Vec4d add(Vec4d o) {
         return new Vec4d(x + o.x, y + o.y, z + o.z, w + o.w);
     }
@@ -82,12 +86,21 @@ public final class Vec4d {
         return x * o.x + y * o.y + z * o.z + w * o.w;
     }
 
+    public double lengthSquared() {
+        return x * x + y * y + z * z + w * w;
+    }
+
     public double length() {
-        return Math.sqrt(x * x + y * y + z * z + w * w);
+        return Math.sqrt(lengthSquared());
     }
 
     public Vec4d normalize() {
-        return divide(length());
+        double lsq = lengthSquared();
+        if (lsq == 1) {
+            return this;
+        }
+
+        return divide(Math.sqrt(lsq));
     }
 
     public double x() {

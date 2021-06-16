@@ -61,6 +61,14 @@ public final class Mat3d {
         );
     }
 
+    public Mat3d negate() {
+        return new Mat3d(
+                -m11, -m12, -m13,
+                -m21, -m22, -m23,
+                -m31, -m32, -m33
+        );
+    }
+
     public Mat3d add(Mat3d o) {
         return new Mat3d(
                 m11 + o.m11, m12 + o.m12, m13 + o.m13,

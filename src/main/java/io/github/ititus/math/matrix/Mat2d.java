@@ -50,6 +50,13 @@ public final class Mat2d {
         );
     }
 
+    public Mat2d negate() {
+        return new Mat2d(
+                -m11, -m12,
+                -m21, -m22
+        );
+    }
+
     public Mat2d add(Mat2d o) {
         return new Mat2d(
                 m11 + o.m11, m12 + o.m12,
