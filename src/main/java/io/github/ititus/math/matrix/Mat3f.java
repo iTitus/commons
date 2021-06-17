@@ -139,7 +139,7 @@ public final class Mat3f {
     public void write(FloatBuffer buffer) {
         buffer.put(m11).put(m21).put(m31);
         buffer.put(m12).put(m22).put(m32);
-        buffer.put(m13).put(m32).put(m33);
+        buffer.put(m13).put(m23).put(m33);
     }
 
     public float m(int row, int col) {
