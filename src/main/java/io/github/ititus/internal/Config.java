@@ -7,14 +7,14 @@ public final class Config {
     private Config() {
     }
 
-    private static String readProperty(String name) {
+    private static String getPropertyName(String name) {
         return System.getProperty("ititus.commons." + name);
     }
 
     private static boolean readBooleanProperty(String name, boolean def) {
         boolean result = def;
         try {
-            result = Boolean.parseBoolean(readProperty(name));
+            result = Boolean.parseBoolean(getPropertyName(name));
         } catch (IllegalArgumentException | NullPointerException ignored) {
         }
 
