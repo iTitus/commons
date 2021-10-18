@@ -21,7 +21,7 @@ public class ComplexNewton {
     private BigComplex initialValue;
     private int maxIterations;
     private BigRational absTolSquared;
-    private final BigRational relTolSquared;
+    private BigRational relTolSquared;
 
     private ComplexNewton(UnaryOperator<BigComplex> function, UnaryOperator<BigComplex> derivative) {
         this.function = function;

@@ -15,7 +15,7 @@ public class DoubleNewton {
     private double initialValue;
     private int maxIterations;
     private double absTol;
-    private final double relTol;
+    private double relTol;
 
     private DoubleNewton(DoubleUnaryOperator function, DoubleUnaryOperator derivative) {
         this.function = function;
