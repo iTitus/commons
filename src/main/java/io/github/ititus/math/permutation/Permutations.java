@@ -91,7 +91,6 @@ public final class Permutations {
     }
 
     public static List<int[]> getAllArraysWithSum(int length, int sum) {
-        // System.out.println("getAllArraysWithSum: length=" + length + " sum=" + sum);
         if (sum < 0) {
             throw new IllegalArgumentException("length=" + length + " sum=" + sum);
         } else if (length == 0 && sum > 0) {

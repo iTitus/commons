@@ -1,9 +1,6 @@
 package io.github.ititus.math.function.polynomial;
 
-import io.github.ititus.math.function.ComplexFunction;
-import io.github.ititus.math.function.Power;
-import io.github.ititus.math.function.Product;
-import io.github.ititus.math.function.Sum;
+import io.github.ititus.math.function.*;
 import io.github.ititus.math.function.constant.Constant;
 import io.github.ititus.math.number.BigComplex;
 
@@ -22,7 +19,6 @@ public final class Polynomial {
         }
 
         List<ComplexFunction> terms = new ArrayList<>();
-
         for (int i = 0; i < constants.length; i++) {
             BigComplex z = constants[i];
             ComplexFunction m = Power.of(i);
@@ -35,5 +31,14 @@ public final class Polynomial {
         }
 
         return Sum.of(terms.toArray(ComplexFunction[]::new));
+    }
+
+    public static ComplexFunction ofRoots(BigComplex... roots) {
+        List<ComplexFunction> terms = new ArrayList<>();
+        for (BigComplex z : roots) {
+            terms.add(Sum.of(Identity.get(), Constant.of(z.negate())));
+        }
+
+        return Product.of(terms.toArray(ComplexFunction[]::new));
     }
 }

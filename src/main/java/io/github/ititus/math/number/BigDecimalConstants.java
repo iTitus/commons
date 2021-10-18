@@ -32,15 +32,14 @@ public final class BigDecimalConstants {
     public static final BigDecimal MINUS_TEN = TEN.negate();
 
     public static final BigDecimal ONE_OVER_TWO = inverse(TWO);
-    public static final BigDecimal ONE_OVER_FOUR = inverse(FOUR);
-    public static final BigDecimal ONE_OVER_FIVE = inverse(FIVE);
-    public static final BigDecimal ONE_OVER_EIGHT = inverse(EIGHT);
-    public static final BigDecimal ONE_OVER_TEN = inverse(TEN);
-
     public static final BigDecimal MINUS_ONE_OVER_TWO = ONE_OVER_TWO.negate();
+    public static final BigDecimal ONE_OVER_FOUR = inverse(FOUR);
     public static final BigDecimal MINUS_ONE_OVER_FOUR = ONE_OVER_FOUR.negate();
+    public static final BigDecimal ONE_OVER_FIVE = inverse(FIVE);
     public static final BigDecimal MINUS_ONE_OVER_FIVE = ONE_OVER_FIVE.negate();
+    public static final BigDecimal ONE_OVER_EIGHT = inverse(EIGHT);
     public static final BigDecimal MINUS_ONE_OVER_EIGHT = ONE_OVER_EIGHT.negate();
+    public static final BigDecimal ONE_OVER_TEN = inverse(TEN);
     public static final BigDecimal MINUS_ONE_OVER_TEN = ONE_OVER_TEN.negate();
 
     private BigDecimalConstants() {

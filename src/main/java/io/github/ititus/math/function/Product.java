@@ -2,11 +2,9 @@ package io.github.ititus.math.function;
 
 import io.github.ititus.math.function.constant.Constant;
 import io.github.ititus.math.number.BigComplex;
+import io.github.ititus.math.permutation.Permutations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,8 +27,10 @@ public final class Product extends ComplexFunction {
         }
 
         // associativity & neutral element
-        terms = Arrays.stream(terms).filter(not(ComplexFunction::isOne)).flatMap(f -> f instanceof Product ?
-                Arrays.stream(((Product) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
+        terms = Arrays.stream(terms)
+                .filter(not(ComplexFunction::isOne))
+                .flatMap(f -> f instanceof Product ? Arrays.stream(((Product) f).terms) : Stream.of(f))
+                .toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
@@ -48,7 +48,8 @@ public final class Product extends ComplexFunction {
         );
         ComplexFunction p = Power.of(
                 Arrays.stream(terms)
-                        .filter(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity()).map(f -> f instanceof Power ? ((Power) f).getExponent().getConstant() : ONE)
+                        .filter(f -> (f instanceof Power && ((Power) f).getBase().isIdentity() && ((Power) f).getExponent().isConstant()) || f.isIdentity())
+                        .map(f -> f instanceof Power ? ((Power) f).getExponent().getConstant() : ONE)
                         .reduce(ZERO, BigComplex::add)
         );
         Stream<ComplexFunction> stream = Arrays.stream(terms)
@@ -72,29 +73,6 @@ public final class Product extends ComplexFunction {
         return new Product(terms);
     }
 
-    private static List<int[]> getAllArraysWithSum(int length, int sum) {
-        if (sum < 0) {
-            throw new IllegalArgumentException("length=" + length + " sum=" + sum);
-        } else if (length == 0 && sum > 0) {
-            return Collections.emptyList();
-        } else if (sum == 0) {
-            return Collections.singletonList(new int[length]);
-        }
-
-        List<int[]> l = new ArrayList<>();
-
-        for (int s = 0; s <= sum; s++) {
-            for (int[] sub : getAllArraysWithSum(length - 1, sum - s)) {
-                int[] a = new int[length];
-                a[0] = s;
-                System.arraycopy(sub, 0, a, 1, sub.length);
-                l.add(a);
-            }
-        }
-
-        return l;
-    }
-
     @Override
     public BigComplex evaluate(BigComplex z) {
         return Arrays.stream(terms)
@@ -105,7 +83,7 @@ public final class Product extends ComplexFunction {
     @Override
     protected ComplexFunction derivative0(int n) {
         return Sum.of(
-                getAllArraysWithSum(terms.length, n)
+                Permutations.getAllArraysWithSum(terms.length, n)
                         .stream()
                         .map(multiIndex -> {
                                     ComplexFunction[] product = new ComplexFunction[terms.length + 1];
@@ -126,7 +104,9 @@ public final class Product extends ComplexFunction {
 
     @Override
     protected String toString(boolean inner) {
-        return Arrays.stream(terms).map(f -> f.toString(true)).collect(Collectors.joining(" * "));
+        return Arrays.stream(terms)
+                .map(f -> f.toString(true))
+                .collect(Collectors.joining(" * "));
     }
 
     @Override

@@ -21,8 +21,10 @@ public final class Sum extends ComplexFunction {
 
     public static ComplexFunction of(ComplexFunction... terms) {
         // associativity & neutral element
-        terms = Arrays.stream(terms).filter(not(ComplexFunction::isZero)).flatMap(f -> f instanceof Sum ?
-                Arrays.stream(((Sum) f).terms) : Stream.of(f)).toArray(ComplexFunction[]::new);
+        terms = Arrays.stream(terms)
+                .filter(not(ComplexFunction::isZero))
+                .flatMap(f -> f instanceof Sum ? Arrays.stream(((Sum) f).terms) : Stream.of(f))
+                .toArray(ComplexFunction[]::new);
 
         // short circuit if too few terms
         if (terms.length == 0) {
