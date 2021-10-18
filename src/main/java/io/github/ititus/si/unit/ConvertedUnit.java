@@ -28,7 +28,7 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     @Override
     public String getSymbol() {
-        throw new UnsupportedOperationException("converted units have not symbol");
+        throw new UnsupportedOperationException("converted units have no symbol");
     }
 
     @Override
@@ -54,6 +54,11 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
         }
 
         return new ConvertedUnit<>(baseUnit.as(type), converter);
+    }
+
+    @Override
+    public Unit<Q> shift(QuantityValue v) {
+        return of(baseUnit, converter.concat(UnitConverter.shift(v)));
     }
 
     @Override

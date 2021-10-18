@@ -45,6 +45,11 @@ final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     }
 
     @Override
+    public Unit<Q> shift(QuantityValue v) {
+        return ConvertedUnit.of(this, UnitConverter.shift(v));
+    }
+
+    @Override
     public Unit<Q> multiply(QuantityValue v) {
         return ConvertedUnit.of(this, UnitConverter.factor(v));
     }

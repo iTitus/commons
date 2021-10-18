@@ -13,10 +13,10 @@ import static io.github.ititus.si.unit.Units.MILE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Percentage.withPercentage;
 
-public class LengthTest {
+class LengthTest {
 
     @Test
-    public void metreToCentiMetre() {
+    void metreToCentiMetre() {
         Quantity<Length> metres = METRE.get(1.35);
         Quantity<Length> centiMetres = metres.convertTo(METRE.prefix(CENTI));
 
@@ -25,7 +25,7 @@ public class LengthTest {
     }
 
     @Test
-    public void milliMetreToMiles() {
+    void milliMetreToMiles() {
         Quantity<Length> milliMetre = METRE.prefix(MILLI).get(23);
         Quantity<Length> miles = milliMetre.convertTo(MILE);
 

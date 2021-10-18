@@ -59,6 +59,36 @@ public interface Unit<Q extends QuantityType<Q>> {
 
     <T extends QuantityType<T>> Unit<T> as(T type);
 
+    default Unit<Q> shift(int n) {
+        return shift(BigRational.of(n));
+    }
+
+    default Unit<Q> shift(long n) {
+        return shift(QuantityValue.of(n));
+    }
+
+    default Unit<Q> shift(BigInteger n) {
+        return shift(QuantityValue.of(n));
+    }
+
+    default Unit<Q> shift(float f) {
+        return shift(QuantityValue.of(f));
+    }
+
+    default Unit<Q> shift(double d) {
+        return shift(QuantityValue.of(d));
+    }
+
+    default Unit<Q> shift(BigDecimal d) {
+        return shift(QuantityValue.of(d));
+    }
+
+    default Unit<Q> shift(BigRational r) {
+        return shift(QuantityValue.of(r));
+    }
+
+    Unit<Q> shift(QuantityValue v);
+
     default Unit<Q> multiply(int n) {
         return multiply(BigRational.of(n));
     }

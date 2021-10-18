@@ -6,10 +6,18 @@ import java.util.List;
 
 public interface UnitConverter {
 
-    IdentityConverter IDENTITY = IdentityConverter.IDENTITY;
+    UnitConverter IDENTITY = IdentityConverter.IDENTITY;
+
+    static UnitConverter shift(QuantityValue shift) {
+        return LinearConverter.ofShift(shift);
+    }
 
     static UnitConverter factor(QuantityValue factor) {
-        return MultiplicationConverter.of(factor);
+        return LinearConverter.ofFactor(factor);
+    }
+
+    static UnitConverter linear(QuantityValue factor, QuantityValue shift) {
+        return LinearConverter.of(factor, shift);
     }
 
     static UnitConverter compound(List<UnitConverter> converters) {

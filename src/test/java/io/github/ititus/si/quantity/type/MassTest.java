@@ -12,10 +12,10 @@ import static io.github.ititus.si.unit.Units.KILOGRAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Percentage.withPercentage;
 
-public class MassTest {
+class MassTest {
 
     @Test
-    public void kilogramToNanoGrams() {
+    void kilogramToNanoGrams() {
         Quantity<Mass> kiloGrams = KILOGRAM.get(1.35);
         Quantity<Mass> nanoGrams = kiloGrams.convertTo(GRAM.prefix(NANO));
 

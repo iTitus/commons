@@ -46,13 +46,13 @@ final class CompoundConverter implements UnitConverter {
         outer:
         for (int i = 0; i < converters.size(); i++) {
             UnitConverter c = converters.get(i);
-            if (!(c instanceof MultiplicationConverter)) {
+            if (!(c instanceof LinearConverter)) {
                 simplified.add(c);
             }
 
             for (int j = i + 1; j < converters.size(); j++) {
                 UnitConverter c_ = converters.get(j);
-                if (!(c_ instanceof MultiplicationConverter)) {
+                if (!(c_ instanceof LinearConverter)) {
                     simplified.add(c);
                     i = j;
                     continue outer;
