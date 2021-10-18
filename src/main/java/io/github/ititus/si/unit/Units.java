@@ -42,7 +42,7 @@ import static io.github.ititus.si.quantity.type.Radioactivity.RADIOACTIVITY;
 import static io.github.ititus.si.quantity.type.SolidAngle.SOLID_ANGLE;
 import static io.github.ititus.si.quantity.type.Speed.SPEED;
 import static io.github.ititus.si.quantity.type.SubstanceAmount.SUBSTANCE_AMOUNT;
-import static io.github.ititus.si.quantity.type.ThermodynamicTemperature.THERMODYNAMIC_TEMPERATURE;
+import static io.github.ititus.si.quantity.type.Temperature.TEMPERATURE;
 import static io.github.ititus.si.quantity.type.Time.TIME;
 import static io.github.ititus.si.quantity.type.Volume.VOLUME;
 
@@ -59,7 +59,7 @@ public final class Units {
     public static final Unit<Mass> GRAM = new BaseUnit<>(MASS, "g");
     public static final Unit<Time> SECOND = new BaseUnit<>(TIME, "s");
     public static final Unit<ElectricCurrent> AMPERE = new BaseUnit<>(ELECTRIC_CURRENT, "A");
-    public static final Unit<ThermodynamicTemperature> KELVIN = new BaseUnit<>(THERMODYNAMIC_TEMPERATURE, "K");
+    public static final Unit<Temperature> KELVIN = new BaseUnit<>(TEMPERATURE, "K");
     public static final Unit<SubstanceAmount> MOLE = new BaseUnit<>(SUBSTANCE_AMOUNT, "mol");
     public static final Unit<LuminousIntensity> CANDELA = new BaseUnit<>(LUMINOUS_INTENSITY, "cd");
 
@@ -103,9 +103,9 @@ public final class Units {
     // Electric Current
 
     // Thermodynamic Temperature
-    public static final Unit<ThermodynamicTemperature> CELSIUS = KELVIN.shift(ofExp(-23715, -2)).alternate("°C");
-    public static final Unit<ThermodynamicTemperature> RANKINE = KELVIN.multiply(of(9, 5)).alternate("°R");
-    public static final Unit<ThermodynamicTemperature> FAHRENHEIT = RANKINE.shift(ofExp(-45967, -2)).alternate("°F");
+    public static final Unit<Temperature> CELSIUS = KELVIN.shift(ofExp(27315, -2)).alternate("°C");
+    public static final Unit<Temperature> RANKINE = KELVIN.multiply(of(5, 9)).alternate("°R");
+    public static final Unit<Temperature> FAHRENHEIT = RANKINE.shift(ofExp(45967, -2)).alternate("°F");
 
     // Amount of Substance
 

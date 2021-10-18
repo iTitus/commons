@@ -1,6 +1,7 @@
 package io.github.ititus.si.dimension;
 
 import io.github.ititus.data.Lazy;
+import io.github.ititus.internal.Config;
 
 import java.util.Collections;
 import java.util.EnumMap;
@@ -12,7 +13,7 @@ public enum BaseDimension implements Dimension {
     MASS('M'),
     TIME('T'),
     ELECTRIC_CURRENT('I'),
-    THERMODYNAMIC_TEMPERATURE('\u0398'),
+    TEMPERATURE(Config.FORCE_ASCII ? 'O' : '\u0398'),
     SUBSTANCE_AMOUNT('N'),
     LUMINOUS_INTENSITY('J');
 

@@ -59,7 +59,7 @@ final class LinearConverter implements UnitConverter {
             return this;
         } else if (converter instanceof LinearConverter) {
             LinearConverter that = (LinearConverter) converter;
-            return of(factor.multiply(that.factor), that.factor.multiply(shift).add(this.shift));
+            return of(factor.multiply(that.factor), that.factor.multiply(shift).add(that.shift));
         }
 
         return UnitConverter.compound(List.of(this, converter));
