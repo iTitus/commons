@@ -49,7 +49,7 @@ public final class Rational extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         String s = inner ? "(" : "";
         s += numerator.toString(true) + " / " + denominator.toString(true);
         return s + (inner ? ")" : "");

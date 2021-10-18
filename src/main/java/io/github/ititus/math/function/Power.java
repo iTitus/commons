@@ -27,6 +27,14 @@ public final class Power extends ComplexFunction {
         return of(base, Constant.of(exponent));
     }
 
+    public static ComplexFunction of(long exponent) {
+        return of(Identity.get(), exponent);
+    }
+
+    public static ComplexFunction of(ComplexFunction base, long exponent) {
+        return of(base, Constant.of(exponent));
+    }
+
     public static ComplexFunction of(BigRational exponent) {
         return of(Identity.get(), exponent);
     }
@@ -113,7 +121,7 @@ public final class Power extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         String s = base.toString(true);
         s += "^";
         s += exponent.toString(true);

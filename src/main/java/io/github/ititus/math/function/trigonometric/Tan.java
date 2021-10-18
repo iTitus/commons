@@ -42,7 +42,7 @@ public final class Tan extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         return "tan(" + f + ")";
     }
 

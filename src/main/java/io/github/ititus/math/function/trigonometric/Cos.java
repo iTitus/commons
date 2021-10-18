@@ -62,7 +62,7 @@ public final class Cos extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         return "cos(" + f + ")";
     }
 

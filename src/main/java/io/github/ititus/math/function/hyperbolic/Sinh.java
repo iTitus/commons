@@ -1,4 +1,4 @@
-package io.github.ititus.math.function.exponential;
+package io.github.ititus.math.function.hyperbolic;
 
 import io.github.ititus.math.function.ComplexFunction;
 import io.github.ititus.math.function.Identity;
@@ -9,13 +9,13 @@ import io.github.ititus.math.number.BigComplexMath;
 
 import java.util.Objects;
 
-public final class Exp extends ComplexFunction {
+public final class Sinh extends ComplexFunction {
 
-    private static final Exp IDENTITY_EXP = new Exp(Identity.get());
+    private static final Sinh IDENTITY_SINH = new Sinh(Identity.get());
 
     private final ComplexFunction f;
 
-    private Exp(ComplexFunction f) {
+    private Sinh(ComplexFunction f) {
         this.f = f;
     }
 
@@ -25,46 +25,54 @@ public final class Exp extends ComplexFunction {
 
     public static ComplexFunction of(ComplexFunction f) {
         if (f.isConstant()) {
-            return Constant.of(BigComplexMath.exp(f.getConstant()));
+            return Constant.of(BigComplexMath.sinh(f.getConstant()));
         } else if (f.isIdentity()) {
-            return IDENTITY_EXP;
+            return IDENTITY_SINH;
         }
 
-        return new Exp(f);
+        return new Sinh(f);
     }
 
     @Override
     public BigComplex evaluate(BigComplex z) {
-        return BigComplexMath.exp(f.evaluate(z));
+        return BigComplexMath.sinh(f.evaluate(z));
     }
 
     @Override
     protected ComplexFunction derivative0(int n) {
-        if (f.isIdentity()) {
-            return this;
+        ComplexFunction d;
+        switch (n % 2) {
+            case 0:
+                d = this;
+                break;
+            case 1:
+                d = Sinh.of(f);
+                break;
+            default:
+                throw new RuntimeException();
         }
 
-        return Product.of(f.derivative(), this).derivative(n - 1);
+        return f.isIdentity() ? d : Product.of(f.derivative(), d).derivative(n - 1);
     }
 
     @Override
     public String toString(boolean inner) {
-        return "exp(" + f + ")";
+        return "sinh(" + f + ")";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof Exp)) {
+        } else if (!(o instanceof Sinh)) {
             return false;
         }
-        Exp e = (Exp) o;
-        return f.equals(e.f);
+        Sinh s = (Sinh) o;
+        return f.equals(s.f);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Exp.class, f);
+        return Objects.hash(Sinh.class, f);
     }
 }

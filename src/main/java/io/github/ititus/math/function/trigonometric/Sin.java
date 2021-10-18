@@ -62,7 +62,7 @@ public final class Sin extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         return "sin(" + f + ")";
     }
 

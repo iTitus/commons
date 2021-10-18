@@ -7,6 +7,8 @@ import io.github.ititus.math.number.BigComplex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class Polynomial {
 
@@ -34,11 +36,12 @@ public final class Polynomial {
     }
 
     public static ComplexFunction ofRoots(BigComplex... roots) {
-        List<ComplexFunction> terms = new ArrayList<>();
-        for (BigComplex z : roots) {
-            terms.add(Sum.of(Identity.get(), Constant.of(z.negate())));
-        }
+        ComplexFunction[] terms = Arrays.stream(roots)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .map(e -> Power.of(Sum.of(Identity.get(), Constant.of(e.getKey().negate())), e.getValue()))
+                .toArray(ComplexFunction[]::new);
 
-        return Product.of(terms.toArray(ComplexFunction[]::new));
+        return Product.of(terms);
     }
 }

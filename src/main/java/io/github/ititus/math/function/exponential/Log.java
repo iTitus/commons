@@ -43,7 +43,7 @@ public final class Log extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         return "ln(" + f + ")";
     }
 

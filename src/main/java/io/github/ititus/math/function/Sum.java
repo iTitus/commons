@@ -109,7 +109,7 @@ public final class Sum extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         return (inner ? "(" : "")
                 + Arrays.stream(terms).map(f -> f.toString(true)).collect(Collectors.joining(" + "))
                 + (inner ? ")" : "");

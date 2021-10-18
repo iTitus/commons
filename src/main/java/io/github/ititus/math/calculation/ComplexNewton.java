@@ -6,6 +6,8 @@ import io.github.ititus.math.number.BigComplexConstants;
 import io.github.ititus.math.number.BigRational;
 import io.github.ititus.math.number.BigRationalConstants;
 
+import java.util.function.UnaryOperator;
+
 public class ComplexNewton {
 
     private static final BigComplex DEFAULT_INITIAL_VALUE = BigComplexConstants.ZERO;
@@ -13,15 +15,15 @@ public class ComplexNewton {
     private static final BigRational DEFAULT_ABS_TOL_SQUARED = BigRational.ofExp(1.48, -8).squared();
     private static final BigRational DEFAULT_REL_TOL_SQUARED = BigRationalConstants.MINUS_ONE;
 
-    private final ComplexFunction function;
-    private final ComplexFunction derivative;
+    private final UnaryOperator<BigComplex> function;
+    private final UnaryOperator<BigComplex> derivative;
 
     private BigComplex initialValue;
     private int maxIterations;
     private BigRational absTolSquared;
-    private BigRational relTolSquared;
+    private final BigRational relTolSquared;
 
-    private ComplexNewton(ComplexFunction function, ComplexFunction derivative) {
+    private ComplexNewton(UnaryOperator<BigComplex> function, UnaryOperator<BigComplex> derivative) {
         this.function = function;
         this.derivative = derivative;
 
@@ -32,7 +34,7 @@ public class ComplexNewton {
     }
 
     public static ComplexNewton of(ComplexFunction f) {
-        return new ComplexNewton(f, f.derivative());
+        return new ComplexNewton(f::evaluate, f.derivative()::evaluate);
     }
 
     public ComplexNewton setInitialValue(BigComplex initialValue) {
@@ -59,7 +61,7 @@ public class ComplexNewton {
         int iterations;
         boolean converged = false;
         for (iterations = 0; iterations < maxIterations; iterations++) {
-            BigComplex delta = function.evaluate(currentValue).divide(derivative.evaluate(currentValue));
+            BigComplex delta = function.apply(currentValue).divide(derivative.apply(currentValue));
             BigRational diffSquared = delta.absSquared();
             if (diffSquared.compareTo(absTolSquared) < 0) {
                 converged = true;

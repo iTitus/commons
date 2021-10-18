@@ -103,7 +103,7 @@ public final class Product extends ComplexFunction {
     }
 
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         return Arrays.stream(terms)
                 .map(f -> f.toString(true))
                 .collect(Collectors.joining(" * "));

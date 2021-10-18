@@ -38,6 +38,10 @@ public final class Constant extends ComplexFunction {
         return of(BigRational.of(n));
     }
 
+    public static Constant of(long n) {
+        return of(BigRational.of(n));
+    }
+
     public static Constant of(BigInteger n) {
         return of(BigRational.of(n));
     }
@@ -100,9 +104,8 @@ public final class Constant extends ComplexFunction {
         return complex;
     }
 
-
     @Override
-    protected String toString(boolean inner) {
+    public String toString(boolean inner) {
         boolean brackets = inner && (
                 complex.isComplex()
                         || (complex.isReal() && !complex.getReal().isBigInteger())

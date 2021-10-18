@@ -1,24 +1,17 @@
 package io.github.ititus.math.function;
 
-import io.github.ititus.math.expression.EvaluationContext;
-import io.github.ititus.math.expression.Expression;
 import io.github.ititus.math.expression.Variable;
 import io.github.ititus.math.number.BigComplex;
 
 import static io.github.ititus.math.number.BigComplexConstants.ONE;
 import static io.github.ititus.math.number.BigComplexConstants.ZERO;
 
-public abstract class ComplexFunction implements Expression {
+public abstract class ComplexFunction {
 
     protected static final Variable VAR = Variable.z();
     protected static final String VAR_NAME = VAR.getName();
 
     protected ComplexFunction() {
-    }
-
-    @Override
-    public BigComplex evaluate(EvaluationContext ctx) {
-        return evaluate(ctx.getValue(VAR));
     }
 
     public abstract BigComplex evaluate(BigComplex z);
@@ -65,10 +58,10 @@ public abstract class ComplexFunction implements Expression {
         return false;
     }
 
-    protected abstract String toString(boolean inner);
+    public abstract String toString(boolean inner);
 
     @Override
-    public String toString() {
+    public final String toString() {
         return toString(false);
     }
 
