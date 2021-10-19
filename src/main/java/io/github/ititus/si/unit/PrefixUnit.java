@@ -52,9 +52,7 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
-        if (!isCommensurableWith(type)) {
-            throw new NotCommensurableException();
-        } else if (getType().equals(type)) {
+        if (getType().equals(type)) {
             return (Unit<T>) this;
         }
 
