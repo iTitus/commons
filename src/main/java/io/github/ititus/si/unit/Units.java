@@ -45,6 +45,7 @@ import static io.github.ititus.si.quantity.type.Speed.SPEED;
 import static io.github.ititus.si.quantity.type.SubstanceAmount.SUBSTANCE_AMOUNT;
 import static io.github.ititus.si.quantity.type.Temperature.TEMPERATURE;
 import static io.github.ititus.si.quantity.type.Time.TIME;
+import static io.github.ititus.si.quantity.type.Torque.TORQUE;
 import static io.github.ititus.si.quantity.type.Volume.VOLUME;
 
 public final class Units {
@@ -148,6 +149,9 @@ public final class Units {
     public static final Unit<Power> KILOWATT = WATT.prefix(KILO);
     public static final Unit<Energy> KILOWATT_HOUR = KILOWATT.multiply(HOUR).as(ENERGY);
 
+    // Torque
+    public static final Unit<Torque> NEWTON_METER = NEWTON.multiply(METRE).as(TORQUE);
+
     // Area
     public static final Unit<Area> SQUARE_METRE = METRE.pow(2).as(AREA);
 
@@ -161,6 +165,9 @@ public final class Units {
 
     // Pressure
     public static final Unit<Pressure> PASCAL = NEWTON.divide(SQUARE_METRE).alternate("Pa").as(PRESSURE);
+    public static final Unit<Pressure> HECTOPASCAL = PASCAL.prefix(HECTO);
+    public static final Unit<Pressure> BAR = PASCAL.multiply(100_000).alternate("bar");
+    public static final Unit<Pressure> STANDARD_ATMOSPHERE = PASCAL.multiply(101_325).alternate("atm");
 
     // Electric Charge
     public static final Unit<ElectricCharge> COULOMB = AMPERE.multiply(SECOND).alternate("C").as(ELECTRIC_CHARGE);

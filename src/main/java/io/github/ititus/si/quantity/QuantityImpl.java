@@ -44,12 +44,12 @@ final class QuantityImpl<Q extends QuantityType<Q>> implements Quantity<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof QuantityImpl)) {
+        } else if (!(o instanceof Quantity)) {
             return false;
         }
-        QuantityImpl<?> quantity = (QuantityImpl<?>) o;
-        return value.equals(quantity.value) && unit.equals(quantity.unit);
+
+        Quantity<?> quantity = (Quantity<?>) o;
+        return value.equals(quantity.getValue()) && unit.equals(quantity.getUnit());
     }
 
     @Override

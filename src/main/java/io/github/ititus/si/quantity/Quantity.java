@@ -26,6 +26,10 @@ public interface Quantity<Q extends QuantityType<Q>> {
 
     <T extends QuantityType<T>> Quantity<T> as(T type);
 
+    default Quantity<Q> asStandard() {
+        return asStandard(getUnit().getType());
+    }
+
     default <T extends QuantityType<T>> Quantity<T> asStandard(T type) {
         return as(type.getStandardUnit());
     }
