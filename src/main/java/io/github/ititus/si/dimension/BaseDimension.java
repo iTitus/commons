@@ -3,8 +3,6 @@ package io.github.ititus.si.dimension;
 import io.github.ititus.data.Lazy;
 import io.github.ititus.internal.Config;
 
-import java.util.Collections;
-import java.util.EnumMap;
 import java.util.Map;
 
 public enum BaseDimension implements Dimension {
@@ -22,7 +20,7 @@ public enum BaseDimension implements Dimension {
 
     BaseDimension(char symbol) {
         this.symbol = symbol;
-        this.baseDimensions = Lazy.of(() -> Collections.unmodifiableMap(new EnumMap<>(Map.of(this, 1))));
+        this.baseDimensions = Lazy.of(() -> Map.of(this, 1));
     }
 
     public char getSymbol() {

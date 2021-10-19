@@ -101,10 +101,10 @@ final class CompoundConverter implements UnitConverter {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof CompoundConverter)) {
+        } else if (!(o instanceof CompoundConverter)) {
             return false;
         }
+
         CompoundConverter that = (CompoundConverter) o;
         return converters.equals(that.converters);
     }

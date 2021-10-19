@@ -102,13 +102,12 @@ final class PrefixUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof PrefixUnit)) {
+        } else if (!(o instanceof PrefixUnit)) {
+            return false;
+        } else if (!super.equals(o)) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
+
         PrefixUnit<?> that = (PrefixUnit<?>) o;
         return baseUnit.equals(that.baseUnit) && prefix.equals(that.prefix);
     }

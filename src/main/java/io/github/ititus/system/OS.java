@@ -24,6 +24,7 @@ public enum OS {
             return OS.SOLARIS;
         }
 
+        System.err.println("Unknown OS " + osName);
         return OS.UNKNOWN;
     });
 

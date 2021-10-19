@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
-public final class CompoundDimension implements Dimension {
+public final class CompoundDimension extends AbstractDimension {
 
     private final Map<BaseDimension, Integer> baseDimensions;
 
@@ -13,32 +13,34 @@ public final class CompoundDimension implements Dimension {
     }
 
     static Dimension of(Map<BaseDimension, Integer> baseDimensions) {
-        Map<BaseDimension, Integer> copy = new EnumMap<>(BaseDimension.class);
-        copy.putAll(baseDimensions);
+        @SuppressWarnings("unchecked")
+        Map.Entry<BaseDimension, Integer>[] entries = baseDimensions.entrySet().stream()
+                .filter(e -> e.getValue() != 0)
+                .toArray(Map.Entry[]::new);
 
-        copy.entrySet().removeIf(e -> e.getValue() == 0);
-
-        if (copy.isEmpty()) {
+        if (entries.length == 0) {
             return NONE;
-        }
-
-        if (copy.size() == 1) {
-            Map.Entry<BaseDimension, Integer> entry = copy.entrySet().stream().findAny().get();
+        } else if (entries.length == 1) {
+            Map.Entry<BaseDimension, Integer> entry = entries[0];
             if (entry.getValue() == 1) {
                 return entry.getKey();
             }
+
+            return new CompoundDimension(Map.of(entry.getKey(), entry.getValue()));
         }
 
-        return new CompoundDimension(Collections.unmodifiableMap(copy));
+        Map<BaseDimension, Integer> baseDimensions_ = new EnumMap<>(BaseDimension.class);
+        for (Map.Entry<BaseDimension, Integer> entry : entries) {
+            baseDimensions_.put(entry.getKey(), entry.getValue());
+        }
+
+        return new CompoundDimension(Collections.unmodifiableMap(baseDimensions_));
     }
 
-    static Dimension multiply(Map<BaseDimension, Integer> baseDimensions1,
-                              Map<BaseDimension, Integer> baseDimensions2) {
+    static Dimension multiply(Map<BaseDimension, Integer> baseDimensions1, Map<BaseDimension, Integer> baseDimensions2) {
         Map<BaseDimension, Integer> baseDimensions = new EnumMap<>(BaseDimension.class);
         baseDimensions.putAll(baseDimensions1);
-        baseDimensions2.forEach(
-                (dim_, n) -> baseDimensions.merge(dim_, n, Integer::sum)
-        );
+        baseDimensions2.forEach((dim_, n) -> baseDimensions.merge(dim_, n, Integer::sum));
         return of(baseDimensions);
     }
 
@@ -48,14 +50,10 @@ public final class CompoundDimension implements Dimension {
         return of(baseDimensions_);
     }
 
-    static Dimension divide(Map<BaseDimension, Integer> baseDimensions1,
-                            Map<BaseDimension, Integer> baseDimensions2) {
+    static Dimension divide(Map<BaseDimension, Integer> baseDimensions1, Map<BaseDimension, Integer> baseDimensions2) {
         Map<BaseDimension, Integer> baseDimensions = new EnumMap<>(BaseDimension.class);
         baseDimensions.putAll(baseDimensions1);
-        baseDimensions2.forEach(
-                (dim_, n) -> baseDimensions.merge(dim_, -n,
-                        (oldValue, newValue) -> oldValue - newValue)
-        );
+        baseDimensions2.forEach((dim_, n) -> baseDimensions.merge(dim_, -n, (oldValue, newValue) -> oldValue - newValue));
         return of(baseDimensions);
     }
 
@@ -85,7 +83,7 @@ public final class CompoundDimension implements Dimension {
         Map<BaseDimension, Integer> baseDimensions_ = new EnumMap<>(BaseDimension.class);
         baseDimensions.forEach((dim, n_) -> {
             if (n_ % n != 0) {
-                throw new ArithmeticException();
+                throw new ArithmeticException("fractional powers not supported");
             }
 
             baseDimensions_.put(dim, n_ / n);
@@ -111,22 +109,5 @@ public final class CompoundDimension implements Dimension {
     @Override
     public Map<BaseDimension, Integer> getBaseDimensions() {
         return baseDimensions;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Dimension)) {
-            return false;
-        }
-        Dimension that = (Dimension) o;
-        return getBaseDimensions().equals(that.getBaseDimensions());
-    }
-
-    @Override
-    public int hashCode() {
-        return getBaseDimensions().hashCode();
     }
 }

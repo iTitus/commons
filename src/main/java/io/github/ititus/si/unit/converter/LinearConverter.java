@@ -77,6 +77,7 @@ final class LinearConverter implements UnitConverter {
         } else if (!(o instanceof LinearConverter)) {
             return false;
         }
+
         LinearConverter that = (LinearConverter) o;
         return factor.equals(that.factor) && shift.equals(that.shift);
     }

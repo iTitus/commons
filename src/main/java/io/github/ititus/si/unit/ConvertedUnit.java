@@ -100,13 +100,12 @@ final class ConvertedUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof ConvertedUnit)) {
+        } else if (!(o instanceof ConvertedUnit)) {
+            return false;
+        } else if (!super.equals(o)) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
+
         ConvertedUnit<?> that = (ConvertedUnit<?>) o;
         return baseUnit.equals(that.baseUnit) && converter.equals(that.converter);
     }

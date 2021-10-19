@@ -206,13 +206,12 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof CompoundUnit)) {
+        } else if (!(o instanceof CompoundUnit)) {
+            return false;
+        } else if (!super.equals(o)) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
+
         CompoundUnit<?> that = (CompoundUnit<?>) o;
         return units.equals(that.units);
     }

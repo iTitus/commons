@@ -38,8 +38,7 @@ abstract class AbstractUnit<Q extends QuantityType<Q>> implements Unit<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof AbstractUnit)) {
+        } else if (!(o instanceof AbstractUnit)) {
             return false;
         }
 

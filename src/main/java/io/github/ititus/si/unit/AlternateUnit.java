@@ -88,13 +88,12 @@ final class AlternateUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof AlternateUnit)) {
+        } else if (!(o instanceof AlternateUnit)) {
+            return false;
+        } else if (!super.equals(o)) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
+
         AlternateUnit<?> that = (AlternateUnit<?>) o;
         return baseUnit.equals(that.baseUnit) && alternateSymbol.equals(that.alternateSymbol);
     }
