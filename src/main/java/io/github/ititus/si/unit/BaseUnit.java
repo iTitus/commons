@@ -1,5 +1,6 @@
 package io.github.ititus.si.unit;
 
+import io.github.ititus.si.NotCommensurableException;
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
 import io.github.ititus.si.quantity.value.QuantityValue;
@@ -12,7 +13,7 @@ final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     private final String symbol;
 
     BaseUnit(Q type, String symbol) {
-        super(type, type.getDimension());
+        super(type);
         this.symbol = symbol;
     }
 
@@ -24,7 +25,7 @@ final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
         if (!isCommensurableWith(unit.getType())) {
-            throw new ClassCastException();
+            throw new NotCommensurableException();
         } else if (equals(unit)) {
             return UnitConverter.IDENTITY;
         }
@@ -36,7 +37,7 @@ final class BaseUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
         if (!isCommensurableWith(type)) {
-            throw new ClassCastException();
+            throw new NotCommensurableException();
         } else if (getType().equals(type)) {
             return (Unit<T>) this;
         }

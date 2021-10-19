@@ -1,5 +1,6 @@
 package io.github.ititus.si.unit;
 
+import io.github.ititus.internal.Config;
 import io.github.ititus.si.quantity.type.*;
 
 import static io.github.ititus.math.number.BigRational.of;
@@ -69,6 +70,7 @@ public final class Units {
     // Length
     public static final Unit<Length> KILOMETRE = METRE.prefix(KILO);
     public static final Unit<Length> DECIMETRE = METRE.prefix(DECI);
+    public static final Unit<Length> CENTIMETRE = METRE.prefix(CENTI);
     public static final Unit<Length> MILLIMETRE = METRE.prefix(MILLI);
     public static final Unit<Length> INCH = MILLIMETRE.multiply(ofExp(254, -1)).alternate("in");
     public static final Unit<Length> FOOT = INCH.multiply(12).alternate("ft");
@@ -170,7 +172,7 @@ public final class Units {
     public static final Unit<ElectricCapacitance> FARAD = COULOMB.divide(VOLT).alternate("F").as(ELECTRIC_CAPACITANCE);
 
     // Electric Resistance
-    public static final Unit<ElectricResistance> OHM = VOLT.divide(AMPERE).alternate("\u03A9").as(ELECTRIC_RESISTANCE);
+    public static final Unit<ElectricResistance> OHM = VOLT.divide(AMPERE).alternate(Config.FORCE_ASCII ? "Ohm" : "\u03A9").as(ELECTRIC_RESISTANCE);
 
     // Electric Conductance
     public static final Unit<ElectricConductance> SIEMENS = OHM.inverse().alternate("S").as(ELECTRIC_CONDUCTANCE);

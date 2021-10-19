@@ -1,18 +1,13 @@
 package io.github.ititus.si.unit;
 
-import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.quantity.type.QuantityType;
-
-import java.util.Objects;
 
 abstract class AbstractUnit<Q extends QuantityType<Q>> implements Unit<Q> {
 
     private final Q type;
-    private final Dimension dimension;
 
-    protected AbstractUnit(Q type, Dimension dimension) {
+    protected AbstractUnit(Q type) {
         this.type = type;
-        this.dimension = dimension;
     }
 
     @Override
@@ -21,15 +16,10 @@ abstract class AbstractUnit<Q extends QuantityType<Q>> implements Unit<Q> {
     }
 
     @Override
-    public Dimension getDimension() {
-        return dimension;
-    }
-
-    @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "type=" + type +
-                ", dimension=" + dimension.getString() +
+                ", dimension=" + getDimension().getString() +
                 ", symbol=" + getSymbol() +
                 '}';
     }
@@ -38,16 +28,16 @@ abstract class AbstractUnit<Q extends QuantityType<Q>> implements Unit<Q> {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof AbstractUnit)) {
+        } else if (!(o instanceof Unit)) {
             return false;
         }
 
-        AbstractUnit<?> that = (AbstractUnit<?>) o;
-        return /*type.equals(that.type) &&*/ dimension.equals(that.dimension);
+        Unit<?> that = (Unit<?>) o;
+        return getDimension().equals(that.getDimension());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(/*type,*/ dimension);
+        return getDimension().hashCode();
     }
 }

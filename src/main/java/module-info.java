@@ -29,6 +29,7 @@ module io.github.ititus.commons {
     exports io.github.ititus.math.vector;
     exports io.github.ititus.parser;
     exports io.github.ititus.precondition;
+    exports io.github.ititus.si;
     exports io.github.ititus.si.dimension;
     exports io.github.ititus.si.prefix;
     exports io.github.ititus.si.quantity;

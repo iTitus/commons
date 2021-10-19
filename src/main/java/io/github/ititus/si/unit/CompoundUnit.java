@@ -1,5 +1,6 @@
 package io.github.ititus.si.unit;
 
+import io.github.ititus.si.NotCommensurableException;
 import io.github.ititus.si.dimension.Dimension;
 import io.github.ititus.si.prefix.Prefix;
 import io.github.ititus.si.quantity.type.QuantityType;
@@ -19,9 +20,11 @@ import static io.github.ititus.si.unit.Units.ONE;
 final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
     private final Map<Unit<?>, Integer> units;
+    private final Dimension dimension;
 
     private CompoundUnit(Q type, Dimension dimension, Map<Unit<?>, Integer> units) {
-        super(type, dimension);
+        super(type);
+        this.dimension = dimension;
         this.units = units;
     }
 
@@ -33,10 +36,8 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
 
         if (units.isEmpty()) {
             return ONE;
-        }
-
-        if (units.size() == 1) {
-            Map.Entry<Unit<?>, Integer> entry = units.entrySet().stream().findAny().get();
+        } else if (units.size() == 1) {
+            Map.Entry<Unit<?>, Integer> entry = units.entrySet().stream().findAny().orElseThrow();
             if (entry.getValue() == 1) {
                 return entry.getKey();
             }
@@ -101,6 +102,11 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     }
 
     @Override
+    public Dimension getDimension() {
+        return dimension;
+    }
+
+    @Override
     public String getSymbol() {
         StringBuilder b = new StringBuilder();
 
@@ -118,7 +124,7 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @Override
     public <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit) {
         if (!isCommensurableWith(unit.getType())) {
-            throw new ClassCastException();
+            throw new NotCommensurableException();
         } else if (equals(unit)) {
             return UnitConverter.IDENTITY;
         }
@@ -154,12 +160,12 @@ final class CompoundUnit<Q extends QuantityType<Q>> extends AbstractUnit<Q> {
     @SuppressWarnings("unchecked")
     public <T extends QuantityType<T>> Unit<T> as(T type) {
         if (!isCommensurableWith(type)) {
-            throw new ClassCastException();
+            throw new NotCommensurableException();
         } else if (getType().equals(type)) {
             return (Unit<T>) this;
         }
 
-        return new CompoundUnit<>(type, getDimension(), units);
+        return new CompoundUnit<>(type, dimension, units);
     }
 
     @Override

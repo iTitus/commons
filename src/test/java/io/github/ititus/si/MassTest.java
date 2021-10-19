@@ -1,6 +1,7 @@
-package io.github.ititus.si.quantity.type;
+package io.github.ititus.si;
 
 import io.github.ititus.si.quantity.Quantity;
+import io.github.ititus.si.quantity.type.Mass;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.assertions.Assertions.assertThat;

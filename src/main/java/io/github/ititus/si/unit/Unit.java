@@ -17,7 +17,9 @@ public interface Unit<Q extends QuantityType<Q>> {
 
     Q getType();
 
-    Dimension getDimension();
+    default Dimension getDimension() {
+        return getType().getDimension();
+    }
 
     <T extends QuantityType<T>> UnitConverter getConverterTo(Unit<T> unit);
 

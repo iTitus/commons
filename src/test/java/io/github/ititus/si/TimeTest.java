@@ -1,14 +1,13 @@
-package io.github.ititus.si.quantity.type;
+package io.github.ititus.si;
 
 import io.github.ititus.si.quantity.Quantity;
+import io.github.ititus.si.quantity.type.Time;
 import org.junit.jupiter.api.Test;
 
 import static io.github.ititus.assertions.Assertions.assertThat;
-import static io.github.ititus.math.number.BigRational.ofExp;
-import static io.github.ititus.si.prefix.MetricPrefix.NANO;
 import static io.github.ititus.si.quantity.value.QuantityValue.of;
-import static io.github.ititus.si.unit.Units.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.github.ititus.si.unit.Units.MINUTE;
+import static io.github.ititus.si.unit.Units.SECOND;
 import static org.assertj.core.data.Percentage.withPercentage;
 
 class TimeTest {
