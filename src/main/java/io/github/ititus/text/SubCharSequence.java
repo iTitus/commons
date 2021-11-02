@@ -2,26 +2,49 @@ package io.github.ititus.text;
 
 import java.util.Objects;
 
-public class SubCharSequence implements CharSequence {
+public final class SubCharSequence implements CharSequence {
 
     private final CharSequence sequence;
     private final int start;
     private final int end;
 
-    public SubCharSequence(CharSequence sequence, int start, int end) {
+    private SubCharSequence(CharSequence sequence, int start, int end) {
         Objects.requireNonNull(sequence);
-        if (start < 0 || end < 0 || end < start) {
+        if (start < 0 || end < start) {
             throw new IllegalArgumentException();
         }
 
         int length = sequence.length();
-        if (start > length || end > length) {
+        if (end > length) {
             throw new IllegalArgumentException();
         }
 
         this.sequence = sequence;
         this.start = start;
         this.end = end;
+    }
+
+    public static CharSequence of(CharSequence sequence, int start, int end) {
+        Objects.requireNonNull(sequence);
+        if (start < 0 || end < start) {
+            throw new IllegalArgumentException();
+        }
+
+        int length = sequence.length();
+        if (end > length) {
+            throw new IllegalArgumentException();
+        }
+
+        if (length == 0 || start == end) {
+            return "";
+        } else if (start == 0 && end == length) {
+            return sequence;
+        } else if (sequence instanceof SubCharSequence) {
+            SubCharSequence subseq = (SubCharSequence) sequence;
+            return new SubCharSequence(subseq.sequence, start + subseq.start, end + subseq.start);
+        }
+
+        return new SubCharSequence(sequence, start, end);
     }
 
     @Override
@@ -41,13 +64,7 @@ public class SubCharSequence implements CharSequence {
 
     @Override
     public CharSequence subSequence(int start, int end) {
-        start += this.start;
-        end += this.start;
-        if (start < 0 || start >= this.end || end < 0 || end >= this.end) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        return new SubCharSequence(sequence, this.start + start, this.start + end);
+        return of(this, start, end);
     }
 
     @Override

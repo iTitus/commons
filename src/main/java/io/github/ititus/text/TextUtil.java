@@ -26,4 +26,47 @@ public class TextUtil {
 
         return true;
     }
+
+    public static String toString(char c) {
+        return toString((int) c);
+    }
+
+    public static String toString(int codepoint) {
+        switch (codepoint) {
+            case '\b':
+                return "\\b";
+            case ' ':
+                return "\\s";
+            case '\t':
+                return "\\t";
+            case '\n':
+                return "\\n";
+            case '\f':
+                return "\\f";
+            case '\r':
+                return "\\r";
+            default:
+                return Character.toString(codepoint);
+        }
+    }
+
+    public static String quote(String s) {
+        StringBuilder b = new StringBuilder().append('"');
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '"') {
+                if ((i - 1 < 0 || s.charAt(i - 1) != '\\') || (i - 2 >= 0 && s.charAt(i - 2) == '\\')) {
+                    b.append('\\');
+                }
+            } else if (c == '\\') {
+                if ((i - 1 < 0 || s.charAt(i - 1) != '\\') && (i + 1 >= s.length() || (s.charAt(i + 1) != '"' && s.charAt(i + 1) != '\\'))) {
+                    b.append('\\');
+                }
+            }
+
+            b.append(c);
+        }
+
+        return b.append('"').toString();
+    }
 }
