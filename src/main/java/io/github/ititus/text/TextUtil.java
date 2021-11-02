@@ -27,11 +27,11 @@ public class TextUtil {
         return true;
     }
 
-    public static String toString(char c) {
-        return toString((int) c);
+    public static String toStringAsEscape(char c) {
+        return toStringAsEscape((int) c);
     }
 
-    public static String toString(int codepoint) {
+    public static String toStringAsEscape(int codepoint) {
         switch (codepoint) {
             case '\b':
                 return "\\b";
