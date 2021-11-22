@@ -1,6 +1,9 @@
 package io.github.ititus.text;
 
-public class TextUtil {
+public final class TextUtil {
+
+    private TextUtil() {
+    }
 
     public static String reverse(String s) {
         return new StringBuilder(s).reverse().toString();
