@@ -30,6 +30,7 @@ public final class IntIntPairImpl implements IntIntPair {
         } else if (!(o instanceof IntIntPair)) {
             return false;
         }
+
         IntIntPair that = (IntIntPair) o;
         return a == that.a() && b == that.b();
     }

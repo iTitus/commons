@@ -9,6 +9,10 @@ public interface Pair<A, B> extends DeepToString {
         return new PairImpl<>(a, b);
     }
 
+    static <B> IntObjPair<B> of(int a, B b) {
+        return IntObjPair.of(a, b);
+    }
+
     static IntIntPair of(int a, int b) {
         return IntIntPair.of(a, b);
     }

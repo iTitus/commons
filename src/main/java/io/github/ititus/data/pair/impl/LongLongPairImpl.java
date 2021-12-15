@@ -38,6 +38,7 @@ public final class LongLongPairImpl implements LongLongPair {
         } else if (!(o instanceof LongLongPair)) {
             return false;
         }
+
         LongLongPair that = (LongLongPair) o;
         return a == that.a() && b == that.b();
     }
