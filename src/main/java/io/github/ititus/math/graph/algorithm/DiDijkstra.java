@@ -9,6 +9,7 @@ import io.github.ititus.math.number.BigRationalConstants;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Directed Dijkstra algorithm
@@ -48,32 +49,30 @@ public class DiDijkstra<T> {
 
     public Result findShortestPaths() {
         if (!r.done) {
-            Set<Vertex<T>> unvisited = new HashSet<>(graph.getVertices());
+            PriorityQueue<Vertex<T>> q = new PriorityQueue<>(distanceComparator);
             r.setDist(start, BigRationalConstants.ZERO);
+            q.add(start);
 
-            while (!unvisited.isEmpty()) {
-                Vertex<T> u = Collections.min(unvisited, distanceComparator);
-                unvisited.remove(u);
+            while (!q.isEmpty()) {
+                Vertex<T> u = q.remove();
 
                 Optional<BigRational> distOpt = r.getDist(u);
                 if (distOpt.isEmpty()) {
-                    // throw new RuntimeException("unreachable vertex " + u);
                     continue;
                 }
 
                 BigRational dist = distOpt.get();
-
                 for (Edge<T> e : graph.getOutgoingEdges(u)) {
                     Vertex<T> v = e.getEnd();
-                    if (!unvisited.contains(v)) {
-                        continue;
-                    }
-
                     BigRational newDist = dist.add(e.getWeight());
                     Optional<BigRational> oldDist = r.getDist(v);
                     if (oldDist.isEmpty() || newDist.compareTo(oldDist.get()) < 0) {
                         r.setDist(v, newDist);
                         r.setPrev(v, u);
+
+                        // re-insert at correct position
+                        q.remove(v);
+                        q.add(v);
                     }
                 }
 
@@ -88,10 +87,13 @@ public class DiDijkstra<T> {
         return r;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private String resultToString(Result r) {
-        List<Vertex<T>> vertices = graph.getVertices().stream()
-                .filter(Predicate.not(start::equals))
-                .toList();
+        Stream<Vertex<T>> stream = graph.getVertices().stream();
+        if (graph.getVertices().iterator().next().get() instanceof Comparable) {
+            stream = stream.sorted(Comparator.comparing(v -> (Comparable) v.get()));
+        }
+        List<Vertex<T>> vertices = stream.toList();
         StringBuilder b = new StringBuilder();
         for (Vertex<T> v : vertices) {
             b.append(v.get()).append('=');
@@ -174,9 +176,7 @@ public class DiDijkstra<T> {
         }
 
         public BigRational getShortestPathLength(Vertex<T> end) {
-            return getShortestPathEdges(end).stream()
-                    .map(Edge::getWeight)
-                    .reduce(BigRationalConstants.ZERO, BigRational::add);
+            return r.getDist(end).orElseThrow();
         }
     }
 }
