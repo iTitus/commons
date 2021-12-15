@@ -1,3 +1,5 @@
+import java.time.Duration
+
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -81,7 +83,7 @@ signing {
 }
 
 nexusPublishing {
-    connectTimeout = clientTimeout = Duration.ofHours(1)
+    connectTimeout = clientTimeout = Duration.ofHours(2)
     repositories {
         sonatype {
             stagingProfileId = project.findProperty('ossrh_staging_profile_id')

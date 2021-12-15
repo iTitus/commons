@@ -73,11 +73,6 @@ public final class Vec2i implements Comparable<Vec2i> {
         return Math.hypot(x, y);
     }
 
-    @Deprecated(forRemoval = true)
-    public double distance() {
-        return Math.hypot(x, y);
-    }
-
     public double distanceTo(Vec2i o) {
         return Math.hypot(x - o.x, y - o.y);
     }
@@ -184,18 +179,8 @@ public final class Vec2i implements Comparable<Vec2i> {
         }
     }
 
-    @Deprecated(forRemoval = true)
-    public int getX() {
-        return x;
-    }
-
     public int x() {
         return x;
-    }
-
-    @Deprecated(forRemoval = true)
-    public int getY() {
-        return y;
     }
 
     public int y() {

@@ -61,27 +61,12 @@ public final class Vec3i implements Comparable<Vec3i> {
         return Math.sqrt(x * x + y * y + z * z);
     }
 
-    @Deprecated(forRemoval = true)
-    public int getX() {
-        return x;
-    }
-
     public int x() {
         return x;
     }
 
-    @Deprecated(forRemoval = true)
-    public int getY() {
-        return y;
-    }
-
     public int y() {
         return y;
-    }
-
-    @Deprecated(forRemoval = true)
-    public int getZ() {
-        return z;
     }
 
     public int z() {

@@ -60,36 +60,16 @@ public final class Vec4i implements Comparable<Vec4i> {
         return Math.sqrt(x * x + y * y + z * z + w * w);
     }
 
-    @Deprecated(forRemoval = true)
-    public int getX() {
-        return x;
-    }
-
     public int x() {
         return x;
-    }
-
-    @Deprecated(forRemoval = true)
-    public int getY() {
-        return y;
     }
 
     public int y() {
         return y;
     }
 
-    @Deprecated(forRemoval = true)
-    public int getZ() {
-        return z;
-    }
-
     public int z() {
         return z;
-    }
-
-    @Deprecated(forRemoval = true)
-    public int getW() {
-        return w;
     }
 
     public int w() {

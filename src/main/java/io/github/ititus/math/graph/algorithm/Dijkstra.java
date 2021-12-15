@@ -1,5 +1,6 @@
 package io.github.ititus.math.graph.algorithm;
 
+import io.github.ititus.data.pair.Pair;
 import io.github.ititus.math.graph.Edge;
 import io.github.ititus.math.graph.Graph;
 import io.github.ititus.math.graph.Vertex;
@@ -22,7 +23,6 @@ public class Dijkstra<T> {
     private final Graph<T> graph;
     private final Vertex<T> start;
     private final Result r;
-    private final Comparator<Vertex<T>> distanceComparator;
 
     public Dijkstra(Graph<T> graph, Vertex<T> start) {
         if (graph.getVertices().isEmpty()) {
@@ -32,47 +32,31 @@ public class Dijkstra<T> {
         this.graph = graph;
         this.start = start;
         this.r = new Result();
-        this.distanceComparator = (v1, v2) -> {
-            Optional<BigRational> r1 = r.getDist(v1);
-            Optional<BigRational> r2 = r.getDist(v2);
-
-            if (r1.isPresent()) {
-                return r2.map(r -> r1.get().compareTo(r)).orElse(-1);
-            } else if (r2.isPresent()) {
-                return 1;
-            }
-
-            return 0;
-        };
     }
 
     public Result findShortestPaths() {
         if (!r.done) {
-            PriorityQueue<Vertex<T>> q = new PriorityQueue<>(distanceComparator);
+            PriorityQueue<Pair<BigRational, Vertex<T>>> q = new PriorityQueue<>(Comparator.comparing(Pair::a));
             r.setDist(start, BigRationalConstants.ZERO);
-            q.add(start);
+            q.add(Pair.of(BigRationalConstants.ZERO, start));
 
             while (!q.isEmpty()) {
-                Vertex<T> u = q.remove();
-
-                Optional<BigRational> distOpt = r.getDist(u);
-                if (distOpt.isEmpty()) {
+                Pair<BigRational, Vertex<T>> pair = q.remove();
+                BigRational dist = pair.a();
+                Vertex<T> u = pair.b();
+                if (!dist.equals(r.getDist(u).orElseThrow())) {
                     continue;
                 }
 
-                BigRational dist = distOpt.get();
                 for (Edge<T> e : graph.getAdjacentEdges(u)) {
-                    Vertex<T> v = e.getStart().equals(u) ? e.getEnd() : e.getStart();
-
+                    Vertex<T> v = e.getEnd();
                     BigRational newDist = dist.add(e.getWeight());
                     Optional<BigRational> oldDist = r.getDist(v);
                     if (oldDist.isEmpty() || newDist.compareTo(oldDist.get()) < 0) {
                         r.setDist(v, newDist);
                         r.setPrev(v, u);
 
-                        // re-insert at correct position
-                        q.remove(v);
-                        q.add(v);
+                        q.add(Pair.of(newDist, v));
                     }
                 }
 
@@ -102,7 +86,7 @@ public class Dijkstra<T> {
             if (dist.isPresent()) {
                 b.append(dist.get()).append(", ").append(r.getPrev(v));
             } else {
-                b.append("∞");
+                b.append('\u221e');
             }
 
             b.append(" | ");
