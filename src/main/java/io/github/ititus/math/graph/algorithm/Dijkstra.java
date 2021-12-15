@@ -98,8 +98,8 @@ public class Dijkstra<T> {
 
     public class Result {
 
-        private final Map<T, BigRational> dist;
-        private final Map<T, Vertex<T>> prev;
+        private final Map<Vertex<T>, BigRational> dist;
+        private final Map<Vertex<T>, Vertex<T>> prev;
         private boolean done;
 
         private Result() {
@@ -109,19 +109,19 @@ public class Dijkstra<T> {
         }
 
         private void setDist(Vertex<T> v, BigRational r) {
-            dist.put(v.get(), r);
+            dist.put(v, r);
         }
 
         private void setPrev(Vertex<T> v, Vertex<T> w) {
-            prev.put(v.get(), w);
+            prev.put(v, w);
         }
 
         private Optional<BigRational> getDist(Vertex<T> v) {
-            return Optional.ofNullable(dist.get(v.get()));
+            return Optional.ofNullable(dist.get(v));
         }
 
         private Optional<Vertex<T>> getPrev(Vertex<T> v) {
-            return Optional.ofNullable(prev.get(v.get()));
+            return Optional.ofNullable(prev.get(v));
         }
 
         public List<Vertex<T>> getShortestPathVertices(Vertex<T> end) {
