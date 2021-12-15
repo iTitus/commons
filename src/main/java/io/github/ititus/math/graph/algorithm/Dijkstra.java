@@ -29,10 +29,6 @@ public class Dijkstra<T> {
         this.start = start;
         this.r = new Result();
         this.distanceComparator = (v1, v2) -> {
-            if (v1.equals(v2)) {
-                return 0;
-            }
-
             Optional<BigRational> r1 = r.getDist(v1);
             Optional<BigRational> r2 = r.getDist(v2);
 
