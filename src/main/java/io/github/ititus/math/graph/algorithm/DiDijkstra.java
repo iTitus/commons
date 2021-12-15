@@ -1,7 +1,7 @@
 package io.github.ititus.math.graph.algorithm;
 
+import io.github.ititus.math.graph.DiGraph;
 import io.github.ititus.math.graph.Edge;
-import io.github.ititus.math.graph.Graph;
 import io.github.ititus.math.graph.Vertex;
 import io.github.ititus.math.number.BigRational;
 import io.github.ititus.math.number.BigRationalConstants;
@@ -11,20 +11,20 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Undirected Dijkstra algorithm
+ * Directed Dijkstra algorithm
  *
  * @param <T> content type
  */
-public class Dijkstra<T> {
+public class DiDijkstra<T> {
 
     private static final boolean PRINT_DEBUG_INFO = false;
 
-    private final Graph<T> graph;
+    private final DiGraph<T> graph;
     private final Vertex<T> start;
     private final Result r;
     private final Comparator<Vertex<T>> distanceComparator;
 
-    public Dijkstra(Graph<T> graph, Vertex<T> start) {
+    public DiDijkstra(DiGraph<T> graph, Vertex<T> start) {
         this.graph = graph;
         this.start = start;
         this.r = new Result();
@@ -63,8 +63,8 @@ public class Dijkstra<T> {
 
                 BigRational dist = distOpt.get();
 
-                for (Edge<T> e : graph.getAdjacentEdges(u)) {
-                    Vertex<T> v = e.getStart().equals(u) ? e.getEnd() : e.getStart();
+                for (Edge<T> e : graph.getOutgoingEdges(u)) {
+                    Vertex<T> v = e.getEnd();
                     if (!unvisited.contains(v)) {
                         continue;
                     }

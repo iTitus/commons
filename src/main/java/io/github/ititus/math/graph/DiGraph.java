@@ -4,19 +4,18 @@ import io.github.ititus.math.number.BigRational;
 import io.github.ititus.math.number.BigRationalConstants;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * Undirected Graph
+ * Directed Graph
  *
  * @param <T> content type
  */
-public class Graph<T> {
+public class DiGraph<T> {
 
     private final Map<T, Vertex<T>> vertices;
     private final Set<Edge<T>> edges;
 
-    public Graph() {
+    public DiGraph() {
         this.vertices = new HashMap<>();
         this.edges = new HashSet<>();
     }
@@ -54,10 +53,8 @@ public class Graph<T> {
 
         Edge<T> e = new Edge<>(start, end, weight);
         edges.add(e);
-        start.addIncomingEdge(end.get(), e);
         start.addOutgoingEdge(end.get(), e);
         end.addIncomingEdge(start.get(), e);
-        end.addOutgoingEdge(start.get(), e);
         return e;
     }
 
@@ -78,24 +75,14 @@ public class Graph<T> {
     }
 
     public Optional<Edge<T>> getEdgeByVertices(Vertex<T> start, Vertex<T> end) {
-        Objects.requireNonNull(start);
-        Objects.requireNonNull(end);
-
-        Optional<Edge<T>> edge = start.getOutgoingEdge(end.get());
-        if (edge.isPresent()) {
-            return edge;
-        }
-
-        return end.getOutgoingEdge(start.get());
+        return Objects.requireNonNull(start).getOutgoingEdge(Objects.requireNonNull(end).get());
     }
 
-    public Set<Vertex<T>> getNeighborVertices(Vertex<T> v) {
-        return Objects.requireNonNull(v).getOutgoingEdges().stream()
-                .map(e -> v.equals(e.getStart()) ? e.getEnd() : e.getStart())
-                .collect(Collectors.toSet());
+    public Collection<Edge<T>> getIncomingEdges(Vertex<T> end) {
+        return Collections.unmodifiableCollection(Objects.requireNonNull(end).getIncomingEdges());
     }
 
-    public Collection<Edge<T>> getAdjacentEdges(Vertex<T> v) {
-        return Collections.unmodifiableCollection(Objects.requireNonNull(v).getOutgoingEdges());
+    public Collection<Edge<T>> getOutgoingEdges(Vertex<T> start) {
+        return Collections.unmodifiableCollection(Objects.requireNonNull(start).getOutgoingEdges());
     }
 }

@@ -6,17 +6,16 @@ plugins {
 }
 
 group = 'io.github.ititus'
-version = '1.5.14'
+version = '2.0.0'
 
 wrapper {
     gradleVersion '7.3'
 }
 
 java {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
-
-    withSourcesJar()
-    withJavadocJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 javadoc {
