@@ -52,9 +52,7 @@ public class Graph<T> {
     }
 
     public Edge<T> addEdge(Vertex<T> start, Vertex<T> end, BigRational weight) {
-        if (Objects.requireNonNull(start).equals(Objects.requireNonNull(end))) {
-            throw new IllegalArgumentException("start=end");
-        } else if (getEdgeByVertices(start, end).isPresent()) {
+        if (getEdgeByVertices(Objects.requireNonNull(start), Objects.requireNonNull(end)).isPresent()) {
             throw new IllegalArgumentException("edge already exists");
         } else if (!Objects.requireNonNull(weight).isPositive()) {
             throw new IllegalArgumentException("weight");

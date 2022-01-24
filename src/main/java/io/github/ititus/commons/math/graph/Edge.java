@@ -1,7 +1,6 @@
 package io.github.ititus.commons.math.graph;
 
 import io.github.ititus.commons.math.number.BigRational;
-import io.github.ititus.commons.math.number.BigRationalConstants;
 
 import java.util.Objects;
 
@@ -16,14 +15,12 @@ public final class Edge<T> {
     private final BigRational weight;
 
     Edge(Vertex<T> start, Vertex<T> end, BigRational weight) {
-        if (Objects.requireNonNull(start).equals(Objects.requireNonNull(end))) {
-            throw new IllegalArgumentException("start=end");
-        } else if (Objects.requireNonNull(weight).compareTo(BigRationalConstants.ZERO) <= 0) {
+        if (!Objects.requireNonNull(weight).isPositive()) {
             throw new IllegalArgumentException("weight");
         }
 
-        this.start = start;
-        this.end = end;
+        this.start = Objects.requireNonNull(start);
+        this.end = Objects.requireNonNull(end);
         this.weight = weight;
     }
 
