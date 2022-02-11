@@ -1,16 +1,15 @@
-package io.github.ititus.commons.data.pair.impl;
+package io.github.ititus.commons.data.pair;
 
 import io.github.ititus.commons.data.ObjectUtil;
-import io.github.ititus.commons.data.pair.Pair;
 
 import java.util.Objects;
 
-public final class PairImpl<A, B> implements Pair<A, B> {
+final class ObjObjPairImpl<A, B> implements ObjObjPair<A, B> {
 
     private final A a;
     private final B b;
 
-    public PairImpl(A a, B b) {
+    ObjObjPairImpl(A a, B b) {
         this.a = a;
         this.b = b;
     }

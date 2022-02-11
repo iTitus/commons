@@ -39,12 +39,23 @@ public final class SubCharSequence implements CharSequence {
             return "";
         } else if (start == 0 && end == length) {
             return sequence;
-        } else if (sequence instanceof SubCharSequence) {
-            SubCharSequence subseq = (SubCharSequence) sequence;
+        } else if (sequence instanceof SubCharSequence subseq) {
             return new SubCharSequence(subseq.sequence, start + subseq.start, end + subseq.start);
         }
 
         return new SubCharSequence(sequence, start, end);
+    }
+
+    public CharSequence sequence() {
+        return sequence;
+    }
+
+    public int start() {
+        return start;
+    }
+
+    public int end() {
+        return end;
     }
 
     @Override

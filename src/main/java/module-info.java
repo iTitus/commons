@@ -39,4 +39,5 @@ module io.github.ititus.commons {
     exports io.github.ititus.commons.si.unit.converter;
     exports io.github.ititus.commons.system;
     exports io.github.ititus.commons.text;
+    exports io.github.ititus.commons.data.either;
 }

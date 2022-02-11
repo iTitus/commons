@@ -1,37 +1,31 @@
 package io.github.ititus.commons.parser;
 
 import java.util.Objects;
+import java.util.function.Function;
 
-public final class ParserResult<IN, OUT> {
+public record ParserResult<I, R>(Input<I> remaining, R result) {
 
-    private final IN remaining;
-    private final OUT result;
-
-    public ParserResult(IN remaining, OUT result) {
-        this.remaining = remaining;
-        this.result = result;
+    public ParserResult {
+        Objects.requireNonNull(remaining);
+        Objects.requireNonNull(result);
     }
 
-    public static <IN, OUT> ParserResult<IN, OUT> of(IN remaining, OUT result) {
+    public static <I, R> ParserResult<I, R> of(Input<I> remaining, R result) {
         return new ParserResult<>(remaining, result);
     }
 
-    public IN getRemaining() {
-        return remaining;
-    }
-
-    public OUT getResult() {
-        return result;
+    public <S> ParserResult<I, S> map(Function<? super R, ? extends S> f) {
+        return of(remaining, f.apply(result));
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (!(o instanceof ParserResult)) {
+        } else if (!(o instanceof ParserResult)) {
             return false;
         }
+
         ParserResult<?, ?> that = (ParserResult<?, ?>) o;
         return remaining.equals(that.remaining) && result.equals(that.result);
     }
@@ -39,10 +33,5 @@ public final class ParserResult<IN, OUT> {
     @Override
     public int hashCode() {
         return Objects.hash(remaining, result);
-    }
-
-    @Override
-    public String toString() {
-        return "ParserResult{remaining=" + remaining + ", result=" + result + "}";
     }
 }

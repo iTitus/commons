@@ -1,25 +1,32 @@
-package io.github.ititus.commons.data.pair.impl;
+package io.github.ititus.commons.data.pair;
 
 import io.github.ititus.commons.data.ArrayUtil;
-import io.github.ititus.commons.data.pair.IntIntPair;
 
-public final class IntIntPairImpl implements IntIntPair {
+final class LongLongPairImpl implements LongLongPair {
 
-    private final int a;
-    private final int b;
+    private final long a;
+    private final long b;
 
-    public IntIntPairImpl(int a, int b) {
+    LongLongPairImpl(long a, long b) {
         this.a = a;
         this.b = b;
     }
 
-    @Override
-    public int aInt() {
+    public long aLong() {
         return a;
     }
 
     @Override
-    public int bInt() {
+    public Long a() {
+        return a;
+    }
+
+    public long bLong() {
+        return b;
+    }
+
+    @Override
+    public Long b() {
         return b;
     }
 
@@ -27,11 +34,11 @@ public final class IntIntPairImpl implements IntIntPair {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof IntIntPair)) {
+        } else if (!(o instanceof LongLongPair)) {
             return false;
         }
 
-        IntIntPair that = (IntIntPair) o;
+        LongLongPair that = (LongLongPair) o;
         return a == that.a() && b == that.b();
     }
 

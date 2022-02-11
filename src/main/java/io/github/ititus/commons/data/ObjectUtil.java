@@ -9,8 +9,7 @@ public final class ObjectUtil {
             return "null";
         } else if (o instanceof DeepToString) {
             return ((DeepToString) o).deepToString();
-        } else if (o instanceof Collection) {
-            Collection<?> c = (Collection<?>) o;
+        } else if (o instanceof Collection<?> c) {
             boolean set = c instanceof Set;
             if (c.isEmpty()) {
                 return set ? "{}" : "[]";
@@ -26,8 +25,7 @@ public final class ObjectUtil {
 
                 b.append(',').append(' ');
             }
-        } else if (o instanceof Map) {
-            Map<?, ?> m = (Map<?, ?>) o;
+        } else if (o instanceof Map<?, ?> m) {
             if (m.isEmpty()) {
                 return "{}";
             }
@@ -43,8 +41,7 @@ public final class ObjectUtil {
 
                 b.append(',').append(' ');
             }
-        } else if (o instanceof Optional) {
-            Optional<?> opt = (Optional<?>) o;
+        } else if (o instanceof Optional<?> opt) {
             if (opt.isEmpty()) {
                 return "Optional.empty";
             }
@@ -60,8 +57,8 @@ public final class ObjectUtil {
     public static String toString(Object o) {
         if (o == null) {
             return "null";
-        } else if (o instanceof Printable) {
-            return ((Printable) o).toPrintableString();
+        } else if (o instanceof Printable p) {
+            return p.toPrintableString();
         } else if (o.getClass().isArray()) {
             return ArrayUtil.toString(o);
         }

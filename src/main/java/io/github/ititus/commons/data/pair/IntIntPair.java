@@ -1,8 +1,6 @@
 package io.github.ititus.commons.data.pair;
 
-import io.github.ititus.commons.data.pair.impl.IntIntPairImpl;
-
-public interface IntIntPair extends Pair<Integer, Integer> {
+public sealed interface IntIntPair extends Pair<Integer, Integer> permits IntIntPairImpl {
 
     static IntIntPair of(int a, int b) {
         return new IntIntPairImpl(a, b);

@@ -1,8 +1,6 @@
 package io.github.ititus.commons.data.pair;
 
-import io.github.ititus.commons.data.pair.impl.LongLongPairImpl;
-
-public interface LongLongPair extends Pair<Long, Long> {
+public sealed interface LongLongPair extends Pair<Long, Long> permits LongLongPairImpl {
 
     static LongLongPair of(long a, long b) {
         return new LongLongPairImpl(a, b);

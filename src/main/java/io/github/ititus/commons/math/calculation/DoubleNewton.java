@@ -11,11 +11,11 @@ public class DoubleNewton {
 
     private final DoubleUnaryOperator function;
     private final DoubleUnaryOperator derivative;
+    private final double relTol;
 
     private double initialValue;
     private int maxIterations;
     private double absTol;
-    private final double relTol;
 
     private DoubleNewton(DoubleUnaryOperator function, DoubleUnaryOperator derivative) {
         this.function = function;

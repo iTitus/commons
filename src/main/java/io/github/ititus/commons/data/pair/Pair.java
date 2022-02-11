@@ -1,12 +1,11 @@
 package io.github.ititus.commons.data.pair;
 
 import io.github.ititus.commons.data.DeepToString;
-import io.github.ititus.commons.data.pair.impl.PairImpl;
 
-public interface Pair<A, B> extends DeepToString {
+public sealed interface Pair<A, B> extends DeepToString permits IntIntPair, IntObjPair, LongLongPair, ObjObjPair {
 
     static <A, B> Pair<A, B> of(A a, B b) {
-        return new PairImpl<>(a, b);
+        return ObjObjPair.of(a, b);
     }
 
     static <B> IntObjPair<B> of(int a, B b) {

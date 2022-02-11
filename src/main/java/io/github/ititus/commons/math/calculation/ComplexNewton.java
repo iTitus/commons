@@ -17,11 +17,11 @@ public class ComplexNewton {
 
     private final UnaryOperator<BigComplex> function;
     private final UnaryOperator<BigComplex> derivative;
+    private final BigRational relTolSquared;
 
     private BigComplex initialValue;
     private int maxIterations;
     private BigRational absTolSquared;
-    private final BigRational relTolSquared;
 
     private ComplexNewton(UnaryOperator<BigComplex> function, UnaryOperator<BigComplex> derivative) {
         this.function = function;
