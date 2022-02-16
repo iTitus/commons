@@ -8,6 +8,6 @@ public interface BaseState<S extends BaseState<S>> {
 
     boolean end();
 
-    Collection<Rule<S>> rules();
+    Collection<TargetedRule<S>> rules();
 
 }

@@ -3,10 +3,10 @@ package io.github.ititus.commons.automaton.finite.dfa;
 import io.github.ititus.commons.automaton.finite.DotUtil;
 import org.junit.jupiter.api.Test;
 
-class DFATest {
+class DFAMinimizationTests {
 
     @Test
-    void testMinimize() {
+    void simple() {
         var s1 = State.create("1");
         var s2 = State.createEnd("2");
         var s3 = State.create("3");
@@ -21,5 +21,23 @@ class DFATest {
 
         var min = dfa.minimize();
         System.out.println(DotUtil.toDot(min));
+    }
+
+    @Test
+    void simpleString() {
+        var initial = State.create("initial");
+        var content = State.create("content");
+        var escape = State.create("escape");
+        var end = State.createEnd("end");
+
+        initial.addRule(content, '"');
+        escape.addRule(content, '"', '\\');
+        content.addRule(end, '"').addRule(escape, '\\').addSelfNotRule('"', '\\');
+
+        var dfa = new DFA(initial);
+        System.out.println(DotUtil.toDot(dfa));
+
+        var minimized = dfa.minimize();
+        System.out.println(DotUtil.toDot(minimized));
     }
 }

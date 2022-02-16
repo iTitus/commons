@@ -1,7 +1,6 @@
 package io.github.ititus.commons.automaton.finite.dfa;
 
 import java.util.Objects;
-import java.util.PrimitiveIterator;
 
 public final class Instance {
 
@@ -27,7 +26,7 @@ public final class Instance {
         }
 
         Instance i = this;
-        for (PrimitiveIterator.OfInt it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
+        for (var it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
             i = i.accept(it.next());
         }
 
@@ -72,7 +71,7 @@ public final class Instance {
 
     @Override
     public int hashCode() {
-        return Objects.hash(current);
+        return Objects.hashCode(current);
     }
 
     @Override

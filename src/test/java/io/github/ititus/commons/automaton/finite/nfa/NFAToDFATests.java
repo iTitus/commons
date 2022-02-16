@@ -3,10 +3,10 @@ package io.github.ititus.commons.automaton.finite.nfa;
 import io.github.ititus.commons.automaton.finite.DotUtil;
 import org.junit.jupiter.api.Test;
 
-class NFATest {
+class NFAToDFATests {
 
     @Test
-    void testToDFA() {
+    void simple() {
         var s0 = State.create("00");
         var s1 = State.create("01");
         var s2 = State.create("02");
@@ -31,6 +31,24 @@ class NFATest {
         s9.addRule(s10, 'b');
 
         var nfa = new NFA(s0);
+        System.out.println(DotUtil.toDot(nfa));
+
+        var dfa = nfa.toDFA();
+        System.out.println(DotUtil.toDot(dfa));
+    }
+
+    @Test
+    void string() {
+        var initial = State.create("initial");
+        var content = State.create("content");
+        var escape = State.create("escape");
+        var end = State.createEnd("end");
+
+        initial.addRule(content, '"');
+        escape.addRule(content, '"', '\\');
+        content.addRule(end, '"').addRule(escape, '\\').addSelfNotRule('"', '\\');
+
+        var nfa = new NFA(initial);
         System.out.println(DotUtil.toDot(nfa));
 
         var dfa = nfa.toDFA();

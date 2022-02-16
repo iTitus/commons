@@ -26,14 +26,14 @@ public final class DotUtil {
         }
 
         while (!q.isEmpty()) {
-            io.github.ititus.commons.automaton.finite.dfa.State state = q.removeFirst();
+            var state = q.removeFirst();
             if (!visited.add(state)) {
                 continue;
             }
 
             defineState(b, state, dfa.initial() == state);
 
-            for (Rule<io.github.ititus.commons.automaton.finite.dfa.State> rule : state.rules()) {
+            for (var rule : state.rules()) {
                 defineRule(b, state, rule);
                 q.addLast(rule.target());
             }
@@ -55,19 +55,19 @@ public final class DotUtil {
         }
 
         while (!q.isEmpty()) {
-            io.github.ititus.commons.automaton.finite.nfa.State state = q.removeFirst();
+            var state = q.removeFirst();
             if (!visited.add(state)) {
                 continue;
             }
 
             defineState(b, state, nfa.initial() == state);
 
-            for (Rule<io.github.ititus.commons.automaton.finite.nfa.State> rule : state.rules()) {
+            for (var rule : state.rules()) {
                 defineRule(b, state, rule);
                 q.addLast(rule.target());
             }
 
-            for (io.github.ititus.commons.automaton.finite.nfa.State s : state.epsilonTransitions()) {
+            for (var s : state.epsilonTransitions()) {
                 defineEpsilon(b, state, s);
                 q.addLast(s);
             }
@@ -92,7 +92,7 @@ public final class DotUtil {
         }
     }
 
-    private static void defineRule(StringBuilder b, BaseState<?> state, Rule<?> rule) {
+    private static void defineRule(StringBuilder b, BaseState<?> state, TargetedRule<?> rule) {
         b.append("    ").append(quoteDot(state.name()));
         b.append(" -> ");
         b.append(quoteDot(rule.target().name()));

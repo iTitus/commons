@@ -4,6 +4,7 @@ module io.github.ititus.commons {
     exports io.github.ititus.commons.automaton.finite;
     exports io.github.ititus.commons.automaton.finite.dfa;
     exports io.github.ititus.commons.automaton.finite.nfa;
+    exports io.github.ititus.commons.automaton.finite.rule;
     exports io.github.ititus.commons.data;
     exports io.github.ititus.commons.data.either;
     exports io.github.ititus.commons.data.mutable;

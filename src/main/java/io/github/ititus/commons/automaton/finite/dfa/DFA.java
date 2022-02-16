@@ -1,10 +1,11 @@
 package io.github.ititus.commons.automaton.finite.dfa;
 
-import io.github.ititus.commons.automaton.finite.Rule;
+import io.github.ititus.commons.automaton.finite.TargetedRule;
 import io.github.ititus.commons.data.pair.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public record DFA(State initial) {
 
@@ -36,7 +37,7 @@ public record DFA(State initial) {
             State s = q.removeFirst();
             if (states.add(s)) {
                 s.rules().stream()
-                        .map(Rule::target)
+                        .map(TargetedRule::target)
                         .forEach(q::addFirst);
             }
         }
@@ -49,6 +50,8 @@ public record DFA(State initial) {
             return this;
         }
 
+        // TODO: optimize this
+
         Set<State> allStates = states();
         Set<State> endStates = allStates.stream().filter(State::end).collect(Collectors.toUnmodifiableSet());
         Set<State> nonEndStates = allStates.stream().filter(s -> !s.end()).collect(Collectors.toUnmodifiableSet());
@@ -57,17 +60,22 @@ public record DFA(State initial) {
         while (true) {
             Set<Set<State>> newPartition = new HashSet<>();
             for (Set<State> group : partition) {
-                int[] validCodepoints = group.stream().flatMap(s -> s.rules().stream())
-                        .flatMapToInt(Rule::validCodepoints)
-                        .distinct()
-                        .toArray();
+                if (group.isEmpty()) {
+                    throw new IllegalStateException();
+                }
+
                 List<Set<State>> newGroups = new ArrayList<>();
                 for (State state : group) {
                     Set<State> groupToAdd = null;
                     outer:
                     for (Set<State> existingGroup : newGroups) {
                         State existingGroupRepresentative = existingGroup.stream().findAny().orElseThrow();
-                        for (int cp : validCodepoints) {
+                        var validCodepointsIterator = Stream.concat(state.rules().stream(), existingGroupRepresentative.rules().stream())
+                                .flatMapToInt(TargetedRule::validCodepoints)
+                                .distinct()
+                                .iterator();
+                        while (validCodepointsIterator.hasNext()) {
+                            int cp = validCodepointsIterator.nextInt();
                             Set<Set<State>> finalPartition = partition;
                             Optional<Set<State>> targetGroup1 = state.accept(cp).map(s -> finalPartition.stream().filter(g -> g.contains(s)).findAny().orElseThrow());
                             Optional<Set<State>> targetGroup2 = existingGroupRepresentative.accept(cp).map(s -> finalPartition.stream().filter(g -> g.contains(s)).findAny().orElseThrow());
@@ -114,12 +122,11 @@ public record DFA(State initial) {
 
         minStates.forEach(p -> {
             State representative = p.a();
-            State state = p.b();
+            State minState = p.b();
 
-            representative.rules().stream()
-                    .flatMapToInt(Rule::validCodepoints)
-                    .distinct()
-                    .forEach(cp -> representative.accept(cp).map(minStatesByStates::get).ifPresent(target -> state.addRule(target.b(), cp)));
+            for (TargetedRule<State> rule : representative.rules()) {
+                minState.addRule(minStatesByStates.get(rule.target()).b(), rule.rule());
+            }
         });
         return new DFA(minInitial);
     }

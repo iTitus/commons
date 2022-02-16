@@ -1,31 +1,18 @@
 package io.github.ititus.commons.automaton.finite;
 
-import java.util.function.Function;
+import io.github.ititus.commons.automaton.finite.rule.Rule;
 
 public final class Rules {
 
+    public static final Rule BIN_DIGIT = Rule.range('0', '1');
+    public static final Rule BIN_DIGIT_WITHOUT_ZERO = Rule.codepoint('1');
+    public static final Rule OCT_DIGIT = Rule.range('0', '7');
+    public static final Rule OCT_DIGIT_WITHOUT_ZERO = Rule.range('1', '7');
+    public static final Rule DEC_DIGIT = Rule.range('0', '9');
+    public static final Rule DEC_DIGIT_WITHOUT_ZERO = Rule.range('1', '9');
+    public static final Rule HEX_DIGIT = Rule.or(Rule.range('0', '9'), Rule.range('a', 'f'), Rule.range('A', 'F'));
+    public static final Rule HEX_DIGIT_WITHOUT_ZERO = Rule.or(Rule.range('1', '9'), Rule.range('a', 'f'), Rule.range('A', 'F'));
     private Rules() {
     }
 
-    public static <T extends BaseState<T>> Function<T, Rule<T>> binDigit() {
-        return target -> new Rule.Range<>(target, '0', '1');
-    }
-
-    public static <T extends BaseState<T>> Function<T, Rule<T>> octDigit() {
-        return target -> new Rule.Range<>(target, '0', '7');
-    }
-
-    public static <T extends BaseState<T>> Function<T, Rule<T>> decDigit() {
-        return target -> new Rule.Range<>(target, '0', '9');
-    }
-
-    public static <T extends BaseState<T>> Function<T, Rule<T>> decDigitWithoutZero() {
-        return target -> new Rule.Range<>(target, '1', '9');
-    }
-
-    public static <T extends BaseState<T>> Function<T, Rule<T>> hexDigit() {
-        return target -> new Rule.Range<>(target, '0', '9')
-                .merge(new Rule.Range<>(target, 'a', 'f'))
-                .merge(new Rule.Range<>(target, 'A', 'F'));
-    }
 }

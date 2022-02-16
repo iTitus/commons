@@ -1,7 +1,6 @@
 package io.github.ititus.commons.automaton.finite.nfa;
 
 import java.util.Objects;
-import java.util.PrimitiveIterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public final class Instance {
         }
 
         Instance i = this;
-        for (PrimitiveIterator.OfInt it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
+        for (var it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
             i = i.accept(it.next());
         }
 
