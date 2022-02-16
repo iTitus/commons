@@ -1,11 +1,18 @@
 module io.github.ititus.commons {
     requires transitive java.net.http;
 
+    exports io.github.ititus.commons.automaton.finite;
+    exports io.github.ititus.commons.automaton.finite.dfa;
+    exports io.github.ititus.commons.automaton.finite.nfa;
     exports io.github.ititus.commons.data;
+    exports io.github.ititus.commons.data.either;
     exports io.github.ititus.commons.data.mutable;
     exports io.github.ititus.commons.data.pair;
+    exports io.github.ititus.commons.exception;
     exports io.github.ititus.commons.function;
     exports io.github.ititus.commons.io;
+    exports io.github.ititus.commons.lexer;
+    exports io.github.ititus.commons.lexer.token;
     exports io.github.ititus.commons.math.base;
     exports io.github.ititus.commons.math.base.binary;
     exports io.github.ititus.commons.math.calculation;
@@ -13,6 +20,7 @@ module io.github.ititus.commons {
     exports io.github.ititus.commons.math.function;
     exports io.github.ititus.commons.math.function.constant;
     exports io.github.ititus.commons.math.function.exponential;
+    exports io.github.ititus.commons.math.function.hyperbolic;
     exports io.github.ititus.commons.math.function.polynomial;
     exports io.github.ititus.commons.math.function.trigonometric;
     exports io.github.ititus.commons.math.graph;
@@ -39,5 +47,4 @@ module io.github.ititus.commons {
     exports io.github.ititus.commons.si.unit.converter;
     exports io.github.ititus.commons.system;
     exports io.github.ititus.commons.text;
-    exports io.github.ititus.commons.data.either;
 }
