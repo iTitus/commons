@@ -38,7 +38,7 @@ class NFAToDFATests {
     }
 
     @Test
-    void string() {
+    void simpleString() {
         var initial = State.create("initial");
         var content = State.create("content");
         var escape = State.create("escape");

@@ -2,6 +2,7 @@ package io.github.ititus.commons.automaton.finite.nfa;
 
 import io.github.ititus.commons.automaton.finite.TargetedRule;
 import io.github.ititus.commons.automaton.finite.dfa.DFA;
+import io.github.ititus.commons.automaton.finite.rule.Rule;
 import io.github.ititus.commons.data.pair.Pair;
 
 import java.util.*;
@@ -64,41 +65,40 @@ public record NFA(State initial) {
 
         // TODO: optimize this
 
-        Set<Set<State>> markedStates = new HashSet<>();
         Set<Set<State>> unmarkedStates = new HashSet<>();
-        Map<Set<State>, io.github.ititus.commons.automaton.finite.dfa.State> state2stateMap = new HashMap<>();
+        Map<Set<State>, io.github.ititus.commons.automaton.finite.dfa.State> oldStates2newStateMap = new HashMap<>();
         Map<Pair<Set<State>, Set<State>>, Set<Integer>> transitions = new HashMap<>();
 
         Set<State> initial = this.initial.acceptEpsilon();
         unmarkedStates.add(initial);
-        var dfaInitial = state2stateMap.computeIfAbsent(initial, NFA::createDFAState);
+        var dfaInitial = oldStates2newStateMap.computeIfAbsent(initial, NFA::createDFAState);
 
         while (!unmarkedStates.isEmpty()) {
-            Set<State> dfaState = unmarkedStates.iterator().next();
-            unmarkedStates.remove(dfaState);
-            markedStates.add(dfaState);
+            Set<State> nfaStates = unmarkedStates.iterator().next();
+            unmarkedStates.remove(nfaStates);
 
-            dfaState.stream()
+            nfaStates.stream()
                     .flatMap(s -> s.rules().stream())
                     .flatMapToInt(TargetedRule::validCodepoints)
                     .distinct()
                     .forEach(cp -> {
-                        Set<State> result = dfaState.stream()
+                        Set<State> result = nfaStates.stream()
                                 .flatMap(s -> s.accept(cp).stream())
                                 .flatMap(s -> s.acceptEpsilon().stream())
                                 .collect(Collectors.toSet());
 
                         if (!result.isEmpty()) {
-                            if (!markedStates.contains(result) && unmarkedStates.add(result)) {
-                                state2stateMap.computeIfAbsent(result, NFA::createDFAState);
+                            if (!oldStates2newStateMap.containsKey(result)) {
+                                unmarkedStates.add(result);
+                                oldStates2newStateMap.put(result, createDFAState(result));
                             }
 
-                            transitions.computeIfAbsent(Pair.of(dfaState, result), k -> new HashSet<>()).add(cp);
+                            transitions.computeIfAbsent(Pair.of(nfaStates, result), k -> new HashSet<>()).add(cp);
                         }
                     });
         }
 
-        transitions.forEach((p, cps) -> state2stateMap.get(p.a()).addRule(state2stateMap.get(p.b()), cps::contains));
+        transitions.forEach((p, cps) -> oldStates2newStateMap.get(p.a()).addRule(oldStates2newStateMap.get(p.b()), cps::contains));
 
         return new DFA(dfaInitial);
     }
