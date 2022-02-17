@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public final class StringPrecondition extends ComparablePrecondition<String> {
 
-    private StringPrecondition(Predicate<String> predicate, Function<String, String> failDescription) {
+    private StringPrecondition(Predicate<? super String> predicate, Function<? super String, String> failDescription) {
         super(predicate, failDescription);
     }
 

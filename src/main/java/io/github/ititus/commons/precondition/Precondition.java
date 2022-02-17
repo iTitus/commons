@@ -6,10 +6,10 @@ import java.util.function.Predicate;
 
 public class Precondition<T> {
 
-    private final Predicate<T> predicate;
-    private final Function<T, String> failDescription;
+    private final Predicate<? super T> predicate;
+    private final Function<? super T, String> failDescription;
 
-    protected Precondition(Predicate<T> predicate, Function<T, String> failDescription) {
+    protected Precondition(Predicate<? super T> predicate, Function<? super T, String> failDescription) {
         this.predicate = predicate;
         this.failDescription = failDescription;
     }

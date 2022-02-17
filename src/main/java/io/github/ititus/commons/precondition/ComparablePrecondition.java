@@ -4,13 +4,13 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class ComparablePrecondition<T extends Comparable<T>> extends Precondition<T> {
+public class ComparablePrecondition<T extends Comparable<? super T>> extends Precondition<T> {
 
-    protected ComparablePrecondition(Predicate<T> predicate, Function<T, String> failDescription) {
+    protected ComparablePrecondition(Predicate<? super T> predicate, Function<? super T, String> failDescription) {
         super(predicate, failDescription);
     }
 
-    public static <T extends Comparable<T>> ComparablePrecondition<T> lessThan(T other) {
+    public static <T extends Comparable<? super T>> ComparablePrecondition<T> lessThan(T other) {
         Objects.requireNonNull(other);
         return new ComparablePrecondition<>(
                 value -> value != null && value.compareTo(other) < 0,
@@ -18,7 +18,7 @@ public class ComparablePrecondition<T extends Comparable<T>> extends Preconditio
         );
     }
 
-    public static <T extends Comparable<T>> ComparablePrecondition<T> lessThanOrEqualTo(T other) {
+    public static <T extends Comparable<? super T>> ComparablePrecondition<T> lessThanOrEqualTo(T other) {
         Objects.requireNonNull(other);
         return new ComparablePrecondition<>(
                 value -> value != null && value.compareTo(other) <= 0,
@@ -26,7 +26,7 @@ public class ComparablePrecondition<T extends Comparable<T>> extends Preconditio
         );
     }
 
-    public static <T extends Comparable<T>> ComparablePrecondition<T> greaterThan(T other) {
+    public static <T extends Comparable<? super T>> ComparablePrecondition<T> greaterThan(T other) {
         Objects.requireNonNull(other);
         return new ComparablePrecondition<>(
                 value -> value != null && value.compareTo(other) > 0,
@@ -34,7 +34,7 @@ public class ComparablePrecondition<T extends Comparable<T>> extends Preconditio
         );
     }
 
-    public static <T extends Comparable<T>> ComparablePrecondition<T> greaterThanOrEqualTo(T other) {
+    public static <T extends Comparable<? super T>> ComparablePrecondition<T> greaterThanOrEqualTo(T other) {
         Objects.requireNonNull(other);
         return new ComparablePrecondition<>(
                 value -> value != null && value.compareTo(other) >= 0,
@@ -42,7 +42,7 @@ public class ComparablePrecondition<T extends Comparable<T>> extends Preconditio
         );
     }
 
-    public static <T extends Comparable<T>> ComparablePrecondition<T> inBounds(T lower, T upper) {
+    public static <T extends Comparable<? super T>> ComparablePrecondition<T> inBounds(T lower, T upper) {
         Objects.requireNonNull(lower);
         Objects.requireNonNull(upper);
         return new ComparablePrecondition<>(
@@ -51,7 +51,7 @@ public class ComparablePrecondition<T extends Comparable<T>> extends Preconditio
         );
     }
 
-    public static <T extends Comparable<T>> ComparablePrecondition<T> inBoundsInclusive(T lower, T upper) {
+    public static <T extends Comparable<? super T>> ComparablePrecondition<T> inBoundsInclusive(T lower, T upper) {
         Objects.requireNonNull(lower);
         Objects.requireNonNull(upper);
         return new ComparablePrecondition<>(
