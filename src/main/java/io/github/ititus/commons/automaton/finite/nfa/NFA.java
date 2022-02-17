@@ -2,7 +2,6 @@ package io.github.ititus.commons.automaton.finite.nfa;
 
 import io.github.ititus.commons.automaton.finite.TargetedRule;
 import io.github.ititus.commons.automaton.finite.dfa.DFA;
-import io.github.ititus.commons.automaton.finite.rule.Rule;
 import io.github.ititus.commons.data.pair.Pair;
 
 import java.util.*;

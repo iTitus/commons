@@ -12,7 +12,7 @@ public final class Rules {
     public static final Rule DEC_DIGIT_WITHOUT_ZERO = Rule.range('1', '9');
     public static final Rule HEX_DIGIT = Rule.or(Rule.range('0', '9'), Rule.range('a', 'f'), Rule.range('A', 'F'));
     public static final Rule HEX_DIGIT_WITHOUT_ZERO = Rule.or(Rule.range('1', '9'), Rule.range('a', 'f'), Rule.range('A', 'F'));
+
     private Rules() {
     }
-
 }

@@ -13,7 +13,7 @@ public abstract class DFATokenType<T> implements TokenType<T> {
 
     public DFATokenType(String name, DFA dfa) {
         this.name = name;
-        this.dfa = dfa.minimize();
+        this.dfa = dfa/*.minimize()*/; // TODO: enable minimization once properly optimized
     }
 
     @Override
