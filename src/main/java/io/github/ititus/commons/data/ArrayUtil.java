@@ -130,4 +130,35 @@ public final class ArrayUtil {
 
         return Arrays.deepToString((Object[]) arr);
     }
+
+    public static int interpolationSearch(int[] arr, int key) {
+        return interpolationSearch(arr, 0, arr.length, key);
+    }
+
+    public static int interpolationSearch(int[] arr, int fromIndex, int toIndex, int key) {
+        if (fromIndex < 0 || toIndex > arr.length || fromIndex > toIndex) {
+            throw new IllegalArgumentException();
+        }
+
+        int low = fromIndex;
+        int high = toIndex - 1;
+
+        while (arr[high] != arr[low] && key >= arr[low] && key <= arr[high]) {
+            int mid = low + ((key - arr[low]) * (high - low) / (arr[high] - arr[low]));
+
+            if (arr[mid] < key) {
+                low = mid + 1;
+            } else if (key < arr[mid]) {
+                high = mid - 1;
+            } else {
+                return mid;
+            }
+        }
+
+        if (key == arr[low]) {
+            return low;
+        } else {
+            return -(low + 1);
+        }
+    }
 }

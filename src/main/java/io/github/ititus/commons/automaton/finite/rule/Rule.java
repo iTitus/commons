@@ -45,7 +45,17 @@ public sealed interface Rule permits All, CachedRule, None, Or, Range, Single {
             return none();
         }
 
-        return or(codepoints.mapToObj(Rule::codepoint));
+        return RuleHelper.simplify(
+                codepoints
+                        .peek(cp -> {
+                            if (cp < MIN_CODE_POINT || cp > MAX_CODE_POINT) {
+                                throw new IllegalArgumentException("codepoint out of bounds");
+                            }
+                        })
+                        .sorted()
+                        .distinct()
+                        .toArray()
+        );
     }
 
     static Rule range(int start, int end) {
