@@ -89,18 +89,15 @@ public final class BigRational extends Number implements Comparable<BigRational>
                             ObjectUtil.toString(o) + " cannot be converted to BigRational", e);
                 }
             }
-        } else if (o instanceof AtomicIntegerArray) {
-            AtomicIntegerArray arr = (AtomicIntegerArray) o;
+        } else if (o instanceof AtomicIntegerArray arr) {
             if (arr.length() == 1) {
                 return of(arr.get(0));
             }
-        } else if (o instanceof AtomicLongArray) {
-            AtomicLongArray arr = (AtomicLongArray) o;
+        } else if (o instanceof AtomicLongArray arr) {
             if (arr.length() == 1) {
                 return of(arr.get(0));
             }
-        } else if (o instanceof AtomicReferenceArray) {
-            AtomicReferenceArray<?> arr = (AtomicReferenceArray<?>) o;
+        } else if (o instanceof AtomicReferenceArray<?> arr) {
             if (arr.length() == 1) {
                 try {
                     return of(arr.get(0));
@@ -1200,10 +1197,10 @@ public final class BigRational extends Number implements Comparable<BigRational>
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        } else if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         BigRational that = (BigRational) o;
         return numerator.equals(that.numerator) && denominator.equals(that.denominator);
     }
@@ -1215,7 +1212,6 @@ public final class BigRational extends Number implements Comparable<BigRational>
 
     @Override
     public String toString() {
-        return isBigInteger() ? toBigInteger().toString() :
-                numerator + "/" + denominator + " (" + toBigDecimal() + ")";
+        return numerator + "/" + denominator;
     }
 }
