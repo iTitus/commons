@@ -72,6 +72,11 @@ public final class RationalStatistics {
         return averagingMode.average(numbers);
     }
 
+    public long count() {
+        return numbers.size();
+    }
+
+
     public BigRational min() {
         return Collections.min(numbers);
     }

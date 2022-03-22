@@ -72,6 +72,10 @@ public final class ComplexStatistics {
         return averagingMode.average(numbers);
     }
 
+    public long count() {
+        return numbers.size();
+    }
+
     public ComplexStatistics add(BigComplex z) {
         numbers.add(z);
         return this;

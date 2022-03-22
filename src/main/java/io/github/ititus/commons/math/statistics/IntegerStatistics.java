@@ -73,6 +73,11 @@ public final class IntegerStatistics {
         return averagingMode.average(numbers);
     }
 
+    public long count() {
+        return numbers.size();
+    }
+
+
     public BigInteger min() {
         return Collections.min(numbers);
     }

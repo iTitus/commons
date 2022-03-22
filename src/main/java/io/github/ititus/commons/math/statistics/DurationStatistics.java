@@ -33,6 +33,10 @@ public final class DurationStatistics {
         return averagingMode.average(durations);
     }
 
+    public long count() {
+        return durations.size();
+    }
+
     public Duration min() {
         return Collections.min(durations);
     }
