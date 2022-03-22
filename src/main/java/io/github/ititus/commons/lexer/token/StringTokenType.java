@@ -16,23 +16,43 @@ public class StringTokenType<T> implements TokenType<T> {
         this.result = result;
     }
 
+    @SuppressWarnings("Duplicates")
     static MatchResult matches(CharSequence token, CharSequence str) {
-        int[] tokenCodepoints = token.codePoints().toArray();
-        int[] strCodepoints = str.codePoints().toArray();
+        int len1 = token.length();
+        int len2 = str.length();
+        int i = 0;
+        int j = 0;
+        while (i < len1 && j < len2) {
+            char ch1 = token.charAt(i++);
+            int cp1 = ch1;
+            if (Character.isHighSurrogate(ch1) && i < len1) {
+                char next = token.charAt(i);
+                if (Character.isLowSurrogate(next)) {
+                    i++;
+                    cp1 = Character.toCodePoint(ch1, next);
+                }
+            }
 
-        int tokenLength = tokenCodepoints.length;
-        int strLength = strCodepoints.length;
-        if (strLength > tokenLength) {
-            return NO_MATCH;
-        }
+            char ch2 = str.charAt(j++);
+            int cp2 = ch2;
+            if (Character.isHighSurrogate(ch2) && j < len2) {
+                char next = str.charAt(j);
+                if (Character.isLowSurrogate(next)) {
+                    j++;
+                    cp2 = Character.toCodePoint(ch1, next);
+                }
+            }
 
-        for (int i = 0; i < strLength; i++) {
-            if (tokenCodepoints[i] != strCodepoints[i]) {
+            if (cp1 != cp2) {
                 return NO_MATCH;
             }
         }
 
-        return strLength == tokenLength ? FULL_MATCH : PREFIX_ONLY_MATCH;
+        if (i == len1 && j == len2) {
+            return FULL_MATCH;
+        }
+
+        return j < len2 ? NO_MATCH : PREFIX_ONLY_MATCH;
     }
 
     @Override
