@@ -33,7 +33,7 @@ public final class DurationStatistics {
         return averagingMode.average(durations);
     }
 
-    public long count() {
+    public int count() {
         return durations.size();
     }
 

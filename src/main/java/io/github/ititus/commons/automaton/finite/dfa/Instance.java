@@ -26,8 +26,20 @@ public final class Instance {
         }
 
         Instance i = this;
-        for (var it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
-            i = i.accept(it.next());
+        int len = input.length();
+        int idx = 0;
+        while (idx < len && i.isValid()) {
+            char ch = input.charAt(idx++);
+            int cp = ch;
+            if (Character.isHighSurrogate(ch) && idx < len) {
+                char next = input.charAt(idx);
+                if (Character.isLowSurrogate(next)) {
+                    idx++;
+                    cp = Character.toCodePoint(ch, next);
+                }
+            }
+
+            i = i.accept(cp);
         }
 
         return i;
@@ -38,7 +50,8 @@ public final class Instance {
             throw new IllegalStateException();
         }
 
-        return current.accept(codepoint).map(Instance::new).orElseGet(Instance::invalid);
+        var target = current.nullableAccept(codepoint);
+        return target != null ? new Instance(target) : INVALID;
     }
 
     public State current() {

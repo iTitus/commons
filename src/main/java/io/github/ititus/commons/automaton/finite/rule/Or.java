@@ -19,7 +19,7 @@ final class Or implements Rule {
 
     @Override
     public String describe() {
-        return "[ " + rules().stream()
+        return "[ " + rules.stream()
                 .map(Rule::describe)
                 .collect(Collectors.joining(" "))
                 + " ]";
@@ -27,8 +27,13 @@ final class Or implements Rule {
 
     @Override
     public boolean accepts(int codepoint) {
-        return rules().stream()
-                .anyMatch(r -> r.accepts(codepoint));
+        for (Rule r : rules) {
+            if (r.accepts(codepoint)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

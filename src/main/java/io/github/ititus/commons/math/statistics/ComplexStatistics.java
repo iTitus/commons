@@ -72,7 +72,7 @@ public final class ComplexStatistics {
         return averagingMode.average(numbers);
     }
 
-    public long count() {
+    public int count() {
         return numbers.size();
     }
 

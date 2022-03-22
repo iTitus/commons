@@ -37,7 +37,7 @@ public final class Instance {
 
         Instance i = this;
         for (var it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
-            i = i.accept(it.next());
+            i = i.accept(it.nextInt());
         }
 
         return i;
