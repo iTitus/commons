@@ -93,14 +93,21 @@ public final class State implements BaseState<State> {
     }
 
     public Optional<State> accept(int codepoint) {
+        return Optional.ofNullable(nullableAccept(codepoint));
+    }
+
+    public State nullableAccept(int codepoint) {
         if (codepoint < Rule.MIN_CODE_POINT || codepoint > Rule.MAX_CODE_POINT) {
             throw new IllegalArgumentException("codepoint out of bounds");
         }
 
-        return rules.values().stream()
-                .filter(r -> r.accepts(codepoint))
-                .map(TargetedRule::target)
-                .findFirst();
+        for (TargetedRule<State> r : rules.values()) {
+            if (r.accepts(codepoint)) {
+                return r.target();
+            }
+        }
+
+        return null;
     }
 
     @Override
