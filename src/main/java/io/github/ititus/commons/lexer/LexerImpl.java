@@ -82,7 +82,7 @@ final class LexerImpl implements Lexer {
                 if (empty) {
                     empty = false;
                     if (hasLineTokenType) {
-                        return new Token<>(LineTokenType.INSTANCE, line);
+                        return Token.create(LineTokenType.INSTANCE, line);
                     }
                 }
 
@@ -169,11 +169,11 @@ final class LexerImpl implements Lexer {
         if (currentTokenCandidate != null) {
             if (currentTokenCandidate instanceof LineTokenType) {
                 line++;
-                token = new Token<>((TokenType<? super Integer>) currentTokenCandidate, line);
+                token = Token.create((TokenType<? super Integer>) currentTokenCandidate, line);
             } else {
                 String tokenText = buffer.subSequence(0, currentTokenEnd).toString();
                 line += (int) tokenText.chars().filter(c -> c == '\n').count();
-                token = new Token<>((TokenType<? super Object>) currentTokenCandidate, currentTokenCandidate.convert(tokenText));
+                token = Token.createRaw((TokenType<? super Object>) currentTokenCandidate, tokenText);
             }
         } else {
             token = null;
