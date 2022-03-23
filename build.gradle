@@ -2,6 +2,7 @@ import java.time.Duration
 
 plugins {
     id 'java-library'
+    id 'me.champeau.jmh' version '0.6.6'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
@@ -23,6 +24,14 @@ java {
     withJavadocJar()
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
 javadoc {
     options {
         addStringOption('Xdoclint:all,-missing', '-quiet')
@@ -42,6 +51,17 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jmh {
+    jmhVersion = '1.34'
+    warmupIterations = 2
+    iterations = 5
+    fork = 1
+}
+
+tasks.withType(me.champeau.jmh.JmhParameters) {
+    jvmArgsAppend = ['-Dfile.encoding=UTF-8']
 }
 
 publishing {
