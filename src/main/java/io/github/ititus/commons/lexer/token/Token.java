@@ -47,7 +47,7 @@ public final class Token<T> {
         }
 
         Token<?> token1 = (Token<?>) o;
-        return type.equals(token1.type) && token().equals(token1.token());
+        return type.equals(token1.type) && Objects.equals(token(), token1.token());
     }
 
     @Override
