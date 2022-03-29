@@ -3,6 +3,7 @@ package io.github.ititus.commons.lexer;
 import io.github.ititus.commons.lexer.token.LineTokenType;
 import io.github.ititus.commons.lexer.token.Token;
 import io.github.ititus.commons.lexer.token.TokenType;
+import io.github.ititus.commons.math.time.StopWatch;
 import io.github.ititus.commons.text.SubCharSequence;
 
 import java.io.IOException;
@@ -105,6 +106,7 @@ final class LexerImpl implements Lexer {
                 continue;
             }
 
+            // TODO: use some king of stateful matcher, so we don't have to recalculate the match with the whole string
             TokenType<?> tokenType = tokenTypes.get(i);
             MatchResult result = tokenType.matches(buffer);
             if (result == MatchResult.NO_MATCH) {

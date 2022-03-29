@@ -11,7 +11,7 @@ public final class Token<T> {
     private Token(TokenType<T> type, String raw, T token) {
         this.type = type;
         this.raw = raw;
-        this.token = null;
+        this.token = token;
     }
 
     public static <T> Token<T> createRaw(TokenType<T> type, String raw) {
@@ -47,7 +47,7 @@ public final class Token<T> {
         }
 
         Token<?> token1 = (Token<?>) o;
-        return type.equals(token1.type) && token.equals(token1.token);
+        return type.equals(token1.type) && token().equals(token1.token());
     }
 
     @Override
