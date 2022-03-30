@@ -27,7 +27,8 @@ abstract sealed class CachedRule implements Rule permits Not {
     }
 
     protected IntStream _validCodepoints() {
-        return IntStream.rangeClosed(Rule.MIN_VALUE, Rule.MAX_VALUE).filter(this::accepts);
+        return IntStream.rangeClosed(Rule.MIN_VALUE, Rule.MAX_VALUE)
+                .filter(c -> accepts((char) c));
     }
 
     @Override

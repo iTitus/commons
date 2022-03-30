@@ -35,22 +35,15 @@ public final class TextUtil {
     }
 
     public static String toStringAsEscape(int codepoint) {
-        switch (codepoint) {
-            case '\b':
-                return "\\b";
-            case ' ':
-                return "\\s";
-            case '\t':
-                return "\\t";
-            case '\n':
-                return "\\n";
-            case '\f':
-                return "\\f";
-            case '\r':
-                return "\\r";
-            default:
-                return Character.toString(codepoint);
-        }
+        return switch (codepoint) {
+            case '\b' -> "\\b";
+            case ' ' -> "\\s";
+            case '\t' -> "\\t";
+            case '\n' -> "\\n";
+            case '\f' -> "\\f";
+            case '\r' -> "\\r";
+            default -> Character.toString(codepoint);
+        };
     }
 
     public static String quote(String s) {

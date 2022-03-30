@@ -3,7 +3,6 @@ package io.github.ititus.commons.lexer;
 import io.github.ititus.commons.lexer.token.LineTokenType;
 import io.github.ititus.commons.lexer.token.Token;
 import io.github.ititus.commons.lexer.token.TokenType;
-import io.github.ititus.commons.math.time.StopWatch;
 import io.github.ititus.commons.text.SubCharSequence;
 
 import java.io.IOException;

@@ -126,14 +126,6 @@ public sealed interface Rule permits All, CachedRule, None, Or, Range, Single {
 
     String describe();
 
-    default boolean accepts(int codepoint) {
-        if (codepoint < MIN_VALUE || codepoint > MAX_VALUE) {
-            throw new IllegalArgumentException();
-        }
-
-        return accepts((char) codepoint);
-    }
-
     boolean accepts(char c);
 
     default Rule merge(Rule other) {
