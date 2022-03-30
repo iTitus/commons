@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'io.github.ititus'
-version = '2.2.3'
+version = '2.3.0'
 
 wrapper {
     gradleVersion '7.4.1'
