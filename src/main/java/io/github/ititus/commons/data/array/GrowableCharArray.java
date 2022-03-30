@@ -30,6 +30,10 @@ public final class GrowableCharArray implements Appendable {
 
     @Override
     public GrowableCharArray append(CharSequence csq) {
+        if (csq == null) {
+            csq = "null";
+        }
+
         return append(csq, 0, csq.length());
     }
 
