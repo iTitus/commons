@@ -21,8 +21,8 @@ public record DFA(State initial) {
         return newInstance().accept(input);
     }
 
-    public Instance run(int codepoint) {
-        return newInstance().accept(codepoint);
+    public Instance run(char c) {
+        return newInstance().accept(c);
     }
 
     public Set<State> states() {
@@ -71,14 +71,14 @@ public record DFA(State initial) {
                     for (Set<State> existingGroup : newGroups) {
                         State existingGroupRepresentative = existingGroup.stream().findAny().orElseThrow();
                         var validCodepointsIterator = Stream.concat(state.rules().stream(), existingGroupRepresentative.rules().stream())
-                                .flatMapToInt(TargetedRule::validCodepoints)
+                                .flatMapToInt(TargetedRule::validChars)
                                 .distinct()
                                 .iterator();
                         while (validCodepointsIterator.hasNext()) {
-                            int cp = validCodepointsIterator.nextInt();
+                            char c = (char) validCodepointsIterator.nextInt();
                             Set<Set<State>> finalPartition = partition;
-                            Optional<Set<State>> targetGroup1 = state.accept(cp).map(s -> finalPartition.stream().filter(g -> g.contains(s)).findAny().orElseThrow());
-                            Optional<Set<State>> targetGroup2 = existingGroupRepresentative.accept(cp).map(s -> finalPartition.stream().filter(g -> g.contains(s)).findAny().orElseThrow());
+                            Optional<Set<State>> targetGroup1 = state.accept(c).map(s -> finalPartition.stream().filter(g -> g.contains(s)).findAny().orElseThrow());
+                            Optional<Set<State>> targetGroup2 = existingGroupRepresentative.accept(c).map(s -> finalPartition.stream().filter(g -> g.contains(s)).findAny().orElseThrow());
                             if (!targetGroup1.equals(targetGroup2)) {
                                 continue outer;
                             }

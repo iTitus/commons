@@ -45,11 +45,7 @@ final class LexerImpl implements Lexer {
     public Token<?> nextToken() throws IOException {
         outer:
         while (true) {
-            for (int length = 1; length <= buffer.length(); length++) {
-                if (buffer.codePointAt(length - 1) != buffer.charAt(length - 1)) {
-                    length++;
-                }
-
+            for (int length = 1, bufferLength = buffer.length(); length <= bufferLength; length++) {
                 CharSequence bufferView = SubCharSequence.of(buffer, 0, length);
                 if (checkTokens(bufferView)) {
                     Token<?> next = endCurrentToken(bufferView);
@@ -62,8 +58,8 @@ final class LexerImpl implements Lexer {
             }
 
             while (true) {
-                int c = nextCodepoint();
-                if (c < 0) {
+                int cOrEof = nextChar();
+                if (cOrEof < 0) {
                     if (buffer.isEmpty()) {
                         return null;
                     } else if (currentTokenCandidate == null || validTokens.cardinality() == 0) {
@@ -78,7 +74,8 @@ final class LexerImpl implements Lexer {
                     return next;
                 }
 
-                buffer.appendCodePoint(c);
+                char c = (char) cOrEof;
+                buffer.append(c);
 
                 if (empty) {
                     empty = false;
@@ -129,7 +126,7 @@ final class LexerImpl implements Lexer {
         return false;
     }
 
-    private int nextCodepoint() throws IOException {
+    private int nextChar() throws IOException {
         int c = reader.read();
         if (c < 0) {
             return -1;
@@ -150,16 +147,6 @@ final class LexerImpl implements Lexer {
                     return '\n';
                 }
             }
-        }
-
-        if (Character.isHighSurrogate((char) c)) {
-            int next = reader.read();
-            if (next < 0 || !Character.isLowSurrogate((char) next)) {
-                reader.unread(next);
-                return c;
-            }
-
-            c = Character.toCodePoint((char) c, (char) next);
         }
 
         return c;

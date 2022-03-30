@@ -16,17 +16,17 @@ final class All implements Rule {
     }
 
     @Override
-    public boolean accepts(int codepoint) {
+    public boolean accepts(char c) {
         return true;
     }
 
     @Override
-    public IntStream validCodepoints() {
-        return IntStream.rangeClosed(Rule.MIN_CODE_POINT, Rule.MAX_CODE_POINT);
+    public IntStream validChars() {
+        return IntStream.rangeClosed(Rule.MIN_VALUE, Rule.MAX_VALUE);
     }
 
     @Override
-    public int validCodepointCount() {
-        return Rule.CODE_POINT_COUNT;
+    public int validCharCount() {
+        return Rule.CHAR_COUNT;
     }
 }

@@ -31,8 +31,8 @@ public record NFA(State initial) {
         return newInstance().accept(input);
     }
 
-    public Instance run(int codepoint) {
-        return newInstance().accept(codepoint);
+    public Instance run(char c) {
+        return newInstance().accept(c);
     }
 
     public Set<State> states() {
@@ -66,7 +66,7 @@ public record NFA(State initial) {
 
         Set<Set<State>> unmarkedStates = new HashSet<>();
         Map<Set<State>, io.github.ititus.commons.automaton.finite.dfa.State> oldStates2newStateMap = new HashMap<>();
-        Map<Pair<Set<State>, Set<State>>, Set<Integer>> transitions = new HashMap<>();
+        Map<Pair<Set<State>, Set<State>>, Set<Character>> transitions = new HashMap<>();
 
         Set<State> initial = this.initial.acceptEpsilon();
         unmarkedStates.add(initial);
@@ -78,11 +78,11 @@ public record NFA(State initial) {
 
             nfaStates.stream()
                     .flatMap(s -> s.rules().stream())
-                    .flatMapToInt(TargetedRule::validCodepoints)
+                    .flatMapToInt(TargetedRule::validChars)
                     .distinct()
-                    .forEach(cp -> {
+                    .forEach(c -> {
                         Set<State> result = nfaStates.stream()
-                                .flatMap(s -> s.accept(cp).stream())
+                                .flatMap(s -> s.accept((char) c).stream())
                                 .flatMap(s -> s.acceptEpsilon().stream())
                                 .collect(Collectors.toSet());
 
@@ -92,12 +92,12 @@ public record NFA(State initial) {
                                 oldStates2newStateMap.put(result, createDFAState(result));
                             }
 
-                            transitions.computeIfAbsent(Pair.of(nfaStates, result), k -> new HashSet<>()).add(cp);
+                            transitions.computeIfAbsent(Pair.of(nfaStates, result), k -> new HashSet<>()).add((char) c);
                         }
                     });
         }
 
-        transitions.forEach((p, cps) -> oldStates2newStateMap.get(p.a()).addRule(oldStates2newStateMap.get(p.b()), cps::contains));
+        transitions.forEach((p, cs) -> oldStates2newStateMap.get(p.a()).addRule(oldStates2newStateMap.get(p.b()), cs::contains));
 
         return new DFA(dfaInitial);
     }

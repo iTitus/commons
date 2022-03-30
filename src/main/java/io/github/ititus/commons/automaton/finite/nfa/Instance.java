@@ -36,8 +36,8 @@ public final class Instance {
         }
 
         Instance i = this;
-        for (var it = input.codePoints().iterator(); i.isValid() && it.hasNext(); ) {
-            i = i.accept(it.nextInt());
+        for (int idx = 0, len = input.length(); idx < len && i.isValid(); idx++) {
+            i = i.accept(input.charAt(idx));
         }
 
         return i;
@@ -51,14 +51,14 @@ public final class Instance {
         return this;
     }
 
-    public Instance accept(int codepoint) {
+    public Instance accept(char c) {
         if (isInvalid()) {
             throw new IllegalStateException();
         }
 
         return create(
                 current.stream()
-                        .flatMap(s -> s.accept(codepoint).stream())
+                        .flatMap(s -> s.accept(c).stream())
                         .collect(Collectors.toUnmodifiableSet())
         );
     }

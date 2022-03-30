@@ -30,12 +30,12 @@ final class Not extends CachedRule {
     }
 
     @Override
-    public boolean accepts(int codepoint) {
-        return !rule.accepts(codepoint);
+    public boolean accepts(char c) {
+        return !rule.accepts(c);
     }
 
     @Override
-    public int validCodepointCount() {
-        return Rule.CODE_POINT_COUNT - rule.validCodepointCount();
+    public int validCharCount() {
+        return Rule.CHAR_COUNT - rule.validCharCount();
     }
 }

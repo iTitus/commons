@@ -4,32 +4,25 @@ import io.github.ititus.commons.automaton.finite.DotUtil;
 
 import java.util.stream.IntStream;
 
-final class Single implements Rule {
-
-    private final int codepoint;
-
-    Single(int codepoint) {
-        super();
-        this.codepoint = codepoint;
-    }
+record Single(char character) implements Rule {
 
     @Override
     public String describe() {
-        return DotUtil.toStringAsEscape(codepoint);
+        return DotUtil.toStringAsEscape(character);
     }
 
     @Override
-    public boolean accepts(int codepoint) {
-        return codepoint == this.codepoint;
+    public boolean accepts(char c) {
+        return c == this.character;
     }
 
     @Override
-    public IntStream validCodepoints() {
-        return IntStream.of(codepoint);
+    public IntStream validChars() {
+        return IntStream.of(character);
     }
 
     @Override
-    public int validCodepointCount() {
+    public int validCharCount() {
         return 1;
     }
 }

@@ -26,31 +26,19 @@ public final class Instance {
         }
 
         Instance i = this;
-        int len = input.length();
-        int idx = 0;
-        while (idx < len && i.isValid()) {
-            char ch = input.charAt(idx++);
-            int cp = ch;
-            if (Character.isHighSurrogate(ch) && idx < len) {
-                char next = input.charAt(idx);
-                if (Character.isLowSurrogate(next)) {
-                    idx++;
-                    cp = Character.toCodePoint(ch, next);
-                }
-            }
-
-            i = i.accept(cp);
+        for (int idx = 0, len = input.length(); idx < len && i.isValid(); idx++) {
+            i = i.accept(input.charAt(idx));
         }
 
         return i;
     }
 
-    public Instance accept(int codepoint) {
+    public Instance accept(char c) {
         if (isInvalid()) {
             throw new IllegalStateException();
         }
 
-        var target = current.nullableAccept(codepoint);
+        var target = current.nullableAccept(c);
         return target != null ? new Instance(target) : INVALID;
     }
 

@@ -23,27 +23,7 @@ public class StringTokenType<T> implements TokenType<T> {
         int i = 0;
         int j = 0;
         while (i < len1 && j < len2) {
-            char ch1 = token.charAt(i++);
-            int cp1 = ch1;
-            if (Character.isHighSurrogate(ch1) && i < len1) {
-                char next = token.charAt(i);
-                if (Character.isLowSurrogate(next)) {
-                    i++;
-                    cp1 = Character.toCodePoint(ch1, next);
-                }
-            }
-
-            char ch2 = str.charAt(j++);
-            int cp2 = ch2;
-            if (Character.isHighSurrogate(ch2) && j < len2) {
-                char next = str.charAt(j);
-                if (Character.isLowSurrogate(next)) {
-                    j++;
-                    cp2 = Character.toCodePoint(ch1, next);
-                }
-            }
-
-            if (cp1 != cp2) {
+            if (token.charAt(i++) != str.charAt(j++)) {
                 return NO_MATCH;
             }
         }

@@ -1,35 +1,37 @@
 package io.github.ititus.commons.automaton.finite.rule;
 
-import java.util.Arrays;
+import io.github.ititus.commons.data.ArrayUtil;
+import io.github.ititus.commons.data.StreamUtil;
+
 import java.util.stream.IntStream;
 
 abstract sealed class CachedRule implements Rule permits Not {
 
-    protected int[] validCodepointCache;
+    protected char[] validCharCache;
 
     protected CachedRule() {
-        this.validCodepointCache = null;
+        this.validCharCache = null;
     }
 
-    protected int[] populateCache() {
-        if (validCodepointCache == null) {
-            validCodepointCache = _validCodepoints().sorted().distinct().toArray();
+    protected char[] populateCache() {
+        if (validCharCache == null) {
+            validCharCache = StreamUtil.toCharArray(_validCodepoints().sorted().distinct());
         }
 
-        return validCodepointCache;
+        return validCharCache;
     }
 
     @Override
-    public IntStream validCodepoints() {
-        return Arrays.stream(populateCache());
+    public IntStream validChars() {
+        return ArrayUtil.stream(populateCache());
     }
 
     protected IntStream _validCodepoints() {
-        return IntStream.rangeClosed(Rule.MIN_CODE_POINT, Rule.MAX_CODE_POINT).filter(this::accepts);
+        return IntStream.rangeClosed(Rule.MIN_VALUE, Rule.MAX_VALUE).filter(this::accepts);
     }
 
     @Override
-    public int validCodepointCount() {
+    public int validCharCount() {
         return populateCache().length;
     }
 }

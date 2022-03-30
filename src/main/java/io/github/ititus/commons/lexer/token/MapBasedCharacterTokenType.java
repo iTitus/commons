@@ -1,5 +1,7 @@
 package io.github.ititus.commons.lexer.token;
 
+import io.github.ititus.commons.data.StreamUtil;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
@@ -7,10 +9,10 @@ import java.util.stream.Collectors;
 
 public class MapBasedCharacterTokenType<T> extends MultiCharTokenType<T> {
 
-    private final Map<Integer, T> conversions;
+    private final Map<Character, T> conversions;
 
-    private MapBasedCharacterTokenType(String name, Map<Integer, T> conversions) {
-        super(name, conversions.keySet().stream().mapToInt(Integer::intValue).toArray());
+    private MapBasedCharacterTokenType(String name, Map<Character, T> conversions) {
+        super(name, StreamUtil.toCharArray(conversions.keySet().stream().mapToInt(Character::charValue)));
         this.conversions = conversions;
     }
 
@@ -22,11 +24,11 @@ public class MapBasedCharacterTokenType<T> extends MultiCharTokenType<T> {
         return new MapBasedCharacterTokenType<>(
                 name,
                 Arrays.stream(enumClass.getEnumConstants())
-                        .collect(Collectors.toUnmodifiableMap(CharacterToken::codepoint, Function.identity()))
+                        .collect(Collectors.toUnmodifiableMap(CharacterToken::character, Function.identity()))
         );
     }
 
-    public static <T> MapBasedCharacterTokenType<T> of(String name, Map<Integer, T> tokens) {
+    public static <T> MapBasedCharacterTokenType<T> of(String name, Map<Character, T> tokens) {
         return new MapBasedCharacterTokenType<>(
                 name,
                 Map.copyOf(tokens)
@@ -35,13 +37,13 @@ public class MapBasedCharacterTokenType<T> extends MultiCharTokenType<T> {
 
     @Override
     public T convert(String token) {
-        return conversions.get(token.codePointAt(0));
+        return conversions.get(token.charAt(0));
     }
 
     @FunctionalInterface
     public interface CharacterToken {
 
-        int codepoint();
+        char character();
 
     }
 }

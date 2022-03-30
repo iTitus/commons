@@ -1,8 +1,9 @@
 package io.github.ititus.commons.automaton.finite.rule;
 
+import io.github.ititus.commons.function.CharPredicate;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.IntPredicate;
 
 import static io.github.ititus.commons.automaton.finite.rule.Rule.*;
 
@@ -10,22 +11,26 @@ final class RuleHelper {
 
     private RuleHelper() {}
 
-    static Rule simplify(IntPredicate acceptor) {
+    static Rule simplify(CharPredicate acceptor) {
         List<Rule> rules = new ArrayList<>();
         List<Rule> notRules = new ArrayList<>();
 
-        int lastStart = Rule.MIN_CODE_POINT;
+        char lastStart = MIN_VALUE;
         boolean lastAccept = acceptor.test(lastStart);
-        for (int cp = Rule.MIN_CODE_POINT + 1; cp <= Rule.MAX_CODE_POINT; cp++) {
-            boolean accept = acceptor.test(cp);
+        for (char c = MIN_VALUE + 1; ; c++) {
+            boolean accept = acceptor.test(c);
             if (accept != lastAccept) {
-                (lastAccept ? rules : notRules).add(Rule.range(lastStart, cp - 1));
-                lastStart = cp;
+                (lastAccept ? rules : notRules).add(range(lastStart, (char) (c - 1)));
+                lastStart = c;
                 lastAccept = accept;
+            }
+
+            if (c == MAX_VALUE) {
+                break;
             }
         }
 
-        (lastAccept ? rules : notRules).add(Rule.range(lastStart, Rule.MAX_CODE_POINT));
+        (lastAccept ? rules : notRules).add(range(lastStart, MAX_VALUE));
 
         if (rules.size() <= notRules.size()) {
             if (rules.isEmpty()) {
@@ -47,34 +52,34 @@ final class RuleHelper {
     }
 
     /**
-     * codepoints must be sorted and distinct.
+     * characters must be sorted and distinct.
      */
-    static Rule simplify(int[] codepoints) {
-        if (codepoints.length == 0) {
+    static Rule simplify(char[] characters) {
+        if (characters.length == 0) {
             return none();
-        } else if (codepoints.length == 1) {
-            return new Single(codepoints[0]);
+        } else if (characters.length == 1) {
+            return new Single(characters[0]);
         }
 
-        boolean not = codepoints.length > (Rule.CODE_POINT_COUNT / 2);
+        boolean not = characters.length > (CHAR_COUNT / 2);
         List<Rule> rules = new ArrayList<>();
         if (not) {
-            if (codepoints[0] > MIN_CODE_POINT) {
-                rules.add(range(MIN_CODE_POINT, codepoints[0] - 1));
+            if (characters[0] > MIN_VALUE) {
+                rules.add(range(MIN_VALUE, (char) (characters[0] - 1)));
             }
 
-            for (int start = 0, len = codepoints.length - 1; start < len; start++) {
-                while (start < len && codepoints[start] == codepoints[start + 1] - 1) {
+            for (int start = 0, len = characters.length - 1; start < len; start++) {
+                while (start < len && characters[start] == characters[start + 1] - 1) {
                     start++;
                 }
 
                 if (start < len) {
-                    rules.add(range(codepoints[start] + 1, codepoints[start + 1] - 1));
+                    rules.add(range((char) (characters[start] + 1), (char) (characters[start + 1] - 1)));
                 }
             }
 
-            if (codepoints[codepoints.length - 1] < MAX_CODE_POINT) {
-                rules.add(range(codepoints[codepoints.length - 1] + 1, MAX_CODE_POINT));
+            if (characters[characters.length - 1] < MAX_VALUE) {
+                rules.add(range((char) (characters[characters.length - 1] + 1), MAX_VALUE));
             }
 
             if (rules.isEmpty()) {
@@ -85,13 +90,13 @@ final class RuleHelper {
 
             return new Not(new Or(List.copyOf(rules)));
         } else {
-            for (int start = 0, len = codepoints.length; start < len; ) {
+            for (int start = 0, len = characters.length; start < len; ) {
                 int end = start + 1;
-                while (end < len && codepoints[end] == codepoints[end - 1] + 1) {
+                while (end < len && characters[end] == characters[end - 1] + 1) {
                     end++;
                 }
 
-                rules.add(range(codepoints[start], codepoints[end - 1]));
+                rules.add(range(characters[start], characters[end - 1]));
                 start = end;
             }
 

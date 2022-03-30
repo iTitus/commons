@@ -31,11 +31,11 @@ public record TargetedRule<S extends BaseState<S>>(S target, Rule rule) {
         return rule.describe();
     }
 
-    public boolean accepts(int codepoint) {
-        return rule.accepts(codepoint);
+    public boolean accepts(char c) {
+        return rule.accepts(c);
     }
 
-    public IntStream validCodepoints() {
-        return rule.validCodepoints();
+    public IntStream validChars() {
+        return rule.validChars();
     }
 }

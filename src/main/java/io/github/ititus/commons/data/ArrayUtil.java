@@ -1,6 +1,12 @@
 package io.github.ititus.commons.data;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 public final class ArrayUtil {
 
@@ -159,6 +165,92 @@ public final class ArrayUtil {
             return low;
         } else {
             return -(low + 1);
+        }
+    }
+
+    public static IntStream stream(char[] array) {
+        return stream(array, 0, array.length);
+    }
+
+    public static IntStream stream(char[] array, int startInclusive, int endExclusive) {
+        return StreamSupport.intStream(spliterator(array, startInclusive, endExclusive), false);
+    }
+
+    public static Spliterator.OfInt spliterator(char[] array) {
+        return new CharArraySpliterator(Objects.requireNonNull(array), Spliterator.ORDERED | Spliterator.IMMUTABLE);
+    }
+
+    public static Spliterator.OfInt spliterator(char[] array, int startInclusive, int endExclusive) {
+        return new CharArraySpliterator(Objects.requireNonNull(array), startInclusive, endExclusive, Spliterator.ORDERED | Spliterator.IMMUTABLE);
+    }
+
+    private static final class CharArraySpliterator implements Spliterator.OfInt {
+
+        private final char[] array;
+        private final int fence;
+        private final int characteristics;
+        private int index;
+
+        public CharArraySpliterator(char[] array, int additionalCharacteristics) {
+            this(array, 0, array.length, additionalCharacteristics);
+        }
+
+        public CharArraySpliterator(char[] array, int origin, int fence, int additionalCharacteristics) {
+            this.array = array;
+            this.index = origin;
+            this.fence = fence;
+            this.characteristics = additionalCharacteristics | Spliterator.SIZED | Spliterator.SUBSIZED;
+        }
+
+        @Override
+        public OfInt trySplit() {
+            int lo = index, mid = (lo + fence) >>> 1;
+            return lo >= mid ? null : new CharArraySpliterator(array, lo, index = mid, characteristics);
+        }
+
+        @Override
+        public void forEachRemaining(IntConsumer action) {
+            char[] a;
+            int i, hi;
+            if (action == null) {
+                throw new NullPointerException();
+            } else if ((a = array).length >= (hi = fence) && (i = index) >= 0 && i < (index = hi)) {
+                do
+                {
+                    action.accept(a[i]);
+                } while (++i < hi);
+            }
+        }
+
+        @Override
+        public boolean tryAdvance(IntConsumer action) {
+            if (action == null) {
+                throw new NullPointerException();
+            } else if (index >= 0 && index < fence) {
+                action.accept(array[index++]);
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public long estimateSize() {
+            return fence - index;
+        }
+
+        @Override
+        public int characteristics() {
+            return characteristics;
+        }
+
+        @Override
+        public Comparator<? super Integer> getComparator() {
+            if (hasCharacteristics(Spliterator.SORTED)) {
+                return null;
+            }
+
+            throw new IllegalStateException();
         }
     }
 }

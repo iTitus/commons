@@ -1,6 +1,5 @@
 package io.github.ititus.commons.automaton.finite;
 
-
 import io.github.ititus.commons.automaton.finite.dfa.DFA;
 import io.github.ititus.commons.automaton.finite.nfa.NFA;
 
@@ -9,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+@SuppressWarnings("Duplicates")
 public final class DotUtil {
 
     private DotUtil() {
@@ -124,8 +124,8 @@ public final class DotUtil {
         return b.append('"').toString();
     }
 
-    public static String toStringAsEscape(int codepoint) {
-        return switch (codepoint) {
+    public static String toStringAsEscape(char c) {
+        return switch (c) {
             case '\b' -> "\\b";
             case ' ' -> "\\s";
             case '\t' -> "\\t";
@@ -133,7 +133,7 @@ public final class DotUtil {
             case '\f' -> "\\f";
             case '\r' -> "\\r";
             case '\u000b' -> "\\v";
-            default -> Character.toString(codepoint);
+            default -> Character.toString(c);
         };
     }
 }

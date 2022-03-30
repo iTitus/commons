@@ -5,7 +5,7 @@ import io.github.ititus.commons.automaton.finite.rule.Rule;
 public final class Rules {
 
     public static final Rule BIN_DIGIT = Rule.range('0', '1');
-    public static final Rule BIN_DIGIT_WITHOUT_ZERO = Rule.codepoint('1');
+    public static final Rule BIN_DIGIT_WITHOUT_ZERO = Rule.character('1');
     public static final Rule OCT_DIGIT = Rule.range('0', '7');
     public static final Rule OCT_DIGIT_WITHOUT_ZERO = Rule.range('1', '7');
     public static final Rule DEC_DIGIT = Rule.range('0', '9');

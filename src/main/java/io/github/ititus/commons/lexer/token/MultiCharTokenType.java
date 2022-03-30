@@ -9,11 +9,11 @@ import static io.github.ititus.commons.lexer.MatchResult.*;
 public abstract class MultiCharTokenType<T> implements TokenType<T> {
 
     private final String name;
-    private final int[] codepoints;
+    private final char[] characters;
 
-    protected MultiCharTokenType(String name, int... codepoints) {
+    protected MultiCharTokenType(String name, char... characters) {
         this.name = name;
-        this.codepoints = Arrays.copyOf(codepoints, codepoints.length);
+        this.characters = Arrays.copyOf(characters, characters.length);
     }
 
     @Override
@@ -23,20 +23,20 @@ public abstract class MultiCharTokenType<T> implements TokenType<T> {
 
     @Override
     public MatchResult matches(CharSequence str) {
-        if (str.isEmpty()) {
-            return codepoints.length == 0 ? NO_MATCH : PREFIX_ONLY_MATCH;
+        int length = str.length();
+        if (length == 0) {
+            return characters.length == 0 ? NO_MATCH : PREFIX_ONLY_MATCH;
+        } else if (length > 1) {
+            return NO_MATCH;
         }
 
-        boolean hasPrefixMatch = false;
-        for (int codepoint : codepoints) {
-            MatchResult result = CharTokenType.matches(codepoint, str);
-            if (result == FULL_MATCH) {
+        char existingChar = str.charAt(0);
+        for (char c : characters) {
+            if (existingChar == c) {
                 return FULL_MATCH;
-            } else if (result == PREFIX_ONLY_MATCH) {
-                hasPrefixMatch = true;
             }
         }
 
-        return hasPrefixMatch ? PREFIX_ONLY_MATCH : NO_MATCH;
+        return NO_MATCH;
     }
 }

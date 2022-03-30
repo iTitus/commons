@@ -4,18 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-final class Or implements Rule {
-
-    private final List<Rule> rules;
-
-    Or(List<Rule> rules) {
-        super();
-        this.rules = rules;
-    }
-
-    List<Rule> rules() {
-        return rules;
-    }
+record Or(List<Rule> rules) implements Rule {
 
     @Override
     public String describe() {
@@ -26,9 +15,9 @@ final class Or implements Rule {
     }
 
     @Override
-    public boolean accepts(int codepoint) {
+    public boolean accepts(char c) {
         for (Rule r : rules) {
-            if (r.accepts(codepoint)) {
+            if (r.accepts(c)) {
                 return true;
             }
         }
@@ -37,12 +26,12 @@ final class Or implements Rule {
     }
 
     @Override
-    public IntStream validCodepoints() {
-        return rules.stream().flatMapToInt(Rule::validCodepoints);
+    public IntStream validChars() {
+        return rules.stream().flatMapToInt(Rule::validChars);
     }
 
     @Override
-    public int validCodepointCount() {
-        return rules.stream().mapToInt(Rule::validCodepointCount).sum();
+    public int validCharCount() {
+        return rules.stream().mapToInt(Rule::validCharCount).sum();
     }
 }

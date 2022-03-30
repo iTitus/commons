@@ -3,9 +3,9 @@ package io.github.ititus.commons.automaton.finite.dfa;
 import io.github.ititus.commons.automaton.finite.BaseState;
 import io.github.ititus.commons.automaton.finite.TargetedRule;
 import io.github.ititus.commons.automaton.finite.rule.Rule;
+import io.github.ititus.commons.function.CharPredicate;
 
 import java.util.*;
-import java.util.function.IntPredicate;
 
 public final class State implements BaseState<State> {
 
@@ -27,51 +27,51 @@ public final class State implements BaseState<State> {
         return new State(true, name);
     }
 
-    public State addSelfRule(int codepoint) {
-        return addRule(this, codepoint);
+    public State addSelfRule(char c) {
+        return addRule(this, c);
     }
 
-    public State addSelfRule(int... codepoints) {
-        return addRule(this, codepoints);
+    public State addSelfRule(char... cs) {
+        return addRule(this, cs);
     }
 
-    public State addRule(State target, int codepoint) {
-        return addRule(target, Rule.codepoint(codepoint));
+    public State addRule(State target, char c) {
+        return addRule(target, Rule.character(c));
     }
 
-    public State addRule(State target, int... codepoints) {
-        return addRule(target, Rule.codepoints(codepoints));
+    public State addRule(State target, char... cs) {
+        return addRule(target, Rule.characters(cs));
     }
 
-    public State addSelfNotRule(int codepoint) {
-        return addNotRule(this, codepoint);
+    public State addSelfNotRule(char c) {
+        return addNotRule(this, c);
     }
 
-    public State addSelfNotRule(int... codepoints) {
-        return addNotRule(this, codepoints);
+    public State addSelfNotRule(char... cs) {
+        return addNotRule(this, cs);
     }
 
-    public State addNotRule(State target, int codepoint) {
-        return addRule(target, Rule.not(Rule.codepoint(codepoint)));
+    public State addNotRule(State target, char c) {
+        return addRule(target, Rule.not(Rule.character(c)));
     }
 
-    public State addNotRule(State target, int... codepoints) {
-        return addRule(target, Rule.not(Rule.codepoints(codepoints)));
+    public State addNotRule(State target, char... cs) {
+        return addRule(target, Rule.not(Rule.characters(cs)));
     }
 
-    public State addSelfRangeRule(int start, int end) {
+    public State addSelfRangeRule(char start, char end) {
         return addRangeRule(this, start, end);
     }
 
-    public State addRangeRule(State target, int start, int end) {
+    public State addRangeRule(State target, char start, char end) {
         return addRule(target, Rule.range(start, end));
     }
 
-    public State addSelfRule(IntPredicate predicate) {
+    public State addSelfRule(CharPredicate predicate) {
         return addRule(this, predicate);
     }
 
-    public State addRule(State target, IntPredicate predicate) {
+    public State addRule(State target, CharPredicate predicate) {
         return addRule(target, Rule.custom(predicate));
     }
 
@@ -84,7 +84,7 @@ public final class State implements BaseState<State> {
     }
 
     public State addRule(TargetedRule<State> rule) {
-        if (rule.validCodepoints().anyMatch(cp -> accept(cp).isPresent())) {
+        if (rule.validChars().anyMatch(c -> accept((char) c).isPresent())) {
             throw new IllegalArgumentException("non-deterministic rule not allowed");
         }
 
@@ -92,17 +92,13 @@ public final class State implements BaseState<State> {
         return this;
     }
 
-    public Optional<State> accept(int codepoint) {
-        return Optional.ofNullable(nullableAccept(codepoint));
+    public Optional<State> accept(char c) {
+        return Optional.ofNullable(nullableAccept(c));
     }
 
-    public State nullableAccept(int codepoint) {
-        if (codepoint < Rule.MIN_CODE_POINT || codepoint > Rule.MAX_CODE_POINT) {
-            throw new IllegalArgumentException("codepoint out of bounds");
-        }
-
+    public State nullableAccept(char c) {
         for (TargetedRule<State> r : rules.values()) {
-            if (r.accepts(codepoint)) {
+            if (r.accepts(c)) {
                 return r.target();
             }
         }

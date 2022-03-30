@@ -4,19 +4,12 @@ import io.github.ititus.commons.automaton.finite.DotUtil;
 
 import java.util.stream.IntStream;
 
-final class Range implements Rule {
+record Range(char start, char end) implements Rule {
 
-    private final int start;
-    private final int end;
-
-    Range(int start, int end) {
-        super();
+    Range {
         if (start > end) {
             throw new IllegalArgumentException();
         }
-
-        this.start = start;
-        this.end = end;
     }
 
     @Override
@@ -25,17 +18,17 @@ final class Range implements Rule {
     }
 
     @Override
-    public boolean accepts(int codepoint) {
-        return start <= codepoint && codepoint <= end;
+    public boolean accepts(char c) {
+        return start <= c && c <= end;
     }
 
     @Override
-    public IntStream validCodepoints() {
+    public IntStream validChars() {
         return IntStream.rangeClosed(start, end);
     }
 
     @Override
-    public int validCodepointCount() {
+    public int validCharCount() {
         return end - start + 1;
     }
 }

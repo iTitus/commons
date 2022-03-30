@@ -3,9 +3,9 @@ package io.github.ititus.commons.automaton.finite.nfa;
 import io.github.ititus.commons.automaton.finite.BaseState;
 import io.github.ititus.commons.automaton.finite.TargetedRule;
 import io.github.ititus.commons.automaton.finite.rule.Rule;
+import io.github.ititus.commons.function.CharPredicate;
 
 import java.util.*;
-import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 public final class State implements BaseState<State> {
@@ -42,35 +42,35 @@ public final class State implements BaseState<State> {
         return this;
     }
 
-    public State addSelfRule(int... codepoints) {
-        return addRule(this, codepoints);
+    public State addSelfRule(char... cs) {
+        return addRule(this, cs);
     }
 
-    public State addRule(State target, int... codepoints) {
-        return addRule(target, Rule.codepoints(codepoints));
+    public State addRule(State target, char... cs) {
+        return addRule(target, Rule.characters(cs));
     }
 
-    public State addSelfNotRule(int... codepoints) {
-        return addNotRule(this, codepoints);
+    public State addSelfNotRule(char... cs) {
+        return addNotRule(this, cs);
     }
 
-    public State addNotRule(State target, int... codepoints) {
-        return addRule(target, Rule.not(Rule.codepoints(codepoints)));
+    public State addNotRule(State target, char... cs) {
+        return addRule(target, Rule.not(Rule.characters(cs)));
     }
 
-    public State addSelfRangeRule(int start, int end) {
+    public State addSelfRangeRule(char start, char end) {
         return addRangeRule(this, start, end);
     }
 
-    public State addRangeRule(State target, int start, int end) {
+    public State addRangeRule(State target, char start, char end) {
         return addRule(target, Rule.range(start, end));
     }
 
-    public State addSelfRule(IntPredicate predicate) {
+    public State addSelfRule(CharPredicate predicate) {
         return addRule(this, predicate);
     }
 
-    public State addRule(State target, IntPredicate predicate) {
+    public State addRule(State target, CharPredicate predicate) {
         return addRule(target, Rule.custom(predicate));
     }
 
@@ -108,13 +108,9 @@ public final class State implements BaseState<State> {
         return cachedEpsilonClosure;
     }
 
-    public Set<State> accept(int codepoint) {
-        if (codepoint < Rule.MIN_CODE_POINT || codepoint > Rule.MAX_CODE_POINT) {
-            throw new IllegalArgumentException("codepoint out of bounds");
-        }
-
+    public Set<State> accept(char c) {
         return rules.values().stream()
-                .filter(r -> r.accepts(codepoint))
+                .filter(r -> r.accepts(c))
                 .map(TargetedRule::target)
                 .collect(Collectors.toUnmodifiableSet());
     }

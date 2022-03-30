@@ -1,18 +1,21 @@
 package io.github.ititus.commons.automaton.finite.rule;
 
+import io.github.ititus.commons.data.ArrayUtil;
+import io.github.ititus.commons.data.StreamUtil;
+import io.github.ititus.commons.function.CharPredicate;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public sealed interface Rule permits All, CachedRule, None, Or, Range, Single {
 
-    int MIN_CODE_POINT = Character.MIN_CODE_POINT;
-    int MAX_CODE_POINT = Character.MAX_CODE_POINT;
-    int CODE_POINT_COUNT = MAX_CODE_POINT - MIN_CODE_POINT + 1;
+    char MIN_VALUE = Character.MIN_VALUE;
+    char MAX_VALUE = Character.MAX_VALUE;
+    int CHAR_COUNT = MAX_VALUE - MIN_VALUE + 1;
 
     static Rule none() {
         return None.INSTANCE;
@@ -22,51 +25,42 @@ public sealed interface Rule permits All, CachedRule, None, Or, Range, Single {
         return All.INSTANCE;
     }
 
-    static Rule codepoint(int codepoint) {
-        if (codepoint < MIN_CODE_POINT || codepoint > MAX_CODE_POINT) {
-            throw new IllegalArgumentException("codepoint out of bounds");
-        }
-
-        return new Single(codepoint);
+    static Rule character(char c) {
+        return new Single(c);
     }
 
-    static Rule codepoints(int... codepoints) {
-        if (codepoints == null || codepoints.length == 0) {
+    static Rule characters(char... cs) {
+        if (cs == null || cs.length == 0) {
             return none();
-        } else if (codepoints.length == 1) {
-            return codepoint(codepoints[0]);
+        } else if (cs.length == 1) {
+            return character(cs[0]);
         }
 
-        return codepoints(Arrays.stream(codepoints));
+        return characters(ArrayUtil.stream(cs));
     }
 
-    static Rule codepoints(IntStream codepoints) {
-        if (codepoints == null) {
+    static Rule characters(IntStream characters) {
+        if (characters == null) {
             return none();
         }
 
-        return RuleHelper.simplify(
-                codepoints
-                        .peek(cp -> {
-                            if (cp < MIN_CODE_POINT || cp > MAX_CODE_POINT) {
-                                throw new IllegalArgumentException("codepoint out of bounds");
+        return RuleHelper.simplify(StreamUtil.toCharArray(
+                characters
+                        .peek(c -> {
+                            if (c < MIN_VALUE || c > MAX_VALUE) {
+                                throw new IllegalArgumentException("character out of bounds");
                             }
                         })
                         .sorted()
                         .distinct()
-                        .toArray()
-        );
+        ));
     }
 
-    static Rule range(int start, int end) {
-        if (start < MIN_CODE_POINT || start > MAX_CODE_POINT) {
-            throw new IllegalArgumentException("start out of bounds");
-        } else if (end < MIN_CODE_POINT || end > MAX_CODE_POINT) {
-            throw new IllegalArgumentException("end out of bounds");
-        } else if (start > end) {
+    static Rule range(char start, char end) {
+        if (start > end) {
             throw new IllegalArgumentException("start > end");
         } else if (start == end) {
-            return codepoint(start);
+            return character(start);
         }
 
         return new Range(start, end);
@@ -110,7 +104,7 @@ public sealed interface Rule permits All, CachedRule, None, Or, Range, Single {
             return all();
         }
 
-        return RuleHelper.simplify(cp -> ruleList.stream().anyMatch(r -> r.accepts(cp)));
+        return RuleHelper.simplify(c -> ruleList.stream().anyMatch(r -> r.accepts(c)));
     }
 
     static Rule not(Rule rule) {
@@ -126,20 +120,28 @@ public sealed interface Rule permits All, CachedRule, None, Or, Range, Single {
         return new Not(rule);
     }
 
-    static Rule custom(IntPredicate codepointPredicate) {
-        return RuleHelper.simplify(codepointPredicate);
+    static Rule custom(CharPredicate charPredicate) {
+        return RuleHelper.simplify(charPredicate);
     }
 
     String describe();
 
-    boolean accepts(int codepoint);
+    default boolean accepts(int codepoint) {
+        if (codepoint < MIN_VALUE || codepoint > MAX_VALUE) {
+            throw new IllegalArgumentException();
+        }
+
+        return accepts((char) codepoint);
+    }
+
+    boolean accepts(char c);
 
     default Rule merge(Rule other) {
         return or(this, other);
     }
 
-    IntStream validCodepoints();
+    IntStream validChars();
 
-    int validCodepointCount();
+    int validCharCount();
 
 }

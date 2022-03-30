@@ -16,17 +16,17 @@ final class None implements Rule {
     }
 
     @Override
-    public boolean accepts(int codepoint) {
+    public boolean accepts(char c) {
         return false;
     }
 
     @Override
-    public IntStream validCodepoints() {
+    public IntStream validChars() {
         return IntStream.empty();
     }
 
     @Override
-    public int validCodepointCount() {
+    public int validCharCount() {
         return 0;
     }
 }
