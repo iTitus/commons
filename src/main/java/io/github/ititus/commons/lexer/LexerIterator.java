@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public final class LexerIterator implements Iterator<Token<?>>, Closeable {
 
@@ -15,7 +16,7 @@ public final class LexerIterator implements Iterator<Token<?>>, Closeable {
     private boolean check;
 
     public LexerIterator(Lexer lexer) {
-        this.lexer = lexer;
+        this.lexer = Objects.requireNonNull(lexer);
         this.check = true;
     }
 

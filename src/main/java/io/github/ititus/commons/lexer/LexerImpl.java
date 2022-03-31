@@ -97,7 +97,7 @@ final class LexerImpl implements Lexer {
 
     private boolean checkTokens(CharSequence buffer) {
         boolean changedTokenCandidate = false;
-        for (int i = 0; i < tokenTypes.size(); i++) {
+        for (int i = 0, len = tokenTypes.size(); i < len; i++) {
             if (!validTokens.get(i)) {
                 continue;
             }
