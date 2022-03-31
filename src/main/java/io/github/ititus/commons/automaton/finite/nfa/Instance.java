@@ -32,7 +32,7 @@ public final class Instance {
 
     public Instance accept(CharSequence input) {
         if (isInvalid()) {
-            throw new IllegalStateException();
+            return this;
         }
 
         Instance i = this;
@@ -44,16 +44,12 @@ public final class Instance {
     }
 
     public Instance acceptEpsilon() {
-        if (isInvalid()) {
-            throw new IllegalStateException();
-        }
-
         return this;
     }
 
     public Instance accept(char c) {
         if (isInvalid()) {
-            throw new IllegalStateException();
+            return this;
         }
 
         return create(

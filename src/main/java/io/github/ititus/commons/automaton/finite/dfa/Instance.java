@@ -21,7 +21,7 @@ public final class Instance {
     }
 
     public Instance accept(CharSequence input) {
-        if (input.isEmpty()) {
+        if (isInvalid() || input.isEmpty()) {
             return this;
         }
 
@@ -35,7 +35,7 @@ public final class Instance {
 
     public Instance accept(char c) {
         if (isInvalid()) {
-            throw new IllegalStateException();
+            return this;
         }
 
         var target = current.nullableAccept(c);
