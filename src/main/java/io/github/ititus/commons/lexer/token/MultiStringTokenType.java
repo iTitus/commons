@@ -2,6 +2,9 @@ package io.github.ititus.commons.lexer.token;
 
 import io.github.ititus.commons.lexer.MatchResult;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import static io.github.ititus.commons.lexer.MatchResult.*;
@@ -9,16 +12,17 @@ import static io.github.ititus.commons.lexer.MatchResult.*;
 public abstract class MultiStringTokenType<T> implements TokenType<T> {
 
     private final String name;
-    private final List<String> tokens;
+    private final List<? extends CharSequence> tokens;
 
-    protected MultiStringTokenType(String name, String... tokens) {
-        this.name = name;
-        this.tokens = List.of(tokens);
+    protected MultiStringTokenType(String name, CharSequence... tokens) {
+        this(name, Arrays.asList(tokens));
     }
 
-    protected MultiStringTokenType(String name, List<String> tokens) {
+    protected MultiStringTokenType(String name, Collection<? extends CharSequence> tokens) {
         this.name = name;
-        this.tokens = List.copyOf(tokens);
+        this.tokens = tokens.stream()
+                .sorted(Comparator.comparingInt(CharSequence::length).reversed())
+                .toList();
     }
 
     @Override
@@ -28,17 +32,22 @@ public abstract class MultiStringTokenType<T> implements TokenType<T> {
 
     @Override
     public MatchResult matches(CharSequence str) {
-        if (str.isEmpty()) {
+        int len = str.length();
+        if (len == 0) {
             return tokens.isEmpty() ? NO_MATCH : PREFIX_ONLY_MATCH;
         }
 
         boolean hasPrefixMatch = false;
-        for (String token : tokens) {
-            MatchResult result = StringTokenType.matches(token, str);
-            if (result == FULL_MATCH) {
-                return FULL_MATCH;
-            } else if (result == PREFIX_ONLY_MATCH) {
-                hasPrefixMatch = true;
+        for (CharSequence token : tokens) {
+            if (len > token.length()) {
+                break;
+            }
+
+            switch (StringTokenType.matches(token, str)) {
+                case FULL_MATCH:
+                    return FULL_MATCH;
+                case PREFIX_ONLY_MATCH:
+                    hasPrefixMatch = true;
             }
         }
 
