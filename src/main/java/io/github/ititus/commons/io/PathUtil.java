@@ -12,9 +12,13 @@ public final class PathUtil {
 
     public static final Comparator<Path> ASCIIBETICAL = PathUtil::compareAsciibetical;
     public static final Comparator<Path> ASCIIBETICAL_NORMALIZE = (p1, p2) -> compareAsciibetical(p1.normalize(), p2.normalize());
+    public static final Comparator<Path> ASCIIBETICAL_ABSOLUTE = (p1, p2) -> compareAsciibetical(p1.toAbsolutePath(), p2.toAbsolutePath());
+    public static final Comparator<Path> ASCIIBETICAL_CANONICAL = (p1, p2) -> compareAsciibetical(toCanonicalPath(p1), toCanonicalPath(p2));
     public static final Comparator<Path> ASCIIBETICAL_REAL = (p1, p2) -> compareAsciibetical(toRealPath(p1), toRealPath(p2));
     public static final Comparator<Path> ASCIIBETICAL_FILES_FIRST = PathUtil::compareAsciibeticalFilesFirst;
     public static final Comparator<Path> ASCIIBETICAL_NORMALIZE_FILES_FIRST = (p1, p2) -> compareAsciibeticalFilesFirst(p1.normalize(), p2.normalize());
+    public static final Comparator<Path> ASCIIBETICAL_ABSOLUTE_FILES_FIRST = (p1, p2) -> compareAsciibeticalFilesFirst(p1.toAbsolutePath(), p2.toAbsolutePath());
+    public static final Comparator<Path> ASCIIBETICAL_CANONICAL_FILES_FIRST = (p1, p2) -> compareAsciibeticalFilesFirst(toCanonicalPath(p1), toCanonicalPath(p2));
     public static final Comparator<Path> ASCIIBETICAL_REAL_FILES_FIRST = (p1, p2) -> compareAsciibeticalFilesFirst(toRealPath(p1), toRealPath(p2));
 
     private PathUtil() {
@@ -82,50 +86,41 @@ public final class PathUtil {
     }
 
     public static int compareAsciibetical(Path p1, Path p2) {
-        if (p1.isAbsolute() != p2.isAbsolute()) {
-            throw new IllegalArgumentException("both paths must either be absolute or relative");
-        }
-
-        int c1 = p1.getNameCount();
-        int c2 = p2.getNameCount();
-
-        int last = Math.min(c1, c2);
-        for (int i = 0; i < last; i++) {
-            int c = p1.getName(i).toString().compareTo(p2.getName(i).toString());
-            if (c != 0) {
-                return c;
-            }
-        }
-
-        return c1 - c2;
+        return compareAsciibetical(p1, p2, false);
     }
 
     public static int compareAsciibeticalFilesFirst(Path p1, Path p2) {
+        return compareAsciibetical(p1, p2, true);
+    }
+
+    public static int compareAsciibetical(Path p1, Path p2, boolean filesFirst) {
         if (p1.isAbsolute() != p2.isAbsolute()) {
             throw new IllegalArgumentException("both paths must either be absolute or relative");
         }
 
         int c1 = p1.getNameCount();
         int c2 = p2.getNameCount();
+        int c = Integer.compare(c1, c2);
+        if (c != 0) {
+            return c;
+        }
 
-        int last = Math.min(c1, c2) - 1;
-        for (int i = 0; i < last; i++) {
-            int c = p1.getName(i).toString().compareTo(p2.getName(i).toString());
+        for (int i = 0; i < c1; i++) {
+            if (filesFirst && i == c1 - 1) {
+                boolean d1 = Files.isDirectory(p1);
+                boolean d2 = Files.isDirectory(p2);
+                if (d1 != d2) {
+                    return d1 ? 1 : -1;
+                }
+            }
+
+            c = p1.getName(i).toString().compareTo(p2.getName(i).toString());
             if (c != 0) {
                 return c;
             }
         }
 
-        int c = c1 - c2;
-        if (c == 0 && !p1.getName(last).toString().equals(p2.getName(last).toString())) {
-            boolean d1 = Files.isDirectory(p1);
-            boolean d2 = Files.isDirectory(p2);
-            if (d1 != d2) {
-                return d1 ? 1 : -1;
-            }
-        }
-
-        return c;
+        return 0;
     }
 
     public static Optional<String> getExtension(Path p) {
