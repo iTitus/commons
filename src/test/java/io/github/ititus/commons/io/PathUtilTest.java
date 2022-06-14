@@ -8,8 +8,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static io.github.ititus.commons.io.PathUtil.ASCIIBETICAL_REAL_FILES_FIRST;
-import static io.github.ititus.commons.io.PathUtil.compareAsciibetical;
+import static io.github.ititus.commons.io.PathUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PathUtilTest {
@@ -69,7 +68,7 @@ class PathUtilTest {
     void testAsciibeticalReal2() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem()) {
             Path a = fs.getPath("a/a");
-            Files.createFile(PathUtil.createParentsAndResolveFile(a));
+            Files.createFile(createParentsAndResolveFile(a));
 
             //noinspection EqualsWithItself
             assertThat(ASCIIBETICAL_REAL_FILES_FIRST.compare(a, a)).isZero();
@@ -82,8 +81,8 @@ class PathUtilTest {
             Path a = fs.getPath("a");
             Path b = fs.getPath("b");
 
-            Files.createFile(PathUtil.createParentsAndResolveFile(a));
-            Files.createFile(PathUtil.createParentsAndResolveFile(b));
+            Files.createFile(createParentsAndResolveFile(a));
+            Files.createFile(createParentsAndResolveFile(b));
 
             assertThat(ASCIIBETICAL_REAL_FILES_FIRST.compare(a, b)).isNegative();
         }
@@ -95,8 +94,8 @@ class PathUtilTest {
             Path a = fs.getPath("a/a");
             Path b = fs.getPath("a/b");
 
-            Files.createFile(PathUtil.createParentsAndResolveFile(a));
-            Files.createFile(PathUtil.createParentsAndResolveFile(b));
+            Files.createFile(createParentsAndResolveFile(a));
+            Files.createFile(createParentsAndResolveFile(b));
 
             assertThat(ASCIIBETICAL_REAL_FILES_FIRST.compare(a, b)).isNegative();
         }
@@ -109,7 +108,7 @@ class PathUtilTest {
             Path b = fs.getPath("a/b");
 
             Files.createDirectories(a);
-            Files.createFile(PathUtil.createParentsAndResolveFile(b));
+            Files.createFile(createParentsAndResolveFile(b));
 
             assertThat(ASCIIBETICAL_REAL_FILES_FIRST.compare(a, b)).isNegative();
         }
@@ -121,8 +120,8 @@ class PathUtilTest {
             Path a = fs.getPath("b");
             Path b = fs.getPath("a/b");
 
-            PathUtil.createOrResolveRealDir(a);
-            Files.createFile(PathUtil.createParentsAndResolveFile(b));
+            createOrResolveRealDir(a);
+            Files.createFile(createParentsAndResolveFile(b));
 
             assertThat(ASCIIBETICAL_REAL_FILES_FIRST.compare(a, b)).isNegative();
         }
@@ -134,8 +133,8 @@ class PathUtilTest {
             Path a = fs.getPath("b");
             Path b = fs.getPath("a");
 
-            Files.createFile(PathUtil.createParentsAndResolveFile(a));
-            PathUtil.createOrResolveRealDir(b);
+            Files.createFile(createParentsAndResolveFile(a));
+            createOrResolveRealDir(b);
 
             assertThat(ASCIIBETICAL_REAL_FILES_FIRST.compare(a, b)).isNegative();
         }
