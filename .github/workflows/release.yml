@@ -38,7 +38,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ steps.get_version.outputs.version-without-v }}
           body: |
-            Download from [Maven Central](https://search.maven.org/artifact/io.github.ititus/ititus-commons/${{ steps.get_version.outputs.version-without-v }}/jar).
+            Download from [Maven Central](https://central.sonatype.com/artifact/io.github.ititus/ititus-commons/${{ steps.get_version.outputs.version-without-v }}).
           draft: false
           prerelease: false
 
