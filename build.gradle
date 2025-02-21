@@ -43,8 +43,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation platform('org.junit:junit-bom:5.12.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.assertj:assertj-core:3.27.3'
     testImplementation 'org.mockito:mockito-core:5.15.2'
     testImplementation 'com.google.jimfs:jimfs:1.3.0'
@@ -52,10 +53,13 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
 }
 
 jmh {
-    jmhVersion = '1.35'
+    jmhVersion = '1.37'
     warmupIterations = 2
     iterations = 5
     fork = 1
