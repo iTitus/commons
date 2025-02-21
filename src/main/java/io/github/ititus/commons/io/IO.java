@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -42,9 +44,9 @@ public final class IO {
 
     public static URL toURL(String url) {
         try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            throw new UncheckedIOException(e);
+            return new URI(url).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
         }
     }
 
