@@ -84,14 +84,12 @@ mavenPublishing {
     }
 }
 
-if (tasks.findByName('publishToMavenCentral')) {
-    tasks.register('publishSnapshotToMavenCentral') {
-        if (version.endsWith('-SNAPSHOT')) {
-            dependsOn publishToMavenCentral
-        }
-    }.configure {
-        onlyIf('SNAPSHOT version') {
-            version.endsWith('-SNAPSHOT')
-        }
+tasks.register('publishSnapshotToMavenCentral') {
+    if (version.endsWith('-SNAPSHOT') && tasks.findByName('publishToMavenCentral')) {
+        dependsOn publishToMavenCentral
+    }
+}.configure {
+    onlyIf('SNAPSHOT version') {
+        version.endsWith('-SNAPSHOT') && tasks.findByName('publishToMavenCentral')
     }
 }
