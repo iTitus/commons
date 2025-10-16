@@ -1,39 +1,24 @@
-import java.time.Duration
-
 plugins {
     id 'java-library'
     id 'me.champeau.jmh' version '0.7.3'
-    id 'maven-publish'
-    id 'signing'
-    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
+    id 'com.vanniktech.maven.publish' version '0.34.0'
 }
 
 group = 'io.github.ititus'
-version = '2.3.3'
+version = '2.3.4-SNAPSHOT'
 
-wrapper {
-    gradleVersion = '8.12.1'
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.release = 21
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     systemProperty 'file.encoding', 'UTF-8'
 }
 
 javadoc {
     options {
+        // silence warnings on missing javadoc
         addBooleanOption('Xdoclint:all,-missing', true)
     }
 }
@@ -65,58 +50,46 @@ jmh {
     fork = 1
 }
 
-tasks.withType(me.champeau.jmh.JmhParameters) {
+tasks.withType(me.champeau.jmh.JmhParameters).configureEach {
     jvmArgsAppend = ['-Dfile.encoding=UTF-8']
 }
 
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            pom {
-                name = 'iTitus Commons'
-                packaging = 'jar'
-                description = 'Library for commonly needed functionality'
-                url = 'https://github.com/iTitus/commons'
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://mit-license.org'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'iTitus'
-                        name = 'iTitus'
-                        email = 'ititus@users.noreply.github.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/iTitus/commons.git'
-                    developerConnection = 'scm:git:ssh://git@github.com:iTitus/commons.git'
-                    url = 'https://github.com/iTitus/commons'
-                    tag = "v${version}"
-                }
-            }
+mavenPublishing {
+    publishToMavenCentral(true)
+    signAllPublications()
 
-            from components.java
+    pom {
+        name = 'iTitus Commons'
+        description = 'Library for commonly needed functionality'
+        url = 'https://github.com/iTitus/commons'
+        licenses {
+            license {
+                name = 'MIT License'
+                url = 'https://mit-license.org'
+            }
+        }
+        developers {
+            developer {
+                id = 'iTitus'
+                name = 'iTitus'
+                email = 'ititus@users.noreply.github.com'
+            }
+        }
+        scm {
+            connection = 'scm:git:git://github.com/iTitus/commons.git'
+            developerConnection = 'scm:git:ssh://git@github.com:iTitus/commons.git'
+            url = 'https://github.com/iTitus/commons'
+            tag = "v${version}"
         }
     }
 }
 
-signing {
-    def signingKey = findProperty('signing_key')
-    def signingPassword = findProperty('signing_password')
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign publishing.publications.MyPublication
-}
-
-nexusPublishing {
-    connectTimeout = clientTimeout = Duration.ofHours(2)
-    repositories {
-        sonatype {
-            stagingProfileId = project.findProperty('ossrh_staging_profile_id')
-            username = project.findProperty('ossrh_username')
-            password = project.findProperty('ossrh_password')
-        }
+tasks.register('publishSnapshotToMavenCentral') {
+    if (version.endsWith('-SNAPSHOT')) {
+        dependsOn publishToMavenCentral
+    }
+}.configure {
+    onlyIf('SNAPSHOT version') {
+        version.endsWith('-SNAPSHOT')
     }
 }
